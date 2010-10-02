@@ -182,14 +182,15 @@ public class Compiler {
         lexer.nextToken();
     }
 
-    private void methodDec(Type type, String name, int qualifier) {
+    private Method methodDec(Type type, String name, int qualifier) {
         /*   MethodDec ::= Qualifier ReturnType Id "("[ FormalParamDec ]  ")"
         "{"  StatementList "}"
          */
         Method metodo;
         lexer.nextToken();
+        ArrayList parametros = null;
         if (lexer.token != Symbol.RIGHTPAR) {
-            formalParamDec();
+            parametros = formalParamDec();
         }
         if (lexer.token != Symbol.RIGHTPAR) {
             error.show(") expected");
@@ -201,13 +202,13 @@ public class Compiler {
         }
 
         lexer.nextToken();
-        statementList();
+        ArrayList<Statement> corpo = statementList();
         if (lexer.token != Symbol.RIGHTCURBRACKET) {
             error.show("} expected");
         }
 
         lexer.nextToken();
-
+        return new Method(name, type, qualifier, parametros, corpo);
     }
 
     private void localDec(Type type) {
@@ -228,7 +229,7 @@ public class Compiler {
         }
     }
 
-    private void formalParamDec() {
+    private ArrayList formalParamDec() {
         //  FormalParamDec ::= ParamDec { "," ParamDec }
 
         paramDec();
@@ -236,15 +237,24 @@ public class Compiler {
             lexer.nextToken();
             paramDec();
         }
+
+        return new ArrayList();
     }
 
     private void paramDec() {
         // ParamDec ::= Type Id
 
-        type();
+        Type t = type();
         if (lexer.token != Symbol.IDENT) {
             error.show("Identifier expected");
         }
+        String name = lexer.getStringValue();
+        if(symbolTable.getInLocal(name) != null){
+            error.show("parameter redeclaration");
+        }
+        Variable v = new Variable(name, t);
+        symbolTable.putInLocal(name, v);
+        
         lexer.nextToken();
     }
 
@@ -268,7 +278,11 @@ public class Compiler {
             case Symbol.IDENT:
                 //# corrija: fa�a uma busca na TS para buscar a classe
                 // IDENT deve ser uma classe.
-                result = null;
+                if(symbolTable.getInGlobal(lexer.getStringValue()) == null){
+                    error.show("inexistent class");
+                }
+
+                result = symbolTable.getInGlobal(lexer.getStringValue());
                 break;
             default:
                 error.show("Type expected");
@@ -289,7 +303,7 @@ public class Compiler {
         }
     }
 
-    private void statementList() {
+    private ArrayList<Statement> statementList() {
         // CompStatement ::= "{" { Statement } "}"
         int tk;
         // statements always begin with an identifier, if, read, write, ...
@@ -297,6 +311,8 @@ public class Compiler {
                 && tk != Symbol.ELSE) {
             statement();
         }
+
+        return new ArrayList();
     }
 
     private void statement() {
@@ -309,7 +325,14 @@ public class Compiler {
 
         switch (lexer.token) {
             case Symbol.THIS:
+                lexer.nextToken();
+                //assignment();
+                break;
             case Symbol.IDENT:
+                if(symbolTable.getInGlobal(lexer.getStringValue()) == null){
+                    error.show("undeclared statement");
+                }
+                localDec(symbolTable.getInGlobal(lexer.getStringValue()));
             case Symbol.SUPER:
                 assignmentMessageSendLocalVarDecStatement();
                 break;
@@ -324,6 +347,10 @@ public class Compiler {
             case Symbol.STRING:
                 lexer.nextToken();
                 localDec(Type.stringType);
+                break;
+            case Symbol.VOID:
+                lexer.nextToken();
+                localDec(Type.voidType);
                 break;
             case Symbol.RETURN:
                 returnStatement();

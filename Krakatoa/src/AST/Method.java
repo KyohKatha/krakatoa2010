@@ -16,4 +16,54 @@ public class Method {
     private Type type;
     private int qualifier;
     private ArrayList parameters;
+    private ArrayList<Statement> corpo;
+
+    public Method(String ident, Type type, int qualifier, ArrayList parameters, ArrayList<Statement> corpo){
+        this.ident = ident;
+        this.type = type;
+        this.qualifier = qualifier;
+        this.parameters = parameters;
+        this.corpo = corpo;
+    }
+
+    public String getIdent() {
+        return ident;
+    }
+
+    public void setIdent(String ident) {
+        this.ident = ident;
+    }
+
+    public ArrayList getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(ArrayList parameters) {
+        this.parameters = parameters;
+    }
+
+    public int getQualifier() {
+        return qualifier;
+    }
+
+    public void setQualifier(int qualifier) {
+        this.qualifier = qualifier;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public ArrayList<Statement> getCorpo() {
+        return corpo;
+    }
+
+    public void setCorpo(ArrayList<Statement> corpo) {
+        this.corpo = corpo;
+    }
+
 }
