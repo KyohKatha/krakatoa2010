@@ -26,6 +26,13 @@ public class ClassDec extends Type {
         this.superclass = superclass;
     }
 
+    public void setPublicMethod (Method method){
+        publicMethodList.addMethod(method);
+    }
+
+    public void setPrivateMethod (Method method){
+        privateMethodList.addMethod(method);
+    }
 
     private String name;
     private ClassDec superclass;

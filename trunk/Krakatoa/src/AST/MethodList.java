@@ -16,5 +16,9 @@ public class MethodList {
        methods = new ArrayList();
     }
 
+    public void addMethod(Method method){
+        methods.add(method);
+    }
+
     private ArrayList methods;
 }

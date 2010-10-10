@@ -1,5 +1,21 @@
 package Comp;
 
+
+
+/*
+ *      Até onde já foi feito:
+ *      Program
+ *          ClassDec
+ *              MethodDec
+ *              InstanceVarDec
+ *
+ *      Obs:
+ *          Falta descer nos métodos chamados por MethodDec (FormalParamDec e StatementList)
+ *
+ *      Perguntas:
+ *          Comofas pra inserir um método numa tabela de símbolos?
+ */
+
 import AST.*;
 import Lexer.*;
 
@@ -139,11 +155,17 @@ public class Compiler {
             String name = lexer.getStringValue();
             lexer.nextToken();
             if (lexer.token == Symbol.LEFTPAR) {
-                methodDec(t, name, qualifier);
+                Method met = methodDec(t, name, qualifier);
+                if(qualifier == Symbol.PUBLIC || qualifier == Symbol.STATICPUBLIC)
+                    nvClasse.setPublicMethod(met);
+                if(qualifier == Symbol.PRIVATE || qualifier == Symbol.STATICPRIVATE)
+                    nvClasse.setPrivateMethod(met);
             } else if (qualifier != Symbol.PRIVATE && qualifier != Symbol.STATICPRIVATE) {
                 error.show("Attempt to declare a public instance variable");
             } else {
-                instanceVarDec(t, name);
+                InstanceVariableList varList = null;
+                varList = instanceVarDec(t, name);
+                nvClasse.setInstanceVariableList(varList);
             }
         }
         if (lexer.token != Symbol.RIGHTCURBRACKET) {
@@ -151,17 +173,18 @@ public class Compiler {
         }
         lexer.nextToken();
 
-        return null;
+        return nvClasse;
     }
 
-    private void instanceVarDec(Type type, String name) {
+    private InstanceVariableList instanceVarDec(Type type, String name) {
         //   InstVarDec ::= [ "static"  ] "private"  Type  IdList  ";"
-
+        InstanceVariableList variables = null;
         if (symbolTable.getInLocal(name) != null) {
             error.show("variable redeclaration");
         }
-        Variable v = new Variable(name, type);
+        InstanceVariable v = new InstanceVariable(name, type);
         symbolTable.putInLocal(name, v);
+        variables.addElement(v);
 
         while (lexer.token == Symbol.COMMA) {
             lexer.nextToken();
@@ -172,21 +195,25 @@ public class Compiler {
             if (symbolTable.getInLocal(name) != null) {
                 error.show("variable redeclaration");
             }
-            v = new Variable(variableName, type);
+            v = new InstanceVariable(variableName, type);
             symbolTable.putInLocal(variableName, v);
             lexer.nextToken();
+            variables.addElement(v);
         }
         if (lexer.token != Symbol.SEMICOLON) {
             error.show(CompilerError.semicolon_expected);
         }
         lexer.nextToken();
+        return variables;
     }
 
     private Method methodDec(Type type, String name, int qualifier) {
         /*   MethodDec ::= Qualifier ReturnType Id "("[ FormalParamDec ]  ")"
         "{"  StatementList "}"
          */
-        Method metodo;
+
+        //Conferir se o método já existe
+
         lexer.nextToken();
         ArrayList parametros = null;
         if (lexer.token != Symbol.RIGHTPAR) {
@@ -207,8 +234,13 @@ public class Compiler {
             error.show("} expected");
         }
 
+        
+        Method met = new Method(name, type, qualifier, parametros, corpo);
+
+        //Inserir na tabela de símbolos
+
         lexer.nextToken();
-        return new Method(name, type, qualifier, parametros, corpo);
+        return met;
     }
 
     private void localDec(Type type) {
