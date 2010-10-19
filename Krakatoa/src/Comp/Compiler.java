@@ -1,21 +1,17 @@
 package Comp;
 
-
-
 /*
  *      Até onde já foi feito:
  *      Program
  *          ClassDec
  *              MethodDec
+ *
  *              InstanceVarDec
  *
  *      Obs:
  *          Falta descer nos métodos chamados por MethodDec (FormalParamDec e StatementList)
  *
- *      Perguntas:
- *          Comofas pra inserir um método numa tabela de símbolos?
  */
-
 import AST.*;
 import Lexer.*;
 
@@ -155,11 +151,23 @@ public class Compiler {
             String name = lexer.getStringValue();
             lexer.nextToken();
             if (lexer.token == Symbol.LEFTPAR) {
-                Method met = methodDec(t, name, qualifier);
-                if(qualifier == Symbol.PUBLIC || qualifier == Symbol.STATICPUBLIC)
+
+                if (nvClasse.searchMethod(name)) {
+                    error.show("Method redeclaration");
+                }
+
+                Method met = new Method(name, t, qualifier);
+
+                if (qualifier == Symbol.PUBLIC || qualifier == Symbol.STATICPUBLIC) {
                     nvClasse.setPublicMethod(met);
-                if(qualifier == Symbol.PRIVATE || qualifier == Symbol.STATICPRIVATE)
+                }
+
+                if (qualifier == Symbol.PRIVATE || qualifier == Symbol.STATICPRIVATE) {
                     nvClasse.setPrivateMethod(met);
+                }
+
+                met = methodDec(met);
+
             } else if (qualifier != Symbol.PRIVATE && qualifier != Symbol.STATICPRIVATE) {
                 error.show("Attempt to declare a public instance variable");
             } else {
@@ -207,12 +215,10 @@ public class Compiler {
         return variables;
     }
 
-    private Method methodDec(Type type, String name, int qualifier) {
+    private Method methodDec(Method met) {
         /*   MethodDec ::= Qualifier ReturnType Id "("[ FormalParamDec ]  ")"
         "{"  StatementList "}"
          */
-
-        //Conferir se o método já existe
 
         lexer.nextToken();
         ArrayList parametros = null;
@@ -234,46 +240,60 @@ public class Compiler {
             error.show("} expected");
         }
 
-        
-        Method met = new Method(name, type, qualifier, parametros, corpo);
+        met.setCorpo(corpo);
 
-        //Inserir na tabela de símbolos
+        met.setParameters(parametros);
 
         lexer.nextToken();
         return met;
     }
 
-    private void localDec(Type type) {
+    private Statement localDec(Type type) {
         // LocalDec ::= Type IdList ";"
 
         if (lexer.token != Symbol.IDENT) {
             error.show("Identifier expected");
         }
+        if (symbolTable.getInLocal(lexer.getStringValue()) != null) {
+            error.show("variable redeclaration");
+        }
+        ArrayList<Variable> vars = new ArrayList();
+        
         Variable v = new Variable(lexer.getStringValue(), type);
+        vars.add(v);
         lexer.nextToken();
         while (lexer.token == Symbol.COMMA) {
             lexer.nextToken();
             if (lexer.token != Symbol.IDENT) {
                 error.show("Identifier expected");
             }
+
+            if (symbolTable.getInLocal(lexer.getStringValue()) != null) {
+                error.show("variable redeclaration");
+            }
             v = new Variable(lexer.getStringValue(), type);
+            vars.add(v);
             lexer.nextToken();
         }
+
+        return new Statement();
     }
 
     private ArrayList formalParamDec() {
         //  FormalParamDec ::= ParamDec { "," ParamDec }
+        ArrayList<Variable> parameters = new ArrayList();
 
-        paramDec();
+        parameters.add(paramDec());
+
         while (lexer.token == Symbol.COMMA) {
             lexer.nextToken();
-            paramDec();
+            parameters.add(paramDec());
         }
 
-        return new ArrayList();
+        return parameters;
     }
 
-    private void paramDec() {
+    private Variable paramDec() {
         // ParamDec ::= Type Id
 
         Type t = type();
@@ -281,13 +301,15 @@ public class Compiler {
             error.show("Identifier expected");
         }
         String name = lexer.getStringValue();
-        if(symbolTable.getInLocal(name) != null){
+        if (symbolTable.getInLocal(name) != null) {
             error.show("parameter redeclaration");
         }
         Variable v = new Variable(name, t);
         symbolTable.putInLocal(name, v);
-        
+
         lexer.nextToken();
+
+        return v;
     }
 
     private Type type() {
@@ -310,7 +332,7 @@ public class Compiler {
             case Symbol.IDENT:
                 //# corrija: fa�a uma busca na TS para buscar a classe
                 // IDENT deve ser uma classe.
-                if(symbolTable.getInGlobal(lexer.getStringValue()) == null){
+                if (symbolTable.getInGlobal(lexer.getStringValue()) == null) {
                     error.show("inexistent class");
                 }
 
@@ -338,16 +360,20 @@ public class Compiler {
     private ArrayList<Statement> statementList() {
         // CompStatement ::= "{" { Statement } "}"
         int tk;
+        ArrayList<Statement> statements = new ArrayList();
         // statements always begin with an identifier, if, read, write, ...
-        while ((tk = lexer.token) != Symbol.RIGHTCURBRACKET
-                && tk != Symbol.ELSE) {
-            statement();
+        while ((tk = lexer.token) != Symbol.RIGHTCURBRACKET && tk != Symbol.ELSE) {
+            statements.add(statement());
         }
 
-        return new ArrayList();
+        if (tk == Symbol.ELSE) {
+            error.show("invalid statement");
+        }
+
+        return statements;
     }
 
-    private void statement() {
+    private Statement statement() {
         /*
         Statement ::= Assignment ``;'' | IfStat |WhileStat 
         |  MessageSend ``;''  | ReturnStat ``;''
@@ -355,16 +381,27 @@ public class Compiler {
         | ``;'' | CompStatement | LocalDec
          */
 
+        Statement statement = null;
+
         switch (lexer.token) {
             case Symbol.THIS:
                 lexer.nextToken();
-                //assignment();
+                if (lexer.token != Symbol.DOT) {
+                    error.show("Dot expected");
+                }
+                lexer.nextToken();
+                statement = assignment();
                 break;
             case Symbol.IDENT:
-                if(symbolTable.getInGlobal(lexer.getStringValue()) == null){
+                String id = lexer.getStringValue();
+                if (symbolTable.getInGlobal(id) != null) {
+                    statement = localDec(symbolTable.getInGlobal(lexer.getStringValue()));
+                } else if (symbolTable.getInLocal(id) == null) {
                     error.show("undeclared statement");
+                } else {
+                    statement = assignment();
                 }
-                localDec(symbolTable.getInGlobal(lexer.getStringValue()));
+                break;
             case Symbol.SUPER:
                 assignmentMessageSendLocalVarDecStatement();
                 break;
@@ -411,6 +448,34 @@ public class Compiler {
             default:
                 error.show("Statement expected");
         }
+        return statement;
+    }
+
+    private Statement assignment() {
+        Statement state = null;
+
+        if (lexer.token != Symbol.IDENT) {
+            error.show("identifier expected");
+        }
+        String id = lexer.getStringValue();
+        if (symbolTable.getInLocal(id) == null) {
+            error.show("undeclared variable");
+        }
+        lexer.nextToken();
+
+        if (lexer.token != Symbol.ASSIGN) {
+            error.show("assign expected");
+        }
+        lexer.nextToken();
+
+        expression();
+
+
+
+        return state;
+    }
+
+    public void expression() {
     }
 
     private Statement assignmentMessageSendLocalVarDecStatement() {
