@@ -91,6 +91,7 @@ public class Compiler {
             error.show("class redeclaration");
         }
         ClassDec nvClasse = new ClassDec(className);
+        classeCorrente = nvClasse;
         symbolTable.putInGlobal(className, nvClasse);
 
         lexer.nextToken();
@@ -143,12 +144,20 @@ public class Compiler {
                     error.show("static, private, or public expected");
                     qualifier = Symbol.PUBLIC;
             }
-            Type t = type();
+            Type t;
+            if(lexer.token == Symbol.VOID){
+                t = Type.voidType;
+            }
+            else
+                t = type();
 
+            //IdList ::= Id { "," Id }
+            // ou MethodDec ::= Qualifier ReturnType Id "(" [ FormalParamDec ] ")" "{" StatementList "}"
             if (lexer.token != Symbol.IDENT) {
                 error.show("Identifier expected");
             }
             String name = lexer.getStringValue();
+
             lexer.nextToken();
             if (lexer.token == Symbol.LEFTPAR) {
 
@@ -167,7 +176,7 @@ public class Compiler {
                 }
 
                 met = methodDec(met);
-
+                metodoCorrente = met;
             } else if (qualifier != Symbol.PRIVATE && qualifier != Symbol.STATICPRIVATE) {
                 error.show("Attempt to declare a public instance variable");
             } else {
@@ -327,9 +336,10 @@ public class Compiler {
             case Symbol.STRING:
                 result = Type.stringType;
                 break;
-            case Symbol.VOID:
+                //acho que void nao tem
+            /*case Symbol.VOID:
                 result = Type.voidType;
-                break;
+                break;*/
             case Symbol.IDENT:
                 //# corrija: fa�a uma busca na TS para buscar a classe
                 // IDENT deve ser uma classe.
@@ -393,20 +403,39 @@ public class Compiler {
                     error.show("Dot expected");
                 }
                 lexer.nextToken();
-                statement = assignment();
+                if(lexer.token != Symbol.IDENT)
+                    error.show("Identifier expected");
+                String id = lexer.getStringValue();
+                lexer.nextToken();
+                if(lexer.token == Symbol.ASSIGN)
+                    statement = assignment(id);
+                else
+                    statement = assignmentMessageSendLocalVarDecStatement(id);
                 break;
             case Symbol.IDENT:
-                String id = lexer.getStringValue();
-                if (symbolTable.getInGlobal(id) != null) {
+                String id2 = lexer.getStringValue();
+                if (symbolTable.getInGlobal(id2) != null) {
                     statement = localDec(symbolTable.getInGlobal(lexer.getStringValue()));
-                } else if (symbolTable.getInLocal(id) == null) {
+                } else if (symbolTable.getInLocal(id2) == null) {
                     error.show("undeclared statement");
                 } else {
-                    statement = assignment();
+                    lexer.nextToken();
+                    if(lexer.token == Symbol.ASSIGN)
+                        statement = assignment(id2);
+                    else
+                        statement = assignmentMessageSendLocalVarDecStatement(id2);
                 }
                 break;
             case Symbol.SUPER:
-                statement = assignmentMessageSendLocalVarDecStatement();
+                lexer.nextToken();
+                if (lexer.token != Symbol.DOT) {
+                    error.show("Dot expected");
+                }
+                lexer.nextToken();
+                if(lexer.token != Symbol.IDENT)
+                    error.show("Identifier expected");
+                String id3 = lexer.getStringValue();
+                statement = assignmentMessageSendLocalVarDecStatement(id3);
                 break;
             case Symbol.INT:
                 lexer.nextToken();
@@ -454,11 +483,7 @@ public class Compiler {
         return statement;
     }
 
-    private Statement assignment() {
-        if (lexer.token != Symbol.IDENT) {
-            error.show("identifier expected");
-        }
-        String id = lexer.getStringValue();
+    private Statement assignment(String id) {
         Variable v = symbolTable.getInLocal(id);
 
         if (v == null) {
@@ -480,10 +505,10 @@ public class Compiler {
         return assign;
     }
 
-    private Statement assignmentMessageSendLocalVarDecStatement() {
+    private Statement assignmentMessageSendLocalVarDecStatement(String id) {
         /*
         Assignment ::= LeftValue "=" Expression
-        LeftValue} ::= [ "this" "." ] Id
+        LeftValue ::= [ "this" "." ] Id
         MessageSend ::= ReceiverMessage "." Id "("  [ ExpressionList ] ")"
         ReceiverMessage ::=  "super" | Id | "this" | "this" "."  Id
         LocalDec ::= Type IdList ";"
@@ -527,28 +552,33 @@ public class Compiler {
          */
 
         switch (lexer.token) {
+            //this
             case Symbol.THIS:
                 lexer.nextToken();
+                //this.
                 if (lexer.token != Symbol.DOT) {
                     error.show(". expected");
                 }
                 lexer.nextToken();
+                //this.id
                 if (lexer.token != Symbol.IDENT) {
                     error.show(CompilerError.identifier_expected);
                 }
                 String ident = lexer.getStringValue();
+                Variable v = symbolTable.getInLocal(ident);
+                if(v == null)
+                    error.show("undeclared variable");
                 lexer.nextToken();
                 switch (lexer.token) {
+                    //this.id =
                     case Symbol.ASSIGN:
-                        // this.id = expr
                         lexer.nextToken();
+                        //this.id = expr
                         Expr anExpr = expr();
-                        //# corrija
-                  /* result = new AssignmentStatement( pointer to instance variable,
-                        anExpr); */
+                        result = new AssignCommand(v,anExpr);
                         break;
                     case Symbol.DOT:
-                        // this.id.id()
+                        // this.id.id
                         lexer.nextToken();
                         if (lexer.token != Symbol.IDENT) {
                             error.show(CompilerError.identifier_expected);
@@ -557,16 +587,14 @@ public class Compiler {
                         lexer.nextToken();
                         exprList = getRealParameters();
                         //# corrija
-                  /* result = new MessageSendStatement( 
-                        new MessageSendToVariable( pointer to variable,
-                        pointer to method, exprList) );  */
+                        result = new MessageSendStatement(new MessageSendToVariable(exprList,v, metodoCorrente) );
                         break;
                     case Symbol.LEFTPAR:
                         // this.id()
                         exprList = getRealParameters();
                         //# corrija
-                  /* result = new MessageSendStatement( 
-                        new MessageSendToSelf( pointer to method, exprList ) ); */
+                        result = new MessageSendStatement(
+                        new MessageSendToSelf( metodoCorrente, exprList ) );
                         break;
                     default:
                         error.show(CompilerError.identifier_expected);
@@ -1135,4 +1163,6 @@ public class Compiler {
     private SymbolTable symbolTable;
     private Lexer lexer;
     private CompilerError error;
+    private ClassDec classeCorrente;
+    private Method metodoCorrente;
 }
