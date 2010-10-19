@@ -27,7 +27,11 @@ public class SymbolTable {
     public Variable getInLocal( String key ) {
        return (Variable ) localTable.get(key);
     }
-    
+
+    public ClassDec getLastClassInsertedOnTheTable(){
+        return (ClassDec) globalTable.get(globalTable.size());
+    }
+
     public Object get( String key ) {
         // returns the object corresponding to the key. 
         Object result;
