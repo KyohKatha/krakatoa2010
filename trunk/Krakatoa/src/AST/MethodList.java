@@ -21,4 +21,12 @@ public class MethodList {
     }
 
     private ArrayList methods;
+
+    public ArrayList getMethods() {
+        return methods;
+    }
+
+    public void setMethods(ArrayList methods) {
+        this.methods = methods;
+    }
 }

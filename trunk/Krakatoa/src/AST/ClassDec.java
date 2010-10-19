@@ -1,5 +1,7 @@
 package AST;
 
+import java.util.ArrayList;
+
 public class ClassDec extends Type {
 
     public ClassDec(String name) {
@@ -32,6 +34,22 @@ public class ClassDec extends Type {
 
     public void setPrivateMethod (Method method){
         privateMethodList.addMethod(method);
+    }
+    
+    public boolean searchMethod(String nome){
+        ArrayList<Method> puMet = publicMethodList.getMethods();
+        ArrayList<Method> prMet = privateMethodList.getMethods();
+        for(int i = 0; i < puMet.size(); i++){
+            if(puMet.get(i).getIdent().equals(nome))
+                return true;
+        }
+        
+        for(int i = 0; i < prMet.size(); i++){
+            if(prMet.get(i).getIdent().equals(nome))
+                return true;
+        }
+        
+        return false;
     }
 
     private String name;

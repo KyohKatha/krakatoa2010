@@ -18,12 +18,10 @@ public class Method {
     private ArrayList parameters;
     private ArrayList<Statement> corpo;
 
-    public Method(String ident, Type type, int qualifier, ArrayList parameters, ArrayList<Statement> corpo){
+    public Method(String ident, Type type, int qualifier){
         this.ident = ident;
         this.type = type;
         this.qualifier = qualifier;
-        this.parameters = parameters;
-        this.corpo = corpo;
     }
 
     public String getIdent() {
