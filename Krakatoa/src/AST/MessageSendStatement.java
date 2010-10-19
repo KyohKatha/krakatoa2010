@@ -9,6 +9,10 @@ public class MessageSendStatement extends Statement {
       pw.println(";");
    }
 
+    public MessageSendStatement(MessageSend messageSend) {
+        this.messageSend = messageSend;
+    }
+
    private MessageSend  messageSend;
 
 }
