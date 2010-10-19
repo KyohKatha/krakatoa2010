@@ -251,16 +251,17 @@ public class Compiler {
     private Statement localDec(Type type) {
         // LocalDec ::= Type IdList ";"
 
+
         if (lexer.token != Symbol.IDENT) {
             error.show("Identifier expected");
         }
         if (symbolTable.getInLocal(lexer.getStringValue()) != null) {
             error.show("variable redeclaration");
         }
-        ArrayList<Variable> vars = new ArrayList();
+        LocalVarList vars = new LocalVarList();
         
         Variable v = new Variable(lexer.getStringValue(), type);
-        vars.add(v);
+        vars.addElement(v);
         lexer.nextToken();
         while (lexer.token == Symbol.COMMA) {
             lexer.nextToken();
@@ -272,11 +273,11 @@ public class Compiler {
                 error.show("variable redeclaration");
             }
             v = new Variable(lexer.getStringValue(), type);
-            vars.add(v);
+            vars.addElement(v);
             lexer.nextToken();
         }
 
-        return new Statement();
+        return vars;
     }
 
     private ArrayList formalParamDec() {
@@ -346,15 +347,17 @@ public class Compiler {
         return result;
     }
 
-    private void compositeStatement() {
+    private Statement compositeStatement() {
 
         lexer.nextToken();
-        statementList();
+        ArrayList<Statement> stList = statementList();
         if (lexer.token != Symbol.RIGHTCURBRACKET) {
             error.show("} expected");
         } else {
             lexer.nextToken();
         }
+        
+        return new CompositeCommand(stList);
     }
 
     private ArrayList<Statement> statementList() {
@@ -403,47 +406,47 @@ public class Compiler {
                 }
                 break;
             case Symbol.SUPER:
-                assignmentMessageSendLocalVarDecStatement();
+                statement = assignmentMessageSendLocalVarDecStatement();
                 break;
             case Symbol.INT:
                 lexer.nextToken();
-                localDec(Type.intType);
+                statement = localDec(Type.intType);
                 break;
             case Symbol.BOOLEAN:
                 lexer.nextToken();
-                localDec(Type.booleanType);
+                statement = localDec(Type.booleanType);
                 break;
             case Symbol.STRING:
                 lexer.nextToken();
-                localDec(Type.stringType);
+                statement = localDec(Type.stringType);
                 break;
             case Symbol.VOID:
                 lexer.nextToken();
-                localDec(Type.voidType);
+                statement = localDec(Type.voidType);
                 break;
             case Symbol.RETURN:
-                returnStatement();
+                statement = returnStatement();
                 break;
             case Symbol.READ:
-                readStatement();
+                statement = readStatement();
                 break;
             case Symbol.WRITE:
-                writeStatement();
+                statement = writeStatement();
                 break;
             case Symbol.IF:
-                ifStatement();
+                statement = ifStatement();
                 break;
             case Symbol.BREAK:
-                breakStatement();
+                statement = breakStatement();
                 break;
             case Symbol.WHILE:
-                whileStatement();
+                statement = whileStatement();
                 break;
             case Symbol.SEMICOLON:
-                nullStatement();
+                statement = nullStatement();
                 break;
             case Symbol.LEFTCURBRACKET:
-                compositeStatement();
+                statement = compositeStatement();
                 break;
             default:
                 error.show("Statement expected");
@@ -452,13 +455,13 @@ public class Compiler {
     }
 
     private Statement assignment() {
-        Statement state = null;
-
         if (lexer.token != Symbol.IDENT) {
             error.show("identifier expected");
         }
         String id = lexer.getStringValue();
-        if (symbolTable.getInLocal(id) == null) {
+        Variable v = symbolTable.getInLocal(id);
+
+        if (v == null) {
             error.show("undeclared variable");
         }
         lexer.nextToken();
@@ -468,14 +471,13 @@ public class Compiler {
         }
         lexer.nextToken();
 
-        expression();
-
-
-
-        return state;
-    }
-
-    public void expression() {
+        Expr expr = expr();
+        AssignCommand assign = new AssignCommand(v, expr);
+        if (lexer.token != Symbol.SEMICOLON) {
+            error.show(CompilerError.semicolon_expected);
+        }
+        lexer.nextToken();
+        return assign;
     }
 
     private Statement assignmentMessageSendLocalVarDecStatement() {
@@ -651,52 +653,60 @@ public class Compiler {
         return anExprList;
     }
 
-    private void whileStatement() {
-
+    private Statement whileStatement() {
+        Statement whileSt = null;
         lexer.nextToken();
         if (lexer.token != Symbol.LEFTPAR) {
             error.show("( expected");
         }
         lexer.nextToken();
-        expr();
+        Expr expr = expr();
         if (lexer.token != Symbol.RIGHTPAR) {
             error.show(") expected");
         }
         lexer.nextToken();
-        statement();
+        whileSt = statement();
+
+        WhileCommand whileCom = new WhileCommand(expr, whileSt);
+        return whileCom;
     }
 
-    private void ifStatement() {
-
+    private Statement ifStatement() {
+        Statement ifSt = null, elseSt = null;
         lexer.nextToken();
         if (lexer.token != Symbol.LEFTPAR) {
             error.show("( expected");
         }
         lexer.nextToken();
-        expr();
+        Expr expr = expr();
         if (lexer.token != Symbol.RIGHTPAR) {
             error.show(") expected");
         }
         lexer.nextToken();
-        statement();
+        ifSt = statement();
         if (lexer.token == Symbol.ELSE) {
             lexer.nextToken();
-            statement();
+            elseSt = statement();
         }
+        IfCommand ifCom = new IfCommand(expr,ifSt, elseSt);
+        return ifCom;
     }
 
-    private void returnStatement() {
-
+    private Statement returnStatement() {
         lexer.nextToken();
-        expr();
+        Expr expr = expr();
         if (lexer.token != Symbol.SEMICOLON) {
             error.show(CompilerError.semicolon_expected);
         }
         lexer.nextToken();
+
+        ReturnCommand retunrCom = new ReturnCommand(expr);
+        return retunrCom;
     }
 
-    private void readStatement() {
+    private Statement readStatement() {
         lexer.nextToken();
+        ReadCommand readCom = new ReadCommand();
         if (lexer.token != Symbol.LEFTPAR) {
             error.show("( expected");
         }
@@ -714,6 +724,14 @@ public class Compiler {
             }
 
             String name = (String) lexer.getStringValue();
+
+            Variable v = symbolTable.getInLocal(name);
+
+            if(v == null)
+                error.show("undeclared variable");
+
+            readCom.addVariable(v);
+
             lexer.nextToken();
             if (lexer.token == Symbol.COMMA) {
                 lexer.nextToken();
@@ -730,16 +748,17 @@ public class Compiler {
             error.show(CompilerError.semicolon_expected);
         }
         lexer.nextToken();
+        return readCom;
     }
 
-    private void writeStatement() {
+    private Statement writeStatement() {
 
         lexer.nextToken();
         if (lexer.token != Symbol.LEFTPAR) {
             error.show("( expected");
         }
         lexer.nextToken();
-        exprList();
+        ExprList exprList = exprList();
         if (lexer.token != Symbol.RIGHTPAR) {
             error.show(") expected");
         }
@@ -748,18 +767,21 @@ public class Compiler {
             error.show(CompilerError.semicolon_expected);
         }
         lexer.nextToken();
+        return new WriteCommand(exprList);
     }
 
-    private void breakStatement() {
+    private Statement breakStatement() {
         lexer.nextToken();
         if (lexer.token != Symbol.SEMICOLON) {
             error.show(CompilerError.semicolon_expected);
         }
         lexer.nextToken();
+        return new BreakCommand();
     }
 
-    private void nullStatement() {
+    private Statement nullStatement() {
         lexer.nextToken();
+        return new NullCommand();
     }
 
     private ExprList exprList() {
@@ -955,6 +977,7 @@ public class Compiler {
                             como par�metro. Por qu� ?
                             return new ThisExpr(currentClass);
                              */
+                            ThisExpr thisExpr = new ThisExpr(symbolTable.getLastClassInsertedOnTheTable());
                         } else {
                             lexer.nextToken();
                             if (lexer.token != Symbol.IDENT) {
