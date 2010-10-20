@@ -36,11 +36,37 @@ public class Compiler {
             if (lexer.token == Symbol.EOF) {
                 error.show("Unexpected EOF");
             }
+
             p = program();
+
             if (lexer.token != Symbol.EOF) {
                 p = null;
                 error.show("EOF expected");
             }
+
+            ArrayList<ClassDec> verificarProgram = p.getClassList();
+            boolean ok = false;
+            int i;
+            for(i = 0; i < verificarProgram.size(); i++){
+                if(verificarProgram.get(i).getCname().equals("Program")){
+                    ok = true;
+                    break;
+                }
+            }
+            if(!ok){
+                error.show("Class Program not found!");
+            }
+
+            Method m = verificarProgram.get(i).searchPublicMethod("run");
+            if(m == null){
+                error.show("Public method run not found!");
+            }else{
+                if(!m.getParameters().isEmpty()){
+                    error.show("Method run should not have any parameters");
+                }
+            }
+
+
         } catch (Exception e) {
             // the below statement prints the stack of called methods.
             // of course, it should be removed if the compiler were
@@ -111,7 +137,8 @@ public class Compiler {
             }
 
             nvClasse.setSuperclass(superClass);
-
+            classeCorrente.setSuperclass(superClass);
+            
             lexer.nextToken();
         }
         if (lexer.token != Symbol.LEFTCURBRACKET) {
@@ -145,11 +172,11 @@ public class Compiler {
                     qualifier = Symbol.PUBLIC;
             }
             Type t;
-            if(lexer.token == Symbol.VOID){
+            if (lexer.token == Symbol.VOID) {
                 t = Type.voidType;
-            }
-            else
+            } else {
                 t = type();
+            }
 
             //IdList ::= Id { "," Id }
             // ou MethodDec ::= Qualifier ReturnType Id "(" [ FormalParamDec ] ")" "{" StatementList "}"
@@ -161,10 +188,12 @@ public class Compiler {
             lexer.nextToken();
             if (lexer.token == Symbol.LEFTPAR) {
 
-                if (nvClasse.searchMethod(name)) {
+                if (nvClasse.searchMethod(name) != null) {
                     error.show("Method redeclaration");
                 }
-
+                if(symbolTable.getInLocal(name) != null){
+                    error.show("Member redeclaration");
+                }
                 Method met = new Method(name, t, qualifier);
 
                 if (qualifier == Symbol.PUBLIC || qualifier == Symbol.STATICPUBLIC) {
@@ -268,7 +297,7 @@ public class Compiler {
             error.show("variable redeclaration");
         }
         LocalVarList vars = new LocalVarList();
-        
+
         Variable v = new Variable(lexer.getStringValue(), type);
         vars.addElement(v);
         lexer.nextToken();
@@ -336,10 +365,10 @@ public class Compiler {
             case Symbol.STRING:
                 result = Type.stringType;
                 break;
-                //acho que void nao tem
+            //acho que void nao tem
             /*case Symbol.VOID:
-                result = Type.voidType;
-                break;*/
+            result = Type.voidType;
+            break;*/
             case Symbol.IDENT:
                 //# corrija: fa�a uma busca na TS para buscar a classe
                 // IDENT deve ser uma classe.
@@ -366,7 +395,7 @@ public class Compiler {
         } else {
             lexer.nextToken();
         }
-        
+
         return new CompositeCommand(stList);
     }
 
@@ -398,44 +427,39 @@ public class Compiler {
 
         switch (lexer.token) {
             case Symbol.THIS:
-                lexer.nextToken();
+                /*lexer.nextToken();
                 if (lexer.token != Symbol.DOT) {
-                    error.show("Dot expected");
+                error.show("Dot expected");
                 }
                 lexer.nextToken();
                 if(lexer.token != Symbol.IDENT)
-                    error.show("Identifier expected");
+                error.show("Identifier expected");
                 String id = lexer.getStringValue();
                 lexer.nextToken();
                 if(lexer.token == Symbol.ASSIGN)
-                    statement = assignment(id);
-                else
-                    statement = assignmentMessageSendLocalVarDecStatement(id);
+                statement = assignment(id);
+                else*/
+                statement = assignmentMessageSendLocalVarDecStatement();
                 break;
             case Symbol.IDENT:
-                String id2 = lexer.getStringValue();
-                if (symbolTable.getInGlobal(id2) != null) {
-                    statement = localDec(symbolTable.getInGlobal(lexer.getStringValue()));
-                } else if (symbolTable.getInLocal(id2) == null) {
-                    error.show("undeclared statement");
+                /*String id = lexer.getStringValue();
+                if (symbolTable.getInGlobal(id) != null) {
+                statement = localDec(symbolTable.getInGlobal(lexer.getStringValue()));
+                } else if (symbolTable.getInLocal(id) == null) {
+                error.show("undeclared statement");
                 } else {
-                    lexer.nextToken();
-                    if(lexer.token == Symbol.ASSIGN)
-                        statement = assignment(id2);
-                    else
-                        statement = assignmentMessageSendLocalVarDecStatement(id2);
-                }
+                lexer.nextToken();
+                if(lexer.token == Symbol.ASSIGN)
+                statement = assignment(id);
+                else
+                statement = assignmentMessageSendLocalVarDecStatement(id);
+                 *
+                 */
+                statement = assignmentMessageSendLocalVarDecStatement();
+                //}
                 break;
             case Symbol.SUPER:
-                lexer.nextToken();
-                if (lexer.token != Symbol.DOT) {
-                    error.show("Dot expected");
-                }
-                lexer.nextToken();
-                if(lexer.token != Symbol.IDENT)
-                    error.show("Identifier expected");
-                String id3 = lexer.getStringValue();
-                statement = assignmentMessageSendLocalVarDecStatement(id3);
+                statement = assignmentMessageSendLocalVarDecStatement();
                 break;
             case Symbol.INT:
                 lexer.nextToken();
@@ -483,29 +507,28 @@ public class Compiler {
         return statement;
     }
 
-    private Statement assignment(String id) {
-        Variable v = symbolTable.getInLocal(id);
+    /*private Statement assignment(String id) {
+    Variable v = symbolTable.getInLocal(id);
 
-        if (v == null) {
-            error.show("undeclared variable");
-        }
-        lexer.nextToken();
-
-        if (lexer.token != Symbol.ASSIGN) {
-            error.show("assign expected");
-        }
-        lexer.nextToken();
-
-        Expr expr = expr();
-        AssignCommand assign = new AssignCommand(v, expr);
-        if (lexer.token != Symbol.SEMICOLON) {
-            error.show(CompilerError.semicolon_expected);
-        }
-        lexer.nextToken();
-        return assign;
+    if (v == null) {
+    error.show("undeclared variable");
     }
+    lexer.nextToken();
 
-    private Statement assignmentMessageSendLocalVarDecStatement(String id) {
+    if (lexer.token != Symbol.ASSIGN) {
+    error.show("assign expected");
+    }
+    lexer.nextToken();
+
+    Expr expr = expr();
+    AssignCommand assign = new AssignCommand(v, expr);
+    if (lexer.token != Symbol.SEMICOLON) {
+    error.show(CompilerError.semicolon_expected);
+    }
+    lexer.nextToken();
+    return assign;
+    }*/
+    private Statement assignmentMessageSendLocalVarDecStatement() {
         /*
         Assignment ::= LeftValue "=" Expression
         LeftValue ::= [ "this" "." ] Id
@@ -565,9 +588,6 @@ public class Compiler {
                     error.show(CompilerError.identifier_expected);
                 }
                 String ident = lexer.getStringValue();
-                Variable v = symbolTable.getInLocal(ident);
-                if(v == null)
-                    error.show("undeclared variable");
                 lexer.nextToken();
                 switch (lexer.token) {
                     //this.id =
@@ -575,7 +595,11 @@ public class Compiler {
                         lexer.nextToken();
                         //this.id = expr
                         Expr anExpr = expr();
-                        result = new AssignCommand(v,anExpr);
+                        Variable v = symbolTable.getInLocal(ident);
+                        if (v == null) {
+                            error.show("undeclared variable");
+                        }
+                        result = new AssignCommand(v, anExpr);
                         break;
                     case Symbol.DOT:
                         // this.id.id
@@ -583,18 +607,39 @@ public class Compiler {
                         if (lexer.token != Symbol.IDENT) {
                             error.show(CompilerError.identifier_expected);
                         }
+                        Variable v2 = symbolTable.getInLocal(ident);
+                        if (v2 == null) {
+                            error.show("undeclared variable");
+                        }
                         methodName = lexer.getStringValue();
+                        if (classeCorrente.searchMethod(methodName) == null) {
+                            error.show("method undeclared");
+                        }
                         lexer.nextToken();
                         exprList = getRealParameters();
-                        //# corrija
-                        result = new MessageSendStatement(new MessageSendToVariable(exprList,v, metodoCorrente) );
+                        result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, metodoCorrente));
                         break;
                     case Symbol.LEFTPAR:
                         // this.id()
+
+                        Method m = classeCorrente.searchMethod(ident);
+                        if (m == null) {
+                            ClassDec aux = classeCorrente;
+                            //procura um metodo nas superclasses da classe corrente
+                            while ((aux = aux.getSuperclass()) != null) {
+                                m = aux.searchPublicMethod(ident);
+                                if (m != null) {
+                                    break;
+                                }
+                                aux = aux.getSuperclass();
+                            }
+                        }
+                        if (m == null) {
+                            error.show("undeclared method");
+                        }
                         exprList = getRealParameters();
-                        //# corrija
                         result = new MessageSendStatement(
-                        new MessageSendToSelf( metodoCorrente, exprList ) );
+                                new MessageSendToSelf(m, exprList));
                         break;
                     default:
                         error.show(CompilerError.identifier_expected);
@@ -611,44 +656,82 @@ public class Compiler {
                     error.show(CompilerError.identifier_expected);
                 }
                 methodName = lexer.getStringValue();
+                ClassDec aux = classeCorrente;
+                Method m = null;
+                //procura um metodo nas superclasses
+                 while ((aux = aux.getSuperclass()) != null) {
+                    m = aux.searchPublicMethod(methodName);
+                    if (m != null) {
+                        break;
+                    }
+                    aux = aux.getSuperclass();
+                }
+
+                if (m == null) {
+                    error.show("undeclared method");
+                }
                 lexer.nextToken();
                 exprList = getRealParameters();
-                //# corrija
-                // result = new MessageSendStatement(
-                //     new MessageSendToSuper( pointer to class, pointer to method, exprList) );
+
+                result = new MessageSendStatement(new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList));
                 break;
             case Symbol.IDENT:
+                //id
                 variableName = lexer.getStringValue();
+
                 lexer.nextToken();
                 switch (lexer.token) {
                     case Symbol.ASSIGN:
                         // id = expr
+                        Variable v = symbolTable.getInLocal(variableName);
+                        if (v == null) {
+                            error.show("undeclared variable");
+                        }
                         lexer.nextToken();
                         Expr anExpr = expr();
                         //# corrija
-                  /* result = new AssignmentStatement( pointer to variable,
-                        anExpr ); */
+                        result = new AssignCommand(v, anExpr);
                         break;
                     case Symbol.IDENT:
                         // id id;
                         // variableName id
-
+                        ClassDec cl = symbolTable.getInGlobal(variableName);
+                        if (cl == null) {
+                            error.show("undeclared class");
+                        }
                         // variableName must be the name of a class
                         // replace null in the statement below by
                         // a point to the class named variableName.
                         // A search in the symbol table is necessary.
-                        localDec(null);
+                        localDec(cl);
                         break;
                     case Symbol.DOT:
                         // id.id()
+                        Variable v2 = symbolTable.getInLocal(variableName);
+                        if (v2 == null) {
+                            error.show("undeclared variable");
+                        }
                         lexer.nextToken();
                         methodName = lexer.getStringValue();
+                        ClassDec cl2 = (ClassDec) v2.getType();
+                        Method m2 = cl2.searchPublicMethod(methodName);
+                        if (m2 == null) {
+                            ClassDec aux2 = cl2;
+                            while ((aux2 = aux2.getSuperclass()) != null) {
+                                m = aux2.searchPublicMethod(methodName);
+                                if (m != null) {
+                                    break;
+                                }
+                                aux = aux2.getSuperclass();
+                            }
+                        }
+                        if (m2 == null) {
+                            error.show("undeclared Method");
+                        }
                         lexer.nextToken();
                         exprList = getRealParameters();
-                        //# corrija
-                  /* result = new MessageSendStatement( 
-                        new MessageSendToVariable( pointer to variable,
-                        pointer to method, exprList ) ); */
+                        
+                        result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m2));
                         break;
                     default:
                         error.show(". or = expected");
@@ -716,7 +799,7 @@ public class Compiler {
             lexer.nextToken();
             elseSt = statement();
         }
-        IfCommand ifCom = new IfCommand(expr,ifSt, elseSt);
+        IfCommand ifCom = new IfCommand(expr, ifSt, elseSt);
         return ifCom;
     }
 
@@ -755,8 +838,9 @@ public class Compiler {
 
             Variable v = symbolTable.getInLocal(name);
 
-            if(v == null)
+            if (v == null) {
                 error.show("undeclared variable");
+            }
 
             readCom.addVariable(v);
 

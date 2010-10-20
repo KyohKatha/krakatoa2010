@@ -5,7 +5,7 @@ import java.util.*;
 public class InstanceVariableList {
 
     public InstanceVariableList() {
-       instanceVariableList = new ArrayList();
+       instanceVariableList = new ArrayList<Variable>();
     }
 
     public void addElement(InstanceVariable instanceVariable) {
@@ -20,6 +20,15 @@ public class InstanceVariableList {
         return instanceVariableList.size();
     }
 
-    private ArrayList instanceVariableList;
+    public ArrayList<Variable> getInstanceVariableList() {
+        return instanceVariableList;
+    }
+
+    public void setInstanceVariableList(ArrayList instanceVariableList) {
+        this.instanceVariableList = instanceVariableList;
+    }
+
+
+    private ArrayList<Variable> instanceVariableList;
 
 }
