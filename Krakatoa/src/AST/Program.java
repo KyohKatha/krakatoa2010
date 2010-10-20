@@ -10,6 +10,14 @@ public class Program {
 
 public void genC(PW pw) {
    }
+
+    public ArrayList<ClassDec> getClassList() {
+        return classList;
+    }
+
+    public void setClassList(ArrayList<ClassDec> classList) {
+        this.classList = classList;
+    }
    
-   private ArrayList classList;
+   private ArrayList<ClassDec> classList;
 }

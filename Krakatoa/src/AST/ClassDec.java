@@ -36,20 +36,30 @@ public class ClassDec extends Type {
         privateMethodList.addMethod(method);
     }
     
-    public boolean searchMethod(String nome){
+    public Method searchMethod(String nome){
         ArrayList<Method> puMet = publicMethodList.getMethods();
         ArrayList<Method> prMet = privateMethodList.getMethods();
         for(int i = 0; i < puMet.size(); i++){
             if(puMet.get(i).getIdent().equals(nome))
-                return true;
+                return puMet.get(i);
         }
         
         for(int i = 0; i < prMet.size(); i++){
             if(prMet.get(i).getIdent().equals(nome))
-                return true;
+                return prMet.get(i);
         }
         
-        return false;
+        return null;
+    }
+
+    public Method searchPublicMethod(String nome){
+        ArrayList<Method> puMet = publicMethodList.getMethods();
+        for(int i = 0; i < puMet.size(); i++){
+            if(puMet.get(i).getIdent().equals(nome))
+                return puMet.get(i);
+        }
+
+        return null;
     }
 
     private String name;
