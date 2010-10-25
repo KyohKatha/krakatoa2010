@@ -1,6 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *Integrantes
+ *
+ *      Bruno Antunes da Silva           317292
+ *      Katharina Carrapatoso Garcia     317144
+ *
  */
 
 package krakatoa;

@@ -1,15 +1,15 @@
+/*
+ *
+ *Integrantes
+ *
+ *      Bruno Antunes da Silva           317292
+ *      Katharina Carrapatoso Garcia     317144
+ *
+ */
+
 package Comp;
 
 /*
- *      Até onde já foi feito:
- *      Program
- *          ClassDec
- *              MethodDec
- *
- *              InstanceVarDec
- *
- *      Obs:
- *          Falta descer nos métodos chamados por MethodDec (FormalParamDec e StatementList)
  *
  */
 import AST.*;
