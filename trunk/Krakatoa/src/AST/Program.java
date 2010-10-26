@@ -17,8 +17,12 @@ public class Program {
    }
    
 
-public void genC(PW pw) {
-   }
+    public void genC(PW pw) {
+    }
+
+    public void genKrakatoa(PW pw){
+
+    }
 
     public ArrayList<ClassDec> getClassList() {
         return classList;

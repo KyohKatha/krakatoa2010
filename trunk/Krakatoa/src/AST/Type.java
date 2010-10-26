@@ -28,6 +28,7 @@ abstract public class Type {
     }
     
     abstract public String getCname();
-    
+    abstract public void genKrakatoa();
+
     private String name;
 }

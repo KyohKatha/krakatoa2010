@@ -68,4 +68,8 @@ public class Method {
         this.corpo = corpo;
     }
 
+    public void genKrakatoa(){
+
+    }
+
 }

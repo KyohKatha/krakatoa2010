@@ -22,6 +22,10 @@ public class VariableExpr extends Expr {
     public Type getType() {
         return v.getType();
     }
-    
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+        v.genKrakatoa(pw);
+    }
+
     private Variable v;
 }

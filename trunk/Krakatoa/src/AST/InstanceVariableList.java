@@ -41,4 +41,8 @@ public class InstanceVariableList {
 
     private ArrayList<Variable> instanceVariableList;
 
+    public void genKrakatoa(){
+
+    }
+
 }

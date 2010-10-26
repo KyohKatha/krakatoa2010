@@ -25,6 +25,10 @@ public class WhileCommand extends Statement{
 
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     private Expr expr;
     private Statement whileStatement;
 }

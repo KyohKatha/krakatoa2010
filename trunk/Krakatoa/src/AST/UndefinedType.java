@@ -17,5 +17,8 @@ public class UndefinedType extends Type {
    public String getCname() {
       return "int";
    }
-   
+
+   public void genKrakatoa(){
+        System.out.print("");
+   }
 }

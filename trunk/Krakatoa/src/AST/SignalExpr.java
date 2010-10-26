@@ -26,7 +26,11 @@ public class SignalExpr extends Expr {
        if ( putParenthesis )
           pw.print(")");
     }
-    
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
     public Type getType() {
        return expr.getType();
     }

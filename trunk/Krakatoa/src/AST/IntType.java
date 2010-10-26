@@ -19,4 +19,8 @@ public class IntType extends Type {
       return "int";
    }
 
+   public void genKrakatoa(){
+        System.out.print("int");
+   }
+
 }

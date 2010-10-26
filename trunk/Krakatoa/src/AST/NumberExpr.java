@@ -21,7 +21,11 @@ public class NumberExpr extends Expr {
     public void genC( PW pw, boolean putParenthesis ) {
         pw.printIdent(value + "");
     }
-    
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
     public Type getType() {
         return Type.intType;
     }

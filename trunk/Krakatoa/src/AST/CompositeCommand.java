@@ -26,5 +26,9 @@ public class CompositeCommand extends Statement{
 
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     ArrayList<Statement> commands;
 }

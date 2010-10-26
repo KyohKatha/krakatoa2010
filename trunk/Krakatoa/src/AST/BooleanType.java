@@ -16,7 +16,11 @@ public class BooleanType extends Type {
    public BooleanType() { super("bool"); }
    
    public String getCname() {
-      return "int";
+      return "bool";
+   }
+
+   public void genKrakatoa(){
+       System.out.print("boolean");
    }
    
 }

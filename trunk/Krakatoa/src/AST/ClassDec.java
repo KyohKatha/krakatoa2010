@@ -71,6 +71,10 @@ public class ClassDec extends Type {
         return null;
     }
 
+    public void genKrakatoa(){
+
+    }
+
     private String name;
     private ClassDec superclass;
     private InstanceVariableList instanceVariableList;

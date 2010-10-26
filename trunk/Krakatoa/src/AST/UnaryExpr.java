@@ -33,7 +33,11 @@ public class UnaryExpr extends Expr {
         }
         expr.genC(pw, false);
     }
-    
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
     public Type getType() {
         return expr.getType();
     }

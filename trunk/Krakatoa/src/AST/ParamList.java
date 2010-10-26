@@ -29,6 +29,10 @@ public class ParamList {
         return paramList.size();
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     private Vector paramList;
 
 }

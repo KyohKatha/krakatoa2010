@@ -33,4 +33,9 @@ public class MethodList {
     public void setMethods(ArrayList methods) {
         this.methods = methods;
     }
+
+    public void genKrakatoa(){
+
+    }
+
 }

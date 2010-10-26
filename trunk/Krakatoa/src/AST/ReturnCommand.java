@@ -24,6 +24,10 @@ public class ReturnCommand extends Statement {
 
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     private Expr expr;
 
 }

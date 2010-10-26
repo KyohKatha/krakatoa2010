@@ -18,6 +18,10 @@ public class MessageSendStatement extends Statement {
       pw.println(";");
    }
 
+   public void genKrakatoa(PW pw){
+
+    }
+
     public MessageSendStatement(MessageSend messageSend) {
         this.messageSend = messageSend;
     }

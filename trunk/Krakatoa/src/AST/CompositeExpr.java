@@ -39,7 +39,11 @@ public class CompositeExpr extends Expr {
        else
             return Type.intType;
     }
-    
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
     private Expr left, right;
     private int oper;
     private static String []arrayOper;

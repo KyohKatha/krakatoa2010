@@ -33,7 +33,11 @@ public class ExprList {
               pw.print(", ");
         }
     }
-    
+
+    public void genKrakatoa(){
+
+    }
+
     private Vector v;
     
 }
