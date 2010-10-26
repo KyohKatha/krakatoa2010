@@ -49,7 +49,7 @@ public class PW {
    public void println( String s ) {
       out.println(s);
    }
-   
+
    int currentIndent = 0;
    /* there is a Java and a Green mode. 
       indent in Java mode:

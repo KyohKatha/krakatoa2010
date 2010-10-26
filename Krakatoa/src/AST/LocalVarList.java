@@ -33,6 +33,10 @@ public class LocalVarList extends Statement{
 
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     private Vector localList;
 
 }

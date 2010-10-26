@@ -19,4 +19,7 @@ public class StringType extends Type {
       return "char *";
    }
 
+   public void genKrakatoa(){
+        System.out.print("char");
+   }
 }

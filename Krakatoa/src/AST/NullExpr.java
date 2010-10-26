@@ -19,4 +19,9 @@ public class NullExpr extends Expr {
       //# corrija
       return null;
    }
+
+   public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
 }

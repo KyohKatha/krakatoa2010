@@ -24,6 +24,10 @@ public class BooleanExpr extends Expr {
     public Type getType() {
         return Type.booleanType;
     }
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
     
     public static BooleanExpr True  = new BooleanExpr(true);
     public static BooleanExpr False = new BooleanExpr(false);

@@ -19,4 +19,7 @@ public class VoidType extends Type {
       return "void";
    }
 
+   public void genKrakatoa(){
+        System.out.print("void");
+   }
 }

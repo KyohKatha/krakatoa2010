@@ -26,7 +26,7 @@ public class AssignCommand extends Statement{
 
     }
 
-    public void genKrakatoa(){
+    public void genKrakatoa(PW pw){
 
     }
 

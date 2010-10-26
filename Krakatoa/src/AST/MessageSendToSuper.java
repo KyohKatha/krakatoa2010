@@ -25,6 +25,10 @@ public class MessageSendToSuper extends MessageSend {
         
     }
 
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
     private ClassDec classe;
     private Method met;
     private ExprList exprList;

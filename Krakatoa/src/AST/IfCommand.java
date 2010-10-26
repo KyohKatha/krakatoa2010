@@ -24,7 +24,11 @@ public class IfCommand extends Statement {
     public void genC(PW pw){
 
     }
-    
+
+    public void genKrakatoa(PW pw){
+
+    }
+
     private Expr expr;
     private Statement ifStatement, elseStatement;
 }

@@ -20,7 +20,11 @@ public class ParenthesisExpr extends Expr {
         expr.genC(pw, false);
         pw.printIdent(")");
     }
-    
+
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+    }
+
     public Type getType() {
         return expr.getType();
     }

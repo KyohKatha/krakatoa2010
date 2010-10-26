@@ -28,5 +28,9 @@ public class ReadCommand extends Statement{
 
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     private ArrayList<Variable> variables;
 }

@@ -24,5 +24,9 @@ public class WriteCommand extends Statement{
 
     }
 
+    public void genKrakatoa(PW pw){
+
+    }
+
     private ExprList exprList;
 }

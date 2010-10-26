@@ -31,5 +31,9 @@ public class ThisExpr extends Expr{
         return currentClass;
     }
 
+    public void genKrakatoa(PW pw, boolean putParenthesis){
+
+   }
+
     private ClassDec currentClass;
 }

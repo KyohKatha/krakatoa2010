@@ -21,4 +21,8 @@ public class BreakCommand extends Statement{
     public void genC(PW pw){
         
     }
+
+    public void genKrakatoa(PW pw){
+
+    }
 }
