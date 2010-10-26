@@ -722,7 +722,7 @@ public class Compiler {
                                 if (m != null) {
                                     break;
                                 }
-                                aux = aux2.getSuperclass();
+                                //aux = aux2.getSuperclass();
                             }
                         }
                         if (m2 == null) {
@@ -1062,6 +1062,17 @@ public class Compiler {
                             error.show(CompilerError.identifier_expected);
                         }
                         methodName = lexer.getStringValue();
+                        ClassDec aux = classeCorrente;
+                        Method m = null;
+                        while ((aux = aux.getSuperclass()) != null) {
+                            m = aux.searchPublicMethod(methodName);
+                            if (m != null) {
+                                break;
+                            }
+                        }
+                        if(m==null){
+                            error.show("Undefined method in super class");
+                        }
                         lexer.nextToken();
                         exprList = getRealParameters();
                         //#  corrija
@@ -1073,11 +1084,9 @@ public class Compiler {
                         aMethod = aClass.getMethod(methodName);
                         if ( aMethod == null )
                         ...
+                        */
+                        return new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList);
 
-                        return new MessageSendToSuper(
-                        aClass, aMethod, exprList);
-                         */
-                        break;
                     case Symbol.THIS:
                         lexer.nextToken();
                         if (lexer.token != Symbol.DOT) {
@@ -1089,7 +1098,8 @@ public class Compiler {
                             como par�metro. Por qu� ?
                             return new ThisExpr(currentClass);
                              */
-                            ThisExpr thisExpr = new ThisExpr(symbolTable.getLastClassInsertedOnTheTable());
+                            ThisExpr thisExpr = new ThisExpr(classeCorrente);
+                            return thisExpr;
                         } else {
                             lexer.nextToken();
                             if (lexer.token != Symbol.IDENT) {
@@ -1101,6 +1111,19 @@ public class Compiler {
                             switch (lexer.token) {
                                 case Symbol.LEFTPAR:
                                     // expression of the kind "this.m()"
+                                    Method m2 = classeCorrente.searchMethod(ident);
+                                    if (m2 == null) {
+                                        ClassDec aux2 = classeCorrente;
+
+                                        while ((aux2 = aux2.getSuperclass()) != null) {
+                                            m2 = aux2.searchPublicMethod(ident);
+                                            if (m2 != null) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if(m2 == null)
+                                        error.show("Undeclared method");
                                     //# corrija
                                     exprList = getRealParameters();
                                     /*
@@ -1109,12 +1132,17 @@ public class Compiler {
                                     if ( aMethod == null )
                                     ...
                                     confira se aMethod pode aceitar os par�metros de exprList.
-                                    return new MessageSendToSelf( aMethod, exprList );
                                      */
-                                    break;
+                                     return new MessageSendToSelf( m2, exprList );
+
                                 case Symbol.DOT:
                                     // expression of the kind "this.x.m()"
                                     //# corrija
+                                    ClassDec cl = symbolTable.getInGlobal(ident);
+                                    ArrayList<Variable> varList = classeCorrente.getInstanceVariableList().getInstanceVariableList();
+                                    if(cl == null){
+                                        error.show("Class expected");
+                                    }
                                     lexer.nextToken();
                                     if (lexer.token != Symbol.IDENT) {
                                         error.show(CompilerError.identifier_expected);
