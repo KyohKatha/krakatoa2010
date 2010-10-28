@@ -35,7 +35,18 @@ public class UnaryExpr extends Expr {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        switch ( op ) {
+            case Symbol.PLUS :
+              pw.print("+");
+              break;
+            case Symbol.MINUS :
+              pw.print("-");
+              break;
+            case Symbol.NOT :
+              pw.print("!");
+              break;
+        }
+        expr.genKrakatoa(pw, false);
     }
 
     public Type getType() {

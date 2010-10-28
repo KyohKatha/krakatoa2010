@@ -71,18 +71,24 @@ public class ClassDec extends Type {
         return null;
     }
 
-    public void genKrakatoa(){
-
-    }
-
-    public void getKrakatoaName(PW pw){
+    public void genKrakatoa(PW pw){
         pw.printIdent("public class "+ name);
         if(superclass != null){
-            pw.print("extends "+ superclass.getKrakatoaName() + " ");
+            pw.print(" extends "+ superclass.getKrakatoaName());
         }
-        pw.print("{\n");
+        pw.print(" {\n");
+        pw.add();
         instanceVariableList.genKrakatoa(pw);
-        continua
+        pw.printIdent("\n");
+        publicMethodList.genKrakatoa(pw);
+        pw.printIdent("\n");
+        privateMethodList.genKrakatoa(pw);
+        pw.sub();
+        pw.printIdent("}\n");
+    }
+
+    public String getKrakatoaName(){
+        return name;
     }
 
     private String name;

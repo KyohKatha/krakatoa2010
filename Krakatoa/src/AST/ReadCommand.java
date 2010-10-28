@@ -29,7 +29,12 @@ public class ReadCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-        eita... como fas?
+        pw.printIdent("read (");
+        for(int i = 0; i < variables.size(); i++){
+            pw.print(variables.get(i).getName());
+            if(i+1<variables.size()) pw.print(", ");
+        }
+        pw.print(");\n");
     }
 
     private ArrayList<Variable> variables;

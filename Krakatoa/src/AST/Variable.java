@@ -25,7 +25,7 @@ public class Variable {
     }
 
     public void genKrakatoa(PW pw){
-
+        pw.print(name);
     }
     
     private String name;
