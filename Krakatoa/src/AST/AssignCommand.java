@@ -27,7 +27,10 @@ public class AssignCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-
+        var.genKrakatoa(pw);
+        pw.print(" = ");
+        expr.genKrakatoa(pw, false);
+        pw.print(";\n");
     }
 
     private Variable var;

@@ -26,7 +26,20 @@ public class IfCommand extends Statement {
     }
 
     public void genKrakatoa(PW pw){
-
+        pw.printIdent("if( ");
+        expr.genKrakatoa(pw, true);
+        pw.print(" ){\n");
+        pw.add();
+        ifStatement.genKrakatoa(pw);
+        pw.sub();
+        pw.printIdent("}\n");
+        if(elseStatement != null){
+            pw.printIdent("else {\n");
+            pw.add();
+            elseStatement.genKrakatoa(pw);
+            pw.sub();
+            pw.printIdent("}\n");
+        }
     }
 
     private Expr expr;

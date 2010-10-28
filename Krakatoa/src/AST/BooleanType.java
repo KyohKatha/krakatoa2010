@@ -9,7 +9,6 @@
 
 package AST;
 
-import java.io.*;
   
 public class BooleanType extends Type {
     
@@ -19,8 +18,7 @@ public class BooleanType extends Type {
       return "bool";
    }
 
-   public void genKrakatoa(){
-       System.out.print("boolean");
+   public String getKrakatoaName(){
+       return "boolean";
    }
-   
 }

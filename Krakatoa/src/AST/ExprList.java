@@ -34,8 +34,14 @@ public class ExprList {
         }
     }
 
-    public void genKrakatoa(){
-
+    public void genKrakatoa(PW pw){
+        int size = v.size();
+        Enumeration e = v.elements();
+        while ( e.hasMoreElements() ) {
+            ((Expr ) e.nextElement()).genKrakatoa(pw, false);
+            if ( --size > 0 )
+              pw.print(", ");
+        }
     }
 
     private Vector v;

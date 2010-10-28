@@ -23,7 +23,7 @@ public class NumberExpr extends Expr {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        pw.print(value + "");
     }
 
     public Type getType() {

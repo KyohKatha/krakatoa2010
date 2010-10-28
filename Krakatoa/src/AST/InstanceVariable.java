@@ -17,8 +17,8 @@ public class InstanceVariable extends Variable {
         super(name, type);
     }
 
-    public void genKrakatoa(){
-
+    public void genKrakatoa(PW pw){
+        super.genKrakatoa(pw);
     }
 
 }

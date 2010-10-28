@@ -23,7 +23,7 @@ public class NullCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-
+        pw.printlnIdent(";\n");
     }
 
 }

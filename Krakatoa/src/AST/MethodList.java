@@ -24,8 +24,6 @@ public class MethodList {
         methods.add(method);
     }
 
-    private ArrayList methods;
-
     public ArrayList getMethods() {
         return methods;
     }
@@ -34,8 +32,11 @@ public class MethodList {
         this.methods = methods;
     }
 
-    public void genKrakatoa(){
-
+    public void genKrakatoa(PW pw){
+        for( int i = 0; i < methods.size(); i++){
+            methods.get(i).genKrakatoa(pw);
+        }
     }
 
+    private ArrayList<Method> methods;
 }

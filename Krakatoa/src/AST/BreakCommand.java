@@ -23,6 +23,6 @@ public class BreakCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-
+        pw.print("break;\n");
     }
 }
