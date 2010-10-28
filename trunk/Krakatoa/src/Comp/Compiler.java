@@ -6,12 +6,12 @@
  *      Katharina Carrapatoso Garcia     317144
  *
  */
-
 package Comp;
 
 /*
  *
  */
+import AST.MessageSendStatic;
 import AST.*;
 import Lexer.*;
 
@@ -47,21 +47,21 @@ public class Compiler {
             ArrayList<ClassDec> verificarProgram = p.getClassList();
             boolean ok = false;
             int i;
-            for(i = 0; i < verificarProgram.size(); i++){
-                if(verificarProgram.get(i).getCname().equals("Program")){
+            for (i = 0; i < verificarProgram.size(); i++) {
+                if (verificarProgram.get(i).getCname().equals("Program")) {
                     ok = true;
                     break;
                 }
             }
-            if(!ok){
+            if (!ok) {
                 error.show("Class Program not found!");
             }
 
             Method m = verificarProgram.get(i).searchPublicMethod("run");
-            if(m == null){
+            if (m == null) {
                 error.show("Public method run not found!");
-            }else{
-                if(m.getParameters().getSize()>0){
+            } else {
+                if (!(m.getParameters().getSize() == 0)) {
                     error.show("Method run should not have any parameters");
                 }
             }
@@ -138,7 +138,7 @@ public class Compiler {
 
             nvClasse.setSuperclass(superClass);
             classeCorrente.setSuperclass(superClass);
-            
+
             lexer.nextToken();
         }
         if (lexer.token != Symbol.LEFTCURBRACKET) {
@@ -188,20 +188,35 @@ public class Compiler {
             lexer.nextToken();
             if (lexer.token == Symbol.LEFTPAR) {
 
+                if (qualifier == Symbol.PUBLIC || qualifier == Symbol.PRIVATE) {
                 if (nvClasse.searchMethod(name) != null) {
                     error.show("Method redeclaration");
                 }
-                if(symbolTable.getInLocal(name) != null){
+                }
+                if (qualifier == Symbol.STATICPUBLIC || qualifier == Symbol.STATICPRIVATE) {
+                if (nvClasse.searchStaticMethod(name) != null) {
+                    error.show("Method redeclaration");
+                }
+                }
+                if (symbolTable.getInLocal(name) != null) {
                     error.show("Member redeclaration");
                 }
                 Method met = new Method(name, t, qualifier);
 
-                if (qualifier == Symbol.PUBLIC || qualifier == Symbol.STATICPUBLIC) {
+                if (qualifier == Symbol.PUBLIC){
                     nvClasse.setPublicMethod(met);
                 }
 
-                if (qualifier == Symbol.PRIVATE || qualifier == Symbol.STATICPRIVATE) {
+                if (qualifier == Symbol.PRIVATE) {
                     nvClasse.setPrivateMethod(met);
+                }
+
+                if (qualifier == Symbol.STATICPRIVATE) {
+                    nvClasse.setPrivateStaticMethod(met);
+                }
+
+                if (qualifier == Symbol.STATICPUBLIC) {
+                    nvClasse.setPublicStaticMethod(met);
                 }
 
                 met = methodDec(met);
@@ -211,7 +226,10 @@ public class Compiler {
             } else {
                 InstanceVariableList varList = null;
                 varList = instanceVarDec(t, name);
-                nvClasse.setInstanceVariableList(varList);
+                if(qualifier == Symbol.PRIVATE)
+                    nvClasse.setInstanceVariableList(varList);
+                else
+                    nvClasse.setStaticInstanceVariableList(varList);
             }
         }
         if (lexer.token != Symbol.RIGHTCURBRACKET) {
@@ -617,6 +635,16 @@ public class Compiler {
                         }
                         lexer.nextToken();
                         exprList = getRealParameters();
+                        boolean flag = true;
+                        for (int i = 0; i < metodoCorrente.getParameters().getSize(); i++) {
+                            if (metodoCorrente.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (!flag) {
+                            error.show("Wrong parameters");
+                        }
                         result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, metodoCorrente));
                         break;
                     case Symbol.LEFTPAR:
@@ -638,6 +666,16 @@ public class Compiler {
                             error.show("undeclared method");
                         }
                         exprList = getRealParameters();
+                        boolean flag2 = true;
+                        for (int i = 0; i < m.getParameters().getSize(); i++) {
+                            if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (!flag2) {
+                            error.show("Wrong parameters");
+                        }
                         result = new MessageSendStatement(
                                 new MessageSendToSelf(m, exprList));
                         break;
@@ -659,7 +697,7 @@ public class Compiler {
                 ClassDec aux = classeCorrente;
                 Method m = null;
                 //procura um metodo nas superclasses
-                 while ((aux = aux.getSuperclass()) != null) {
+                while ((aux = aux.getSuperclass()) != null) {
                     m = aux.searchPublicMethod(methodName);
                     if (m != null) {
                         break;
@@ -672,7 +710,16 @@ public class Compiler {
                 }
                 lexer.nextToken();
                 exprList = getRealParameters();
-
+                boolean flag = true;
+                for (int i = 0; i < m.getParameters().getSize(); i++) {
+                    if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    error.show("Wrong parameters");
+                }
                 result = new MessageSendStatement(new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList));
                 break;
             case Symbol.IDENT:
@@ -730,7 +777,16 @@ public class Compiler {
                         }
                         lexer.nextToken();
                         exprList = getRealParameters();
-                        
+                        boolean flag2 = true;
+                        for (int i = 0; i < m2.getParameters().getSize(); i++) {
+                            if (m2.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                flag2 = false;
+                                break;
+                            }
+                        }
+                        if (!flag2) {
+                            error.show("Wrong parameters");
+                        }
                         result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m2));
                         break;
                     default:
@@ -1070,11 +1126,21 @@ public class Compiler {
                                 break;
                             }
                         }
-                        if(m==null){
+                        if (m == null) {
                             error.show("Undefined method in super class");
                         }
                         lexer.nextToken();
                         exprList = getRealParameters();
+                        boolean flag = true;
+                        for (int i = 0; i < m.getParameters().getSize(); i++) {
+                            if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (!flag) {
+                            error.show("Wrong parameters");
+                        }
                         //#  corrija
                   /* 
                         deve existir uma vari�vel de inst�ncia currentClass.
@@ -1084,7 +1150,7 @@ public class Compiler {
                         aMethod = aClass.getMethod(methodName);
                         if ( aMethod == null )
                         ...
-                        */
+                         */
                         return new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList);
 
                     case Symbol.THIS:
@@ -1122,10 +1188,21 @@ public class Compiler {
                                             }
                                         }
                                     }
-                                    if(m2 == null)
+                                    if (m2 == null) {
                                         error.show("Undeclared method");
+                                    }
                                     //# corrija
                                     exprList = getRealParameters();
+                                    boolean flag2 = true;
+                                    for (int i = 0; i < m2.getParameters().getSize(); i++) {
+                                        if (m2.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                            flag2 = false;
+                                            break;
+                                        }
+                                    }
+                                    if (!flag2) {
+                                        error.show("Wrong parameters");
+                                    }
                                     /*
                                     procure o m�todo ident na classe corrente:
                                     aMethod = currentClass.searchMethod(ident);
@@ -1133,107 +1210,173 @@ public class Compiler {
                                     ...
                                     confira se aMethod pode aceitar os par�metros de exprList.
                                      */
-                                     return new MessageSendToSelf( m2, exprList );
+                                    return new MessageSendToSelf(m2, exprList);
 
                                 case Symbol.DOT:
                                     // expression of the kind "this.x.m()"
                                     //# corrija
-                                    ClassDec cl = symbolTable.getInGlobal(ident);
+                                    Variable var = null;
                                     ArrayList<Variable> varList = classeCorrente.getInstanceVariableList().getInstanceVariableList();
-                                    if(cl == null){
-                                        error.show("Class expected");
+                                    for (int i = 0; i < varList.size(); i++) {
+                                        if (varList.get(i).getName().equals(ident)) {
+                                            var = varList.get(i);
+                                            break;
+                                        }
                                     }
+
+                                    if (var == null) {
+                                        error.show("Undeclared instance varible");
+                                    }
+
                                     lexer.nextToken();
                                     if (lexer.token != Symbol.IDENT) {
                                         error.show(CompilerError.identifier_expected);
                                     }
                                     methodName = lexer.getStringValue();
+                                    if (!(var.getType() instanceof ClassDec)) {
+                                        error.show("Instance variable is not of a Class type");
+                                    }
+                                    ClassDec cl = (ClassDec) var.getType();
+                                    Method m3 = cl.searchPublicMethod(ident);
+                                    if (m3 == null) {
+                                        ClassDec aux2 = cl;
+                                        while ((aux2 = aux2.getSuperclass()) != null) {
+                                            m3 = aux2.searchPublicMethod(ident);
+                                            if (m3 != null) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (m3 == null) {
+                                        error.show("Undeclared method");
+                                    }
                                     lexer.nextToken();
                                     exprList = getRealParameters();
-                                /*
-                                em this.x.m(), x est� em ident e m em methodName
-                                procure por x na lista de vari�veis de inst�ncia da classe corrente:
-                                anInstanceVariable = currentClass.searchInstanceVariable(ident);
-                                if ( anInstanceVariable == null ) 
-                                ...
-                                pegue a classe declarada de x, o tipo de x:
-                                if ( ! (anInstanceVariable.getType() instanceof ClassDec) ) 
-                                ... // tipo de x n�o � uma classe, erro
-                                confira se a classe de x possui m�todo m:
-                                aClass = (ClassDec ) anInstanceVariable.getType();
-                                aMethod = aClass.searchMethod(methodName);
-                                if ( aMethod == null )
-                                ...
-                                
-                                return new MessageSendToVariable( anInstanceVariable, aMethod, exprList );
-
-                                 */
+                                    boolean flag3 = true;
+                                    for (int i = 0; i < m3.getParameters().getSize(); i++) {
+                                        if (m3.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                            flag3 = false;
+                                            break;
+                                        }
+                                    }
+                                    if (!flag3) {
+                                        error.show("Wrong parameters");
+                                    }
+                                    /*
+                                    em this.x.m(), x est� em ident e m em methodName
+                                    procure por x na lista de vari�veis de inst�ncia da classe corrente:
+                                    anInstanceVariable = currentClass.searchInstanceVariable(ident);
+                                    if ( anInstanceVariable == null )
+                                    ...
+                                    pegue a classe declarada de x, o tipo de x:
+                                    if ( ! (anInstanceVariable.getType() instanceof ClassDec) )
+                                    ... // tipo de x n�o � uma classe, erro
+                                    confira se a classe de x possui m�todo m:
+                                    aClass = (ClassDec ) anInstanceVariable.getType();
+                                    aMethod = aClass.searchMethod(methodName);
+                                    if ( aMethod == null )
+                                    ...
+                                     */
+                                    return new MessageSendToVariable(exprList, var, m3);
                                 default:
-                                // expression of the kind "this.x"
-                                //# corrija
-                           /*
-                                procure x na lista de vari�veis de inst�ncia da classe corrente:
-                                anInstanceVariable = currentClass.searchInstanceVariable(ident);
-                                if ( anInstanceVariable == null )
-                                ...
-                                return new VariableExpr( anInstanceVariable )
-                                 */
+                                    // expression of the kind "this.x"
+                                    //# corrija
+                                    Variable var2 = null;
+                                    ArrayList<Variable> varList2 = classeCorrente.getInstanceVariableList().getInstanceVariableList();
+                                    for (int i = 0; i < varList2.size(); i++) {
+                                        if (varList2.get(i).getName().equals(ident)) {
+                                            var2 = varList2.get(i);
+                                            break;
+                                        }
+                                    }
+                                    if (var2 == null) {
+                                        error.show("Undeclared instance varible");
+                                    }
+                                    /*
+                                    procure x na lista de vari�veis de inst�ncia da classe corrente:
+                                    anInstanceVariable = currentClass.searchInstanceVariable(ident);
+                                    if ( anInstanceVariable == null )
+                                    ...*/
+                                    return new VariableExpr(var2);
+
                             }
 
                         }
-                        break;
                     case Symbol.IDENT:
                         variableName = lexer.getStringValue();
                         lexer.nextToken();
                         if (lexer.token != Symbol.DOT) {
                             // expression of the kind "x"
                             //# corrija
-                     /* 
+                            Variable var = symbolTable.getInLocal(variableName);
+                            if (var == null) {
+                                error.show("undeclared variable");
+                            }
+                            /*
                             if ( (aVariable = symbolTable.get...(variableName)) == null )
-                            ...
-                            return new VariableExpr(aVariable);
-                             */
+                            ...*/
+                            return new VariableExpr(var);
+
                         } else {
                             // expression of the kind "x.m()"
                             lexer.nextToken();  // eat the dot
                             switch (lexer.token) {
                                 case Symbol.IDENT:
+                                    ClassDec cl = null;
+                                    Method m3 = null;
                                     methodName = lexer.getStringValue();
                                     lexer.nextToken();
                                     exprList = getRealParameters();
-                                    //#  corrija
-                           /* 
+                                    Variable var = symbolTable.getInLocal(variableName);
+                                    if (var != null) {
+                                        error.show("undeclared variable");
 
-                                    if ( (aVariable = symbolTable.getInLocal(variableName)) != null ) {
-                                    // x is a variable
-                                    Type t = aVariable.getType();
-                                    teste se t � do tipo ClassDec nesta linha
-                                    aClass = (ClassDec ) t;
-                                    verifique se a classe aClass possui um m�todo chamado methodName
-                                    que pode receber como par�metros as express�es de exprList.
-                                    Algo como (apenas o in�cio):
-                                    aMethod = aClass.searchMethod(methodName);
-                                    ...
-                                    return new MessageSendToVariable(
-                                    aVariable, aMethod, exprList);
+                                        if (!(var.getType() instanceof ClassDec)) {
+                                            error.show("Instance variable is not of a Class type");
+                                        }
+                                        cl = (ClassDec) var.getType();
+                                        m3 = cl.searchPublicMethod(methodName);
+                                        if (m3 == null) {
+                                            ClassDec aux2 = cl;
+                                            while ((aux2 = aux2.getSuperclass()) != null) {
+                                                m3 = aux2.searchPublicMethod(methodName);
+                                                if (m3 != null) {
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (m3 == null) {
+                                            error.show("Undeclared method");
+                                        }
+                                        boolean flag2 = true;
+                                        for (int i = 0; i < m3.getParameters().getSize(); i++) {
+                                            if (m3.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                                flag2 = false;
+                                                break;
+                                            }
+                                        }
+                                        if (!flag2) {
+                                            error.show("Wrong parameters");
+                                        }
+                                    } else {
 
+                                        if ((cl = symbolTable.getInGlobal(variableName)) == null) {
+                                            error.show("Undeclared class");
+                                        }
+                                        //Method m3 = cl.searchStaticMethod(methodName);
+                                        m3 = cl.searchMethod(methodName);
+                                        if (m3 == null) {
+                                            ClassDec aux2 = cl;
+                                            while ((aux2 = aux2.getSuperclass()) != null) {
+                                                m3 = aux2.searchPublicMethod(methodName);
+                                                if (m3 != null) {
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
-                                    else {
-                                    // em "x.m()", x is not a variable. Should be a class name
-                                    if ( (aClass = symbolTable.getInGlobal(variableName)) == null )
-                                    ...
-                                    nesta linha, verifique se methodName � um m�todo est�tico da
-                                    classe aClass que pode aceitar como par�metros as express�es de exprList.
-                                    Algo como (apenas o in�cio):
-                                    aStaticMethod = aClass.searchStaticMethod(methodName);
-                                    ...
-                                    return new MessageSendStatic(aClass, aStaticMethod, exprList);
-                                    }
+                                    return new MessageSendStatic(m3, cl, exprList);
 
-
-                                     */
-
-                                    break;
                                 default:
                                     error.show(CompilerError.identifier_expected);
                             }
