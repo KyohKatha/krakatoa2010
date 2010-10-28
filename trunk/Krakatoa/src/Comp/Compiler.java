@@ -61,7 +61,7 @@ public class Compiler {
             if(m == null){
                 error.show("Public method run not found!");
             }else{
-                if(!m.getParameters().isEmpty()){
+                if(m.getParameters().getSize()>0){
                     error.show("Method run should not have any parameters");
                 }
             }
@@ -259,7 +259,7 @@ public class Compiler {
          */
 
         lexer.nextToken();
-        ArrayList parametros = null;
+        ParamList parametros = null;
         if (lexer.token != Symbol.RIGHTPAR) {
             parametros = formalParamDec();
         }
@@ -318,15 +318,15 @@ public class Compiler {
         return vars;
     }
 
-    private ArrayList formalParamDec() {
+    private ParamList formalParamDec() {
         //  FormalParamDec ::= ParamDec { "," ParamDec }
-        ArrayList<Variable> parameters = new ArrayList();
+        ParamList parameters = new ParamList();
 
-        parameters.add(paramDec());
+        parameters.addElement(paramDec());
 
         while (lexer.token == Symbol.COMMA) {
             lexer.nextToken();
-            parameters.add(paramDec());
+            parameters.addElement(paramDec());
         }
 
         return parameters;

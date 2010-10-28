@@ -25,7 +25,8 @@ public class ReturnCommand extends Statement {
     }
 
     public void genKrakatoa(PW pw){
-
+        pw.printIdent("return ");
+        expr.genKrakatoa(pw, true);
     }
 
     private Expr expr;

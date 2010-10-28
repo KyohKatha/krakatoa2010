@@ -25,7 +25,9 @@ public class WriteCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-
+        pw.printIdent("write(");
+        exprList.genKrakatoa(pw);
+        pw.print(");\n");
     }
 
     private ExprList exprList;

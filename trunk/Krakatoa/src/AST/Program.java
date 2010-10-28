@@ -22,7 +22,7 @@ public class Program {
 
     public void genKrakatoa(PW pw){
         for(int i = 0; i < classList.size(); i++){
-            classList.get(i).genKrakatoa();
+            classList.get(i).genKrakatoa(pw);
         }
     }
 
