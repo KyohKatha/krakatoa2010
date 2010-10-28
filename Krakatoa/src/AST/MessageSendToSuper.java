@@ -26,7 +26,10 @@ public class MessageSendToSuper extends MessageSend {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        pw.printIdent("super.");
+        pw.print(met.getIdent() + "(");
+        exprList.genKrakatoa(pw);
+        pw.print(");\n");
     }
 
     private ClassDec classe;

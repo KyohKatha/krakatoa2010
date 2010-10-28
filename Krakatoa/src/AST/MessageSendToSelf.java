@@ -20,7 +20,10 @@ public class MessageSendToSelf extends MessageSend {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        pw.printIdent("this.");
+        pw.print(met.getIdent() + "(");
+        exprList.genKrakatoa(pw);
+        pw.print(");\n");
     }
 
 

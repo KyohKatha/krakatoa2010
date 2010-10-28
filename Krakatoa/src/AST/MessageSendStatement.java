@@ -14,13 +14,15 @@ public class MessageSendStatement extends Statement {
 
    public void genC( PW pw ) {
       pw.printIdent("");
-      // messageSend.genC(pw);
+      messageSend.genC(pw,true);
       pw.println(";");
    }
 
    public void genKrakatoa(PW pw){
-
-    }
+      pw.printIdent("");
+      messageSend.genKrakatoa(pw,true);
+      pw.println(";\n");
+   }
 
     public MessageSendStatement(MessageSend messageSend) {
         this.messageSend = messageSend;
