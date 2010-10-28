@@ -16,19 +16,21 @@ import java.util.*;
 public class ExprList {
     
     public ExprList() {
-        v = new Vector();
+        v = new ArrayList<Expr>();
     }
     
     public void addElement( Expr expr ) {
-        v.addElement(expr);
+        v.add(expr);
     }
     
     public void genC( PW pw ) {
         
         int size = v.size();
-        Enumeration e = v.elements();
-        while ( e.hasMoreElements() ) {
-            ((Expr ) e.nextElement()).genC(pw, false);
+        //Enumeration e = v.();
+        int i = 0;
+        while ( i < v.size() ) {
+            ((Expr ) v.get(i)).genC(pw, false);
+            i++;
             if ( --size > 0 ) 
               pw.print(", ");
         }
@@ -36,15 +38,22 @@ public class ExprList {
 
     public void genKrakatoa(PW pw){
         int size = v.size();
-        Enumeration e = v.elements();
-        while ( e.hasMoreElements() ) {
-            ((Expr ) e.nextElement()).genKrakatoa(pw, false);
+        for(int i = 0; i < v.size(); i++){
+            v.get(i).genKrakatoa(pw, false);
             if ( --size > 0 )
               pw.print(", ");
         }
     }
 
-    private Vector v;
+    public ArrayList<Expr> getV() {
+        return v;
+    }
+
+    public void setV(ArrayList v) {
+        this.v = v;
+    }
+
+    private ArrayList<Expr> v;
     
 }
             
