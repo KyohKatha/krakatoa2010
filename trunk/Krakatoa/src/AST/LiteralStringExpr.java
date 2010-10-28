@@ -26,7 +26,7 @@ public class LiteralStringExpr extends Expr {
     private String literalString;
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        pw.print(literalString);
     }
 
 }

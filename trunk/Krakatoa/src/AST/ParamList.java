@@ -30,7 +30,12 @@ public class ParamList {
     }
 
     public void genKrakatoa(PW pw){
-
+        Enumeration e = paramList.elements();
+        for(int i = 0; i < paramList.size(); i++){
+            (( Variable )e.nextElement()).genKrakatoa(pw);
+            if(i+1 < paramList.size())
+                pw.print(", ");
+        }
     }
 
     private Vector paramList;

@@ -21,7 +21,9 @@ public class Program {
     }
 
     public void genKrakatoa(PW pw){
-
+        for(int i = 0; i < classList.size(); i++){
+            classList.get(i).genKrakatoa();
+        }
     }
 
     public ArrayList<ClassDec> getClassList() {

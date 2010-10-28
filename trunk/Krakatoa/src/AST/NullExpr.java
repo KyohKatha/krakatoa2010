@@ -21,7 +21,7 @@ public class NullExpr extends Expr {
    }
 
    public void genKrakatoa(PW pw, boolean putParenthesis){
-
-    }
+        pw.printIdent("NULL");
+   }
 
 }

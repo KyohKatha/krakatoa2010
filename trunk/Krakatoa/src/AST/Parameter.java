@@ -9,7 +9,6 @@
 
 package AST;
 
-import java.io.*;
 
 public class Parameter extends Variable {
     
@@ -18,6 +17,6 @@ public class Parameter extends Variable {
     }
 
     public void genKrakatoa(PW pw){
-
+        super.genKrakatoa(pw);
     }
 }

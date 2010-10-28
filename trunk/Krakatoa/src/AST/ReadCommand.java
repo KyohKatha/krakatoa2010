@@ -29,7 +29,7 @@ public class ReadCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-
+        eita... como fas?
     }
 
     private ArrayList<Variable> variables;

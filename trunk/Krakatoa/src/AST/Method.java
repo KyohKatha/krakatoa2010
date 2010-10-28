@@ -10,6 +10,7 @@
 package AST;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Method {
     private String ident;
     private Type type;
     private int qualifier;
-    private ArrayList parameters;
+    private ParamList parameters;
     private ArrayList<Statement> corpo;
 
     public Method(String ident, Type type, int qualifier){
@@ -36,11 +37,11 @@ public class Method {
         this.ident = ident;
     }
 
-    public ArrayList getParameters() {
+    public ParamList getParameters() {
         return parameters;
     }
 
-    public void setParameters(ArrayList parameters) {
+    public void setParameters(ParamList parameters) {
         this.parameters = parameters;
     }
 
@@ -68,8 +69,27 @@ public class Method {
         this.corpo = corpo;
     }
 
-    public void genKrakatoa(){
-
+    public void genKrakatoa(PW pw){
+        switch(qualifier){
+            case 38:
+                pw.printIdent("public ");
+                break;
+            case 39:
+                pw.printIdent("private ");
+                break;
+            case 138:
+                pw.printIdent("static public ");
+                break;
+            case 139:
+                pw.printIdent("static public ");
+                break;
+        }
+        pw.print(type + " " + ident + "( ");
+        parameters.genKrakatoa(null);
+        pw.print("){\n");
+        for(int i = 0; i < corpo.size(); i++){
+            corpo.get(i).genKrakatoa(pw);
+        }
+        pw.printIdent("}\n");
     }
-
 }

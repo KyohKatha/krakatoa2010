@@ -41,7 +41,9 @@ public class CompositeExpr extends Expr {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        left.genKrakatoa(pw, putParenthesis);
+        pw.print(arrayOper[oper]);
+        right.genKrakatoa(pw, putParenthesis);
     }
 
     private Expr left, right;

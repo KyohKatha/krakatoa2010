@@ -27,7 +27,10 @@ public class CompositeCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-
+        int i;
+        for (i=0; i<commands.size(); i++){
+            commands.get(i).genKrakatoa(pw);
+        }
     }
 
     ArrayList<Statement> commands;
