@@ -152,6 +152,7 @@ public class ClassDec extends Type {
 
 
     public void genKrakatoa() {
+        
     }
     private String name;
     private ClassDec superclass;

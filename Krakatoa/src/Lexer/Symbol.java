@@ -51,6 +51,7 @@ public class Symbol {
       SUPER = 35,       
       THIS = 36,        
       NEW = 37,         
+      STATIC = 137,
       STATICPUBLIC = 138,
       STATICPRIVATE = 139,
       PUBLIC = 38,

@@ -55,6 +55,7 @@ public class Lexer {
 		keywordsTable.put( "new", new Integer(Symbol.NEW) );
 		keywordsTable.put( "public", new Integer(Symbol.PUBLIC) );
 		keywordsTable.put( "private", new Integer(Symbol.PRIVATE) );
+                keywordsTable.put( "static", new Integer(Symbol.STATIC) );
 		keywordsTable.put( "String", new Integer(Symbol.STRING) );
 		keywordsTable.put( "extends", new Integer(Symbol.EXTENDS) );
 		
