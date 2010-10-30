@@ -148,38 +148,37 @@ public class Compiler {
 
 
         //memberslist
-        while (lexer.token == Symbol.STATICPUBLIC || lexer.token == Symbol.STATICPRIVATE
-                || lexer.token == Symbol.PRIVATE || lexer.token == Symbol.PUBLIC) {
-
-            int qualifier;
+        while (lexer.token == Symbol.STATIC || lexer.token == Symbol.PRIVATE || lexer.token == Symbol.PUBLIC) {
+            int qualifier = 0;
+            if(lexer.token == Symbol.STATIC){
+                qualifier = 100;
+                lexer.nextToken();
+            }
             switch (lexer.token) {
                 case Symbol.PRIVATE:
                     lexer.nextToken();
-                    qualifier = Symbol.PRIVATE;
+                    qualifier += Symbol.PRIVATE;
                     break;
                 case Symbol.PUBLIC:
                     lexer.nextToken();
-                    qualifier = Symbol.PUBLIC;
+                    qualifier += Symbol.PUBLIC;
                     break;
-                case Symbol.STATICPUBLIC:
-                    lexer.nextToken();
-                    qualifier = Symbol.STATICPUBLIC;
-                case Symbol.STATICPRIVATE:
-                    lexer.nextToken();
-                    qualifier = Symbol.STATICPRIVATE;
                 default:
                     error.show("static, private, or public expected");
                     qualifier = Symbol.PUBLIC;
             }
+            qualifierCorrente = qualifier;
             Type t;
             if (lexer.token == Symbol.VOID) {
                 t = Type.voidType;
+                lexer.nextToken();
             } else {
                 t = type();
             }
 
             //IdList ::= Id { "," Id }
             // ou MethodDec ::= Qualifier ReturnType Id "(" [ FormalParamDec ] ")" "{" StatementList "}"
+
             if (lexer.token != Symbol.IDENT) {
                 error.show("Identifier expected");
             }
@@ -189,21 +188,21 @@ public class Compiler {
             if (lexer.token == Symbol.LEFTPAR) {
 
                 if (qualifier == Symbol.PUBLIC || qualifier == Symbol.PRIVATE) {
-                if (nvClasse.searchMethod(name) != null) {
-                    error.show("Method redeclaration");
-                }
+                    if (nvClasse.searchMethod(name) != null) {
+                        error.show("Method redeclaration");
+                    }
                 }
                 if (qualifier == Symbol.STATICPUBLIC || qualifier == Symbol.STATICPRIVATE) {
-                if (nvClasse.searchStaticMethod(name) != null) {
-                    error.show("Method redeclaration");
-                }
+                    if (nvClasse.searchStaticMethod(name) != null) {
+                        error.show("Method redeclaration");
+                    }
                 }
                 if (symbolTable.getInLocal(name) != null) {
                     error.show("Member redeclaration");
                 }
                 Method met = new Method(name, t, qualifier);
 
-                if (qualifier == Symbol.PUBLIC){
+                if (qualifier == Symbol.PUBLIC) {
                     nvClasse.setPublicMethod(met);
                 }
 
@@ -226,10 +225,11 @@ public class Compiler {
             } else {
                 InstanceVariableList varList = null;
                 varList = instanceVarDec(t, name);
-                if(qualifier == Symbol.PRIVATE)
+                if (qualifier == Symbol.PRIVATE) {
                     nvClasse.setInstanceVariableList(varList);
-                else
+                } else {
                     nvClasse.setStaticInstanceVariableList(varList);
+                }
             }
         }
         if (lexer.token != Symbol.RIGHTCURBRACKET) {
@@ -445,6 +445,9 @@ public class Compiler {
 
         switch (lexer.token) {
             case Symbol.THIS:
+                if (qualifierCorrente == Symbol.STATICPRIVATE || qualifierCorrente == Symbol.STATICPUBLIC) {
+                    error.show("'this' can not be used on a static method");
+                }
                 /*lexer.nextToken();
                 if (lexer.token != Symbol.DOT) {
                 error.show("Dot expected");
@@ -477,6 +480,9 @@ public class Compiler {
                 //}
                 break;
             case Symbol.SUPER:
+                if (qualifierCorrente == Symbol.STATICPRIVATE || qualifierCorrente == Symbol.STATICPUBLIC) {
+                    error.show("'super' can not be used on a static method");
+                }
                 statement = assignmentMessageSendLocalVarDecStatement();
                 break;
             case Symbol.INT:
@@ -754,22 +760,49 @@ public class Compiler {
                         break;
                     case Symbol.DOT:
                         // id.id()
+                        //Verifica se o primeiro 'id' eh uma variavel ou Classe
                         Variable v2 = symbolTable.getInLocal(variableName);
-                        if (v2 == null) {
-                            error.show("undeclared variable");
+                        ClassDec clInit = symbolTable.getInGlobal(variableName);
+                        ClassDec cl2 = null;
+                        if (v2 == null && clInit == null) {
+                            error.show("undeclared variable/class");
                         }
                         lexer.nextToken();
                         methodName = lexer.getStringValue();
-                        ClassDec cl2 = (ClassDec) v2.getType();
-                        Method m2 = cl2.searchPublicMethod(methodName);
-                        if (m2 == null) {
-                            ClassDec aux2 = cl2;
-                            while ((aux2 = aux2.getSuperclass()) != null) {
-                                m = aux2.searchPublicMethod(methodName);
-                                if (m != null) {
-                                    break;
+                        Method m2 = null;
+                        //vai procurar se o metodo existe na classe da variavel, ou em suas superclasses
+                        if (v2 != null) {
+                            cl2 = (ClassDec) v2.getType();
+                            m2 = cl2.searchPublicMethod(methodName);
+                            if (m2 == null) {
+                                ClassDec aux2 = cl2;
+                                while ((aux2 = aux2.getSuperclass()) != null) {
+                                    m = aux2.searchPublicMethod(methodName);
+                                    if (m != null) {
+                                        break;
+                                    }
+                                    //aux = aux2.getSuperclass();
                                 }
-                                //aux = aux2.getSuperclass();
+                            }
+                        }
+                        //vai procurar se o metodo existe na classe (static), ou em suas superclasses
+                        if (clInit != null) {
+                            cl2 = clInit;
+                            //se o metodo chamado esta dentro de um metodo da classe corrente entao pode ser um metodo static public ou private
+                            if (classeCorrente == clInit) {
+                                m2 = cl2.searchStaticMethod(methodName);
+                            } else {
+                                m2 = cl2.searchPublicStaticMethod(methodName);
+                            }
+                            if (m2 == null) {
+                                ClassDec aux2 = cl2;
+                                while ((aux2 = aux2.getSuperclass()) != null) {
+                                    m = aux2.searchPublicStaticMethod(methodName);
+                                    if (m != null) {
+                                        break;
+                                    }
+                                    //aux = aux2.getSuperclass();
+                                }
                             }
                         }
                         if (m2 == null) {
@@ -1420,4 +1453,5 @@ public class Compiler {
     private CompilerError error;
     private ClassDec classeCorrente;
     private Method metodoCorrente;
+    private int qualifierCorrente;
 }
