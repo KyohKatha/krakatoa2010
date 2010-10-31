@@ -1,0 +1,15 @@
+/*
+  @filename   er-sin31.kra
+
+  @comment    ; excedente
+*/
+  
+
+class Program {
+    
+    private int i;  ;    //#
+  
+    public void run() {
+    }
+
+}

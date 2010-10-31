@@ -1,0 +1,18 @@
+/*
+  @filename   ok-sin12.kra
+
+  @comment    testa se aceita - antes de variavel
+*/
+
+class Program {
+   
+   public void run() {
+      int a;
+      
+      a = 1;
+      write( -a );
+   }   
+
+}
+
+

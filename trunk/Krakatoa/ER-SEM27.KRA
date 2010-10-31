@@ -1,0 +1,18 @@
+/*
+  @filename   er-sem27.kra
+
+  @comment    classe A herda de si mesma
+  */
+
+class A extends A {   //#
+}
+
+
+class Program {
+   
+   public void run() {
+   }   
+
+}
+
+

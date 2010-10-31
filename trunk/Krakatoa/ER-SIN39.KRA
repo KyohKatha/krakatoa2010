@@ -1,0 +1,24 @@
+/*
+  @filename   er-sin39.kra
+
+  @comment    ; depois do nome do metodo
+  */
+
+class A {
+  
+   public int get() ; {  //#
+       return 0;
+   }
+
+}
+
+class Program {
+  
+    public void run() {
+       A a;
+
+       a = new A();
+       write( a.get() );
+    }
+
+}

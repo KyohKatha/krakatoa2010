@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin09.kra
+      
+  @comment    operadores de comparacao nao podem ser usados em sequencia
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+       if ( 3 > 2 > 1 )    //#
+          write(0);
+          
+    }
+
+}

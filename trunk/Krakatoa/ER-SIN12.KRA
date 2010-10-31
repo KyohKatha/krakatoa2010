@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin12.kra
+      
+  @comment    {-} usado como expressao
+  */
+      
+class Program {
+  
+    public void run() {
+
+       int i;
+
+       i = { 0 };          //#
+       write(i);
+    }
+
+}

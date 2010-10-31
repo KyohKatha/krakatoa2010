@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem43.kra
+
+  @comment    Variavel de tipo basico nao pode receber null
+  */
+
+class Program {
+   
+   public void run() {
+      int i;
+      
+      i = null;     //#
+   }   
+
+}
+
+

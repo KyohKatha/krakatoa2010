@@ -1,0 +1,13 @@
+/*
+  @filename  er-lex06.kra
+      
+  @comment    Testa se o lexico nao permite sublinhado como primeiro carater
+  */
+      
+class Program {
+  
+    public void run() {
+       int _i;  //#
+    }
+
+}

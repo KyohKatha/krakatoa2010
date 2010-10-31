@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem13.kra
+      
+  @comment    Variaveis booleanas nao podem ser lidas.
+  */
+
+class Program {
+   
+   public void run() {
+      boolean b;
+      
+      read( b );  //#
+   }   
+
+}
+
+

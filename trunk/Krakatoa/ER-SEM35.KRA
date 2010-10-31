@@ -1,0 +1,27 @@
+/*
+  @filename   er-sem35.kra
+
+  @comment    Metodo que nao deve retornar nada com instrucao return
+  */
+
+class A {
+   
+   public void m() {
+      return 0;         //#
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      a = new A();
+      a.m();
+   }   
+
+}
+
+

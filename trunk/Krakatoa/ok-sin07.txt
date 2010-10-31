@@ -1,0 +1,2 @@
+68 : Wrong parameters
+      w.setNext(null);

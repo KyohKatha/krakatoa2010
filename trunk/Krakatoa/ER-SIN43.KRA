@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin43.kra
+  
+  @comment    testa se aceita declaracoes sem public/private
+
+*/
+
+class Program {
+
+   void m() {      //#
+   }
+   
+   public void run() {
+   }
+
+}

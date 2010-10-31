@@ -1,0 +1,45 @@
+class A {
+    static private int a;
+    private A b;
+    static private void m() { 
+        A c;
+        c = A.a;
+        c = this.b;
+        A.a = c;
+        this.b = c;
+        read(A.a);
+        read(this.b);
+        write(A.a);
+        write(this.b);
+        A.a = A.a - 1;
+        if ( A.a > 0 ) A.m();
+    }
+    public A get(A a) {
+        A.m();
+        return new A();
+    }
+}
+
+class B extends A {
+    static private int a;
+    private A b;
+    static private void m() { 
+    }
+    private void p() {
+    }
+    public A get(A a) {
+        this.b = a;
+        a = B.a;
+        B.a = this.b;
+        
+        return new B();
+    }
+}
+
+class Program {
+    public void run() {
+        B b;
+        b = new B();
+        b.p();
+    }
+}

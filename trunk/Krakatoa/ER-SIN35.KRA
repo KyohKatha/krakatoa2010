@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin35.kra
+
+  @comment    , ausente na declaracao de m
+  */
+
+
+class Program {
+    
+    public void m( int x, int y  boolean ok ) {  //#
+    }
+
+    public void run() {
+    }
+
+}

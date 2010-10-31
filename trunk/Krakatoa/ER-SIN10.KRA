@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin10.kra
+      
+  @comment    Falta ( depois de read
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+       int i;
+       read i);          //#
+       
+    }
+
+}

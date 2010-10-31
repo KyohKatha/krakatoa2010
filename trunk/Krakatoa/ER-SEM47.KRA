@@ -1,0 +1,40 @@
+/*
+  @filename   er-sem47.kra
+
+  @comment    Chamada a metodo inexistente utilizando 'super'
+  */
+
+class A {
+   
+   private int n;
+   
+   public void set(int n) {
+      this.n = n;
+   }   
+   public int get() {
+      return this.n;
+   }   
+
+}
+
+
+class B extends A {
+   
+   public void m() {
+   }   
+   public int get() {
+      super.m();       //#
+      return 0;
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+   }   
+
+}
+
+

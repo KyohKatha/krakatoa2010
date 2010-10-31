@@ -1,0 +1,14 @@
+/*
+  @filename   er-sem18.kra
+      
+  @comment    Tipo 'e uma variavel
+  */
+      
+class Program {
+  
+    public void run() {
+       int  k;
+       k i;    //#
+    }
+
+}

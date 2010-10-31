@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin19.kra
+      
+  @comment    Falta o ; apos read
+  */
+      
+
+class Program {
+  
+    public void run() {
+
+       int i;
+       read(i)        //#
+       read(i);
+    }
+
+}

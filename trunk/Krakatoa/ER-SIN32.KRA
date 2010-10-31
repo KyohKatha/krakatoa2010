@@ -1,0 +1,15 @@
+/*
+  @filename   er-sin32.kra
+
+  @comment    , excedente
+  */
+
+class Program {
+  
+    public void m( int x, , int y)  {   //#
+    }
+    
+    public void run() {
+    }
+
+}

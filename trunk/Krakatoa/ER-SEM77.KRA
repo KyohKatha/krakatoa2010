@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem77.kra
+
+  @comment    metodo run ausente
+
+*/
+
+class Program {
+    
+    public void m() {
+    }
+
+} //#

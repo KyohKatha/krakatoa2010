@@ -1,0 +1,20 @@
+/*
+  @filename   er-sem75.kra
+
+  @comment    chamada a metodo estatico privado
+
+*/
+
+class A {
+   static private void m() {
+   }
+}
+
+
+class Program {
+    
+    public void run() {
+        A.m();             //#
+    }
+
+}

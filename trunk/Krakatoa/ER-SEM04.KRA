@@ -1,0 +1,18 @@
+/*
+  @filename   er-sem04.kra
+      
+  @comment    Erro de tipos
+  */
+
+class Program {
+   
+   public void run() {
+      int i;
+      
+      i = false;   //#
+      write(i);
+   }   
+
+}
+
+

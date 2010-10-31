@@ -1,0 +1,18 @@
+/*
+  @filename   er-sem14.kra
+      
+  @comment    Expressoes booleanas nao podem ser escritas.
+  */
+
+class Program {
+   
+   public void run() {
+      boolean b;
+
+      b = false;
+      write( b );   //#
+   }   
+
+}
+
+

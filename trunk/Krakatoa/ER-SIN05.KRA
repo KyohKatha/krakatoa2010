@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin05.kra
+      
+  @comment    , seguida de ) em read
+  */
+      
+class Program {
+  
+    public void run() {
+        
+       int i, j;
+       read(i, j, );    //#
+       
+    }
+
+}

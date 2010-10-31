@@ -1,0 +1,14 @@
+/*
+  @filename   er-sin16.kra
+      
+  @comment    tipo usado como variavel
+  */
+      
+
+class Program {
+  
+    public void run() {
+       String int;        //#
+    }
+
+}

@@ -1,0 +1,15 @@
+/*
+  @filename   er-sem26.kra
+      
+  @comment    O compilador devera sinalizar erro 'break fora de while'
+  */
+
+class Program {
+   
+   public void run() {
+      break;        //#
+   }   
+
+}
+
+

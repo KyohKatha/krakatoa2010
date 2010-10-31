@@ -1,0 +1,13 @@
+/*
+  @filename   er-lex09.kra
+      
+  @comment    O compilador devera sinalizar 'Numero fora dos limites'
+  */
+      
+class Program {
+  
+    public void run() {
+       write( 4000000000000000000 );   //#
+    }
+
+}

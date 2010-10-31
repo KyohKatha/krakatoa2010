@@ -1,0 +1,14 @@
+/*
+  @filename   er-sin01.kra
+      
+  @comment    Declaracoes de variaveis locais devem ter aparecer depois de {.
+  */
+      
+class Program {
+  
+    public void run() 
+         int i;     //#
+    {
+    }
+
+}

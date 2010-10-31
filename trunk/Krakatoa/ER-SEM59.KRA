@@ -1,0 +1,29 @@
+/*
+  @filename   er-sem59.kra
+
+  @comment    Chamada a metodo privado
+  */
+
+
+class A {
+  
+    private void p() {
+    }
+  
+    public void m() {
+       this.p();
+    }
+
+}
+
+
+class Program {
+  
+    public void run() {
+       A a;
+
+       a = new A();
+       a.p();  //#
+    }
+
+}

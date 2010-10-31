@@ -1,0 +1,21 @@
+/*
+  @filename   er-sem42.kra
+
+  @comment    Variavel de tipo basico nao pode receber objetos
+  */
+
+class A {
+}
+
+
+class Program {
+   
+   public void run() {
+      int i;
+      
+      i = new A();   //#
+   }   
+
+}
+
+

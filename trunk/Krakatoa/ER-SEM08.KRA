@@ -1,0 +1,15 @@
+/*
+  @filename   er-sem08.kra
+      
+  @comment    Uso de operador aritmetico com valores booleanos
+  */
+
+class Program {
+   
+   public void run() {
+      write( true + false );   //#
+   }   
+
+}
+
+

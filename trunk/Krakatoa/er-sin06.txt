@@ -1,0 +1,2 @@
+13 : Identifier expected
+       write( 1, 2, 3, );  //#

@@ -1,0 +1,27 @@
+/*
+  @filename   er-sem38.kra
+
+  @comment    A instrucao 'b = a' esta errada. Variaveis de subclasses nao podem receber objetos de superclasses.
+  */
+
+class A {
+}
+
+
+class B extends A {
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      B b;
+      
+      a = new A();
+      b = a;         //#
+   }   
+
+}
+
+

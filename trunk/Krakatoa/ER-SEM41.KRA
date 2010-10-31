@@ -1,0 +1,21 @@
+/*
+  @filename   er-sem41.kra
+
+  @comment    Objeto nao pode receber valores de tipos basicos
+  */
+
+class A {
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      a = 0;        //#
+   }   
+
+}
+
+

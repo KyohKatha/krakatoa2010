@@ -1,0 +1,18 @@
+/*
+  @filename   er-sem11.kra
+      
+  @comment    Expressao do while deve ser booleana
+  */
+
+class Program {
+   
+   public void run() {
+    
+      while ( 0 )      //#
+         write( 0 );
+         
+   }   
+
+}
+
+

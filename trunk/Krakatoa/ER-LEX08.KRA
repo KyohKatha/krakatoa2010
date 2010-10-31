@@ -1,0 +1,30 @@
+/*   //#
+  @filename  er-lex08.kra
+      
+  @comment    O compilador devera sinalizar 'comentario nao fechado'
+  e indicar o numero da linha onde o comentario comecou:
+  Erro: comentario iniciado na linha 1 nao foi fechado.
+      
+class A {
+  
+    public void m() {
+
+       int i;
+       i = 1;
+       while ( i <= 10 ) {
+          write(i);
+          i = i + 1;
+       }
+    }
+
+}
+
+class Program {
+  
+    public void run() {
+       A a;
+       a = new A();
+       a.m();
+    }
+
+}

@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin02.kra
+      
+  @comment    Depois de , deve vir um identificador
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+       int i, j, ;       //#
+       
+    }
+
+}

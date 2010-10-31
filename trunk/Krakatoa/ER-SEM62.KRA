@@ -1,0 +1,21 @@
+/*
+  @filename   er-sem62.kra
+
+  @comment    uso de variavel de instancia sem this
+  */
+
+
+
+class Program {
+  
+   private int a;
+  
+   public void run() {
+
+      int b;
+      b = 1;
+      a = b;    //#
+    }
+
+}
+

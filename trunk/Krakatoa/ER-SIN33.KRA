@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin33.kra
+
+  @comment    Tipo ausente na declaracao de x
+  */
+
+
+class Program {
+  
+    public void m( x ) {   //#
+    }
+    
+    public void run() {
+    }
+
+}

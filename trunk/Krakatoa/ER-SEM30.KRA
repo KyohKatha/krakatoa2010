@@ -1,0 +1,36 @@
+/*
+  @filename   er-sem30.kra
+
+  @comment    Metodo put em B possui valor de retorno. Na superclasse A, nao.
+  */
+
+
+class A {
+   
+   public void put() {
+   }   
+
+}
+
+
+class B extends A {
+   
+   public int put() {   //#
+      return 0;
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      a = new A();
+      a.put();
+   }   
+
+}
+
+

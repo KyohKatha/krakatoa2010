@@ -1,0 +1,24 @@
+/*
+  @filename   er-sem37.kra
+
+  @comment    Metodo set nao pertence 'a classe A
+  */
+
+class A {
+  
+    public void m() {
+    }
+
+}
+
+
+class Program {
+  
+    public void run() {
+       A a;
+
+       a = new A();
+       a.set(0);       //#
+    }
+
+}

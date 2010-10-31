@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem05.kra
+      
+  @comment    Erro de tipos
+  */
+
+class Program {
+   
+   public void run() {
+      boolean b;
+      
+      b = 0;   //#
+   }   
+
+}
+
+

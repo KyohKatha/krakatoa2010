@@ -14,6 +14,12 @@ public class ClassDec extends Type {
 
     public ClassDec(String name) {
         super(name);
+        instanceVariableList = new InstanceVariableList();
+        privateMethodList = new MethodList();
+        publicMethodList = new MethodList();
+        staticInstanceVariableList = new InstanceVariableList();
+        staticPrivateMethodList = new MethodList();
+        staticPublicMethodList = new MethodList();
     }
 
     public String getCname() {
@@ -24,8 +30,12 @@ public class ClassDec extends Type {
         return instanceVariableList;
     }
 
-    public void setInstanceVariableList(InstanceVariableList instanceVariableList) {
-        this.instanceVariableList = instanceVariableList;
+    public void setInstanceVariableList(InstanceVariableList instanceVariableListA) {
+        if(this.instanceVariableList == null || this.instanceVariableList.getSize() == 0)
+            this.instanceVariableList = instanceVariableListA;
+        else{
+                instanceVariableList.getInstanceVariableList().addAll(instanceVariableListA.getInstanceVariableList());
+            }
     }
 
     public InstanceVariableList getStaticInstanceVariableList() {
@@ -148,6 +158,56 @@ public class ClassDec extends Type {
         }
 
         return null;
+    }
+
+    public InstanceVariable searchInstanceVariable(String nome){
+        ArrayList<InstanceVariable> aux = this.instanceVariableList.getInstanceVariableList();
+        for(int i = 0; i < aux.size(); i++){
+            if(aux.get(i).getName().equals(nome))
+                return aux.get(i);
+        }
+        return null;
+    }
+
+    public InstanceVariable searchStaticInstanceVariable(String nome){
+        ArrayList<InstanceVariable> aux = this.staticInstanceVariableList.getInstanceVariableList();
+        for(int i = 0; i < aux.size(); i++){
+            if(aux.get(i).getName().equals(nome))
+                return aux.get(i);
+        }
+        return null;
+    }
+
+    public MethodList getPrivateMethodList() {
+        return privateMethodList;
+    }
+
+    public void setPrivateMethodList(MethodList privateMethodList) {
+        this.privateMethodList = privateMethodList;
+    }
+
+    public MethodList getPublicMethodList() {
+        return publicMethodList;
+    }
+
+    public void setPublicMethodList(MethodList publicMethodList) {
+        this.publicMethodList = publicMethodList;
+    }
+
+    public MethodList getStaticPrivateMethodList() {
+        return staticPrivateMethodList;
+    }
+
+    public void setStaticPrivateMethodList(MethodList staticPrivateMethodList) {
+        this.staticPrivateMethodList = staticPrivateMethodList;
+    }
+
+    public MethodList getStaticPublicMethodList() {
+        return staticPublicMethodList;
+    }
+
+    public void setStaticPublicMethodList(MethodList staticPublicMethodList) {
+        this.staticPublicMethodList = staticPublicMethodList;
     }
 
 

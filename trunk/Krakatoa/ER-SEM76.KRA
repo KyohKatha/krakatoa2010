@@ -1,0 +1,22 @@
+/*
+  @filename   er-sem76.kra
+
+  @comment    chamada a metodo estatico atraves de variavel
+
+*/
+
+class A {
+   static public void m() {
+   }
+}
+
+
+class Program {
+    
+    public void run() {
+        A a;
+        a = new A();
+        a.m();             //#
+    }
+
+}

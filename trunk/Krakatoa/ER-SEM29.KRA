@@ -1,0 +1,35 @@
+/*
+  @filename   er-sem29.kra
+
+  @comment    put redefinida em B com parametros diferentes daqueles da superclasse
+  A
+  */
+
+class A {
+    
+   public void put() {
+   }   
+
+}
+
+
+class B extends A {
+   
+   public void put(int x) {  //#
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      a = new A();
+      a.put();
+   }   
+
+}
+
+

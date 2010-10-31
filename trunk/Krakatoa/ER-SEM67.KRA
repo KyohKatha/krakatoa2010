@@ -1,0 +1,22 @@
+/*
+  @filename   er-sem67.kra
+
+  @comment    chamada a método não existente
+
+*/
+
+
+class Program {
+    
+    public void p() { 
+    }
+    
+    static public void m() {  
+        p();                      //#
+    }
+  
+ 
+    public void run() {
+    }
+
+}

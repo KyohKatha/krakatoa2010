@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin23.kra
+      
+  @comment    else sem if
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+       else            //#
+          write(0);
+          
+    }
+
+}

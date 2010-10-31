@@ -1,0 +1,1 @@
+      "ok-sin15.kra", "  @comment    tests Strings", "0",

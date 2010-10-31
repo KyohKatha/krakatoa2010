@@ -1,0 +1,24 @@
+/*
+  @filename   ok-sem07.kra
+      
+  @comment    breaks dentro de loops encaixados.
+  */
+
+class Program {
+   
+   public void run() {
+    
+      while ( true ) {         
+        while ( true ) {            
+            while ( true ) {               
+                break;
+            }            
+            break;
+         }         
+         break;
+      }   
+   }   
+
+}
+
+
