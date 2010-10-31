@@ -1,0 +1,20 @@
+/*
+  @filename   er-sem73.kra
+
+  @comment    dois metodos estaticos com mesmo nome
+
+*/
+
+
+class Program {
+    
+    static public void m() {
+    }
+    
+    static public void m() {   //#
+    }
+  
+    public void run() {
+    }
+
+}

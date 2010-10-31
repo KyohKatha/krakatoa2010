@@ -1,0 +1,28 @@
+/*
+  @filename   er-sem32.kra
+
+  @comment    Metodo publico e privado com mesmo nome
+  */
+
+class A {
+  
+    private void m() {
+    }
+  
+    public void m() {  //#
+    }
+
+}
+
+
+
+class Program {
+  
+    public void run() {
+
+       A a;
+       a = new A();
+       a.m();
+    }
+
+}

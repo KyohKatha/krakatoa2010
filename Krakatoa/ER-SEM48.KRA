@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem48.kra
+
+  @comment    Os nomes dos tipos basicos sao reservados e nao podem ser nomes de classes
+  */
+
+class int {  //#
+}
+
+
+
+class Program {
+  
+    public void run() {
+    }
+
+}

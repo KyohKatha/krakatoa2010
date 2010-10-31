@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin34.kra
+
+  @comment    ; excedente na declaracao de y
+  */
+
+
+class Program {
+  
+    public void m( int x, int y ; ) {   //#
+    }
+    
+    public void run() {
+    }
+
+}

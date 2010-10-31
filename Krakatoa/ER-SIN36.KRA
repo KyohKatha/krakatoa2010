@@ -1,0 +1,15 @@
+/*
+  @filename   er-sin36.kra
+
+  @comment    Tipo de retorno ausente na declaracao de m
+  */
+
+
+class Program {
+  
+    public m( int x, int y ) {  //#
+    }
+   
+    public void run() {
+    }
+}

@@ -1,0 +1,2 @@
+11 : static, private, or public expected
+    static void m() {  //#

@@ -1,0 +1,27 @@
+/*
+  @filename   er-sem36.kra
+
+  @comment    Instrucao 'i = a.m()' admite que m retorna algum valor
+  */
+
+class A {
+   
+   public void m() {
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      int i;
+      
+      a = new A();
+      i = a.m();          //#
+   }   
+
+}
+
+

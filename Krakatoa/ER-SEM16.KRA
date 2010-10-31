@@ -1,0 +1,15 @@
+/*
+  @filename   er-sem16.kra
+      
+  @comment    Menos unario aplicado a booleano
+  */
+
+class Program {
+   
+   public void run() {
+      write( -true );  //#
+   }   
+
+}
+
+

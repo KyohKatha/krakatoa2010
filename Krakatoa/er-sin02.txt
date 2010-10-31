@@ -1,0 +1,2 @@
+12 : Identifier expected
+       int i, j, ;       //#

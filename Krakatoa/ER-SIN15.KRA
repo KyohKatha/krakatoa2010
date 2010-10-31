@@ -1,0 +1,14 @@
+/*
+  @filename   er-sin15.kra
+      
+  @comment    Nao pode existir comentario no meio de um numero
+  */
+      
+
+class Program {
+  
+    public void run() {
+       write( 2/*A*/4 );       //#
+    }
+
+}

@@ -1,0 +1,28 @@
+/*
+  @filename   er-sem39.kra
+
+  @comment    Erro de tipos. A instrucao 'return A.new()' esta errada pois o tipo do valor de
+  retorno 'e B. Devem ser retornados objetos de B e sua subclasses,
+  nao suas superclasses
+  */
+
+class A {
+}
+
+
+class B extends A {
+}
+
+
+class Program {
+   
+   public B m() {
+      return new A();   //#
+   }   
+   
+   public void run() {
+   }   
+
+}
+
+

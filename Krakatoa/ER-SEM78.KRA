@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem78.kra
+
+  @comment    classe Program ausente
+
+*/
+
+class A {
+    
+    public void m() {
+    }
+
+} //#

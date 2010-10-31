@@ -1,0 +1,15 @@
+/*
+  @filename   er-sin11.kra
+      
+  @comment    Falta ( depois de write
+  */
+      
+
+
+class Program {
+  
+    public void run() {
+      write 3);       //#
+    }
+
+}

@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem17.kra
+      
+  @comment    Parametros de read devem ser variaveis.
+  */
+      
+class Program {
+  
+    public void run() {
+        read(0);  //#
+    }
+
+}

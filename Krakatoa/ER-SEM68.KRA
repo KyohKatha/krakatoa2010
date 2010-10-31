@@ -1,0 +1,22 @@
+/*
+  @filename   er-sem68.kra
+
+  @comment    chamada a método não existente
+
+*/
+
+
+class Program {
+    
+    public void t() { 
+    }
+    
+    public void m() {  
+        this.p();                      //#
+    }
+  
+ 
+    public void run() {
+    }
+
+}

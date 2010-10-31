@@ -1,0 +1,20 @@
+/*
+  @filename   er-sem49.kra
+
+  @comment    Tipos basicos nao podem ser herdados, pois nao sao classes
+  */
+
+class A {
+}
+
+
+class B extends int {  //#
+
+}
+
+class Program {
+  
+    public void run() {
+    }
+
+}

@@ -1,0 +1,14 @@
+/*
+  @filename  er-lex03.kra
+      
+  @comment    Testa se o lexico considera o numero -32768 como incorreto.
+  O arquivo er-lex10.kra 'e vazio mesmo. E o er-lex01.kra nao
+  existe --- nao o crie, ele nao deve existir.
+  */
+      
+class Program {
+
+    public void run() {
+       write( -32768 ); //#
+    }
+}

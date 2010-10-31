@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem06.kra
+      
+  @comment    Instrucao esperada, atribuicao a valor
+  */
+      
+class Program {
+  
+    public void run() {
+       0 = 0;       //#
+    }
+
+}

@@ -19,7 +19,7 @@ public class Comp {
         FileReader stream;
         int numChRead;
         Program program;
-        
+        System.out.println("OLAAAAAAAAAa");
         if ( args.length < 1 ||  args.length > 2 )  {
             System.out.println("Usage:\n   Comp input [output]");
             System.out.println("input is the file to be compiled");
@@ -123,7 +123,8 @@ public class Comp {
             program  = compiler.compile(input, outError );
             
             if ( program != null ) {
-               PW pw = new PW();
+                System.out.println("Program:"+program.getClassList().get(0).getCname());
+                PW pw = new PW();
                pw.set(printWriter);
                //program.genHTML( pw );
                if ( printWriter.checkError() ) {

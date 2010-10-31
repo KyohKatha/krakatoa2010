@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem20.kra
+      
+  @comment    Palavra reservada utilizada como variavel
+  */
+      
+class Program {
+  
+    public void run() {
+       int boolean;   //#
+    }
+
+}

@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin38.kra
+
+  @comment    } do fim do while ausente
+  */
+
+class Program {
+  
+    public void run() {
+        
+       while ( true ) {
+        
+    }
+
+}
+//#

@@ -1,0 +1,2 @@
+11 : inexistent class
+    static public m() {  //#

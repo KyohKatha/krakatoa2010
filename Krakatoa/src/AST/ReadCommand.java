@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class ReadCommand extends Statement{
 
     public ReadCommand() {
+        variables = new ArrayList<Variable>();
     }
 
     public void addVariable(Variable v){

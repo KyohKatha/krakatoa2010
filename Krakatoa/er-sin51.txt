@@ -1,0 +1,2 @@
+11 : Type expected
+    public static void m() {  //#

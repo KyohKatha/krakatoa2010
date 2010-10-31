@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin08.kra
+      
+  @comment    write sem argumentos
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+       write();      //#
+       
+    }
+
+}

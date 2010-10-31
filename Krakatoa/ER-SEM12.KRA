@@ -1,0 +1,15 @@
+/*
+  @filename   er-sem12.kra
+      
+  @comment    Valor booleano em expressao inteira
+  */
+
+class Program {
+   
+   public void run() {
+      write(  1 + 2 + true + 1 + 0 );   //#
+   }   
+
+}
+
+

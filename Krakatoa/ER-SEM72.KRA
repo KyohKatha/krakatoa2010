@@ -1,0 +1,21 @@
+/*
+  @filename   er-sem72.kra
+
+  @comment    chamada de metodo instancia publico em metodo estatico
+
+*/
+
+
+class Program {
+    
+    private void m() {
+    }
+    
+    static public void set() {  
+        this.m();               //#
+    }
+  
+    public void run() {
+    }
+
+}

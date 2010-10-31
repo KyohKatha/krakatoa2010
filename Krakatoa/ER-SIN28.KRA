@@ -1,0 +1,23 @@
+/*
+  @filename   er-sin28.kra
+      
+  @comment    Palavras chaves nao podem estar em maiuscula.
+  */
+      
+CLASS A {   //#
+  
+    public void m() {
+    }
+      
+}
+
+class Program {
+  
+    public void run() {
+       A a;
+
+       a = new A();
+       a.m();
+    }
+
+}

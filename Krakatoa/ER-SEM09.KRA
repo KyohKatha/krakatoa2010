@@ -1,0 +1,18 @@
+/*
+  @filename   er-sem09.kra
+      
+  @comment    Uso de operadores logicos com inteiros
+  */
+
+class Program {
+   
+   public void run() {
+      int i;
+      
+      i = (3 && 4) || 5;      //#
+      write(i);
+   }   
+
+}
+
+

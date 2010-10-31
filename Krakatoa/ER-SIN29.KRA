@@ -1,0 +1,19 @@
+/*
+  @filename   er-sin29.kra
+
+  @comment    classe sem corpo
+  */
+
+class A {
+  
+
+class Program {       //#
+  
+    public void run() {
+       A a;
+
+       a = new A();
+       a.m();
+    }
+
+}

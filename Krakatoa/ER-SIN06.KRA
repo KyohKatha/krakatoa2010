@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin06.kra
+      
+  @comment    , seguida de ) em write
+
+  */
+
+
+class Program {
+  
+    public void run() {
+        
+       write( 1, 2, 3, );  //#
+       
+    }
+
+}

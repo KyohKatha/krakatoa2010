@@ -1,0 +1,26 @@
+/*
+  @filename   er-sem50.kra
+      
+  @comment    O compilador devera sinalizar erro 'break fora de loop-end'
+  */
+
+
+
+class Program {
+   
+   public void run() {
+      while ( false ) {         
+        while ( false ) {            
+            while ( false ) {               
+                break;
+            }            
+            break;
+         }         
+         break;
+      }      
+      break;   //#
+   }   
+
+}
+
+

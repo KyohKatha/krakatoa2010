@@ -1,0 +1,2 @@
+10 : Statement expected
+       int i0.0;   /* .  'e um carater ilegal  */   //#

@@ -1,0 +1,2 @@
+11 : Identifier expected
+       String int;        //#

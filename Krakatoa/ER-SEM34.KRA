@@ -1,0 +1,26 @@
+/*
+  @filename   er-sem34.kra
+
+  @comment    Chamada  'a.m()' eh uma expressao e esta sendo utilizada como uma instrucao
+  */
+
+class A {
+   public int m() {
+      return 0;
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      a = new A();
+      a.m();            //#
+   }   
+
+}
+
+

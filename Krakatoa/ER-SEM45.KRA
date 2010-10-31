@@ -1,0 +1,21 @@
+/*
+  @filename   er-sem45.kra
+
+  @comment    Nao se pode ler objetos
+  */
+
+class A {
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      read(a);      //#
+   }   
+
+}
+
+

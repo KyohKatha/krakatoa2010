@@ -1,0 +1,25 @@
+/*
+  @filename   er-sem74.kra
+
+  @comment    chamada ilegal a metodo estatico
+
+*/
+
+class A {
+   static public void m() {
+   }
+}
+
+class B extends A {
+    static public void p() {   
+        m();                       //#
+    }
+}
+
+
+class Program {
+    
+    public void run() {
+    }
+
+}

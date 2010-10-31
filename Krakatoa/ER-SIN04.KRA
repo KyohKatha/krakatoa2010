@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin04.kra
+      
+  @comment    Falta o tipo da variavel
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+       i;   //#
+       
+    }
+
+}

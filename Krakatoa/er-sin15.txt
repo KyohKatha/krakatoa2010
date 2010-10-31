@@ -1,0 +1,2 @@
+11 : ) expected
+       write( 2/*A*/4 );       //#

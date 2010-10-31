@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem81.kra
+
+  @comment    m‚todo run deve ser publico
+
+*/
+
+class Program {
+    
+    private void run() {  //#
+    }
+
+}

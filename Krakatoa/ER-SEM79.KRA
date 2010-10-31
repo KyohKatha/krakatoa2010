@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem79.kra
+
+  @comment    assinatura do m‚todo run incorreta
+
+*/
+
+class Program {
+    
+    public void run(int n) {  //#
+    }
+
+}

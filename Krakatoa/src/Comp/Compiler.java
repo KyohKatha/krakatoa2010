@@ -61,7 +61,7 @@ public class Compiler {
             if (m == null) {
                 error.show("Public method run not found!");
             } else {
-                if (!(m.getParameters().getSize() == 0)) {
+                if (m.getParameters() != null) {
                     error.show("Method run should not have any parameters");
                 }
             }
@@ -72,7 +72,7 @@ public class Compiler {
             // of course, it should be removed if the compiler were
             // a production compiler.
 
-            //e.printStackTrace();
+            e.printStackTrace();
             p = null;
         }
 
@@ -82,10 +82,13 @@ public class Compiler {
     private Program program() {
         // Program ::=  ClassDec { ClassDec }
         ArrayList<ClassDec> classes = new ArrayList<ClassDec>();
+        System.out.println("CLASSES");
         classes.add(classDec());
+        System.out.println("Voltei CLASSES");
         while (lexer.token == Symbol.CLASS) {
             classes.add(classDec());
         }
+        System.out.println("VOLTEI! VOU RETORNAR!");
         return new Program(classes);
     }
 
@@ -150,7 +153,7 @@ public class Compiler {
         //memberslist
         while (lexer.token == Symbol.STATIC || lexer.token == Symbol.PRIVATE || lexer.token == Symbol.PUBLIC) {
             int qualifier = 0;
-            if(lexer.token == Symbol.STATIC){
+            if (lexer.token == Symbol.STATIC) {
                 qualifier = 100;
                 lexer.nextToken();
             }
@@ -188,16 +191,16 @@ public class Compiler {
             if (lexer.token == Symbol.LEFTPAR) {
 
                 if (qualifier == Symbol.PUBLIC || qualifier == Symbol.PRIVATE) {
-                    if (nvClasse.searchMethod(name) != null) {
+                    if (classeCorrente.searchMethod(name) != null) {
                         error.show("Method redeclaration");
                     }
                 }
                 if (qualifier == Symbol.STATICPUBLIC || qualifier == Symbol.STATICPRIVATE) {
-                    if (nvClasse.searchStaticMethod(name) != null) {
+                    if (classeCorrente.searchStaticMethod(name) != null) {
                         error.show("Method redeclaration");
                     }
                 }
-                if (symbolTable.getInLocal(name) != null) {
+                if (classeCorrente.searchInstanceVariable(name) != null) {
                     error.show("Member redeclaration");
                 }
                 Method met = new Method(name, t, qualifier);
@@ -220,6 +223,7 @@ public class Compiler {
 
                 met = methodDec(met);
                 metodoCorrente = met;
+                symbolTable.removeLocalIdent();
             } else if (qualifier != Symbol.PRIVATE && qualifier != Symbol.STATICPRIVATE) {
                 error.show("Attempt to declare a public instance variable");
             } else {
@@ -227,8 +231,10 @@ public class Compiler {
                 varList = instanceVarDec(t, name);
                 if (qualifier == Symbol.PRIVATE) {
                     nvClasse.setInstanceVariableList(varList);
+                    classeCorrente.setInstanceVariableList(varList);
                 } else {
                     nvClasse.setStaticInstanceVariableList(varList);
+                    classeCorrente.setStaticInstanceVariableList(varList);
                 }
             }
         }
@@ -242,12 +248,12 @@ public class Compiler {
 
     private InstanceVariableList instanceVarDec(Type type, String name) {
         //   InstVarDec ::= [ "static"  ] "private"  Type  IdList  ";"
-        InstanceVariableList variables = null;
-        if (symbolTable.getInLocal(name) != null) {
+        InstanceVariableList variables = new InstanceVariableList();
+        if (classeCorrente.searchInstanceVariable(name) != null) {
             error.show("variable redeclaration");
         }
         InstanceVariable v = new InstanceVariable(name, type);
-        symbolTable.putInLocal(name, v);
+        //symbolTable.putInLocal(name, v);
         variables.addElement(v);
 
         while (lexer.token == Symbol.COMMA) {
@@ -256,11 +262,11 @@ public class Compiler {
                 error.show("Identifier expected");
             }
             String variableName = lexer.getStringValue();
-            if (symbolTable.getInLocal(name) != null) {
+            if (classeCorrente.searchInstanceVariable(name) != null) {
                 error.show("variable redeclaration");
             }
             v = new InstanceVariable(variableName, type);
-            symbolTable.putInLocal(variableName, v);
+            //symbolTable.putInLocal(variableName, v);
             lexer.nextToken();
             variables.addElement(v);
         }
@@ -317,6 +323,7 @@ public class Compiler {
         LocalVarList vars = new LocalVarList();
 
         Variable v = new Variable(lexer.getStringValue(), type);
+        symbolTable.putInLocal(v.getName(), v);
         vars.addElement(v);
         lexer.nextToken();
         while (lexer.token == Symbol.COMMA) {
@@ -329,6 +336,7 @@ public class Compiler {
                 error.show("variable redeclaration");
             }
             v = new Variable(lexer.getStringValue(), type);
+            symbolTable.putInLocal(v.getName(), v);
             vars.addElement(v);
             lexer.nextToken();
         }
@@ -352,20 +360,18 @@ public class Compiler {
 
     private Variable paramDec() {
         // ParamDec ::= Type Id
-
         Type t = type();
         if (lexer.token != Symbol.IDENT) {
             error.show("Identifier expected");
         }
         String name = lexer.getStringValue();
-        if (symbolTable.getInLocal(name) != null) {
+        Variable v = symbolTable.getInLocal(name);
+        if (v != null) {
             error.show("parameter redeclaration");
         }
-        Variable v = new Variable(name, t);
+        v = new Variable(name, t);
         symbolTable.putInLocal(name, v);
-
         lexer.nextToken();
-
         return v;
     }
 
@@ -616,10 +622,11 @@ public class Compiler {
                 switch (lexer.token) {
                     //this.id =
                     case Symbol.ASSIGN:
+
                         lexer.nextToken();
                         //this.id = expr
                         Expr anExpr = expr();
-                        Variable v = symbolTable.getInLocal(ident);
+                        Variable v = classeCorrente.searchInstanceVariable(ident);
                         if (v == null) {
                             error.show("undeclared variable");
                         }
@@ -631,7 +638,8 @@ public class Compiler {
                         if (lexer.token != Symbol.IDENT) {
                             error.show(CompilerError.identifier_expected);
                         }
-                        Variable v2 = symbolTable.getInLocal(ident);
+                        Variable v2 = classeCorrente.searchInstanceVariable(ident);
+
                         if (v2 == null) {
                             error.show("undeclared variable");
                         }
@@ -642,14 +650,21 @@ public class Compiler {
                         lexer.nextToken();
                         exprList = getRealParameters();
                         boolean flag = true;
-                        for (int i = 0; i < metodoCorrente.getParameters().getSize(); i++) {
-                            if (metodoCorrente.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                flag = false;
-                                break;
+                        if (metodoCorrente.getParameters() == null) {
+                            if (exprList != null) {
+                                error.show("Wrong parameters");
                             }
-                        }
-                        if (!flag) {
-                            error.show("Wrong parameters");
+
+                        } else {
+                            for (int i = 0; i < metodoCorrente.getParameters().getSize(); i++) {
+                                if (metodoCorrente.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (!flag) {
+                                error.show("Wrong parameters");
+                            }
                         }
                         result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, metodoCorrente));
                         break;
@@ -673,14 +688,21 @@ public class Compiler {
                         }
                         exprList = getRealParameters();
                         boolean flag2 = true;
-                        for (int i = 0; i < m.getParameters().getSize(); i++) {
-                            if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                flag = false;
-                                break;
+                        if (m.getParameters() == null) {
+                            if (exprList != null) {
+                                error.show("Wrong parameters");
                             }
-                        }
-                        if (!flag2) {
-                            error.show("Wrong parameters");
+
+                        } else {
+                            for (int i = 0; i < m.getParameters().getSize(); i++) {
+                                if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (!flag2) {
+                                error.show("Wrong parameters");
+                            }
                         }
                         result = new MessageSendStatement(
                                 new MessageSendToSelf(m, exprList));
@@ -708,7 +730,7 @@ public class Compiler {
                     if (m != null) {
                         break;
                     }
-                    aux = aux.getSuperclass();
+                    
                 }
 
                 if (m == null) {
@@ -717,14 +739,21 @@ public class Compiler {
                 lexer.nextToken();
                 exprList = getRealParameters();
                 boolean flag = true;
-                for (int i = 0; i < m.getParameters().getSize(); i++) {
-                    if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                        flag = false;
-                        break;
+                if (m.getParameters() == null) {
+                    if (exprList != null) {
+                        error.show("Wrong parameters");
                     }
-                }
-                if (!flag) {
-                    error.show("Wrong parameters");
+
+                } else {
+                    for (int i = 0; i < m.getParameters().getSize(); i++) {
+                        if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        error.show("Wrong parameters");
+                    }
                 }
                 result = new MessageSendStatement(new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList));
                 break;
@@ -737,8 +766,14 @@ public class Compiler {
                     case Symbol.ASSIGN:
                         // id = expr
                         Variable v = symbolTable.getInLocal(variableName);
+                        InstanceVariable auxInst = null;
+                        System.out.println("Eh AKI!");
                         if (v == null) {
-                            error.show("undeclared variable");
+                            if ((auxInst = classeCorrente.searchInstanceVariable(variableName)) == null) {
+                                error.show("undeclared variable");
+                            } else {
+                                v = new Variable(variableName, auxInst.getType());
+                            }
                         }
                         lexer.nextToken();
                         Expr anExpr = expr();
@@ -753,19 +788,22 @@ public class Compiler {
                             error.show("undeclared class");
                         }
                         // variableName must be the name of a class
-                        // replace null in the statement below by
-                        // a point to the class named variableName.
-                        // A search in the symbol table is necessary.
-                        localDec(cl);
+                        result = localDec(cl);
                         break;
                     case Symbol.DOT:
                         // id.id()
+                        // replace null in the statement below by
+                        // a point to the class named variableName.
+                        // A search in the symbol table is necessary.
                         //Verifica se o primeiro 'id' eh uma variavel ou Classe
                         Variable v2 = symbolTable.getInLocal(variableName);
                         ClassDec clInit = symbolTable.getInGlobal(variableName);
                         ClassDec cl2 = null;
                         if (v2 == null && clInit == null) {
-                            error.show("undeclared variable/class");
+                            v2 = classeCorrente.searchInstanceVariable(variableName);
+                            if (v2 == null) {
+                                error.show("undeclared variable/class");
+                            }
                         }
                         lexer.nextToken();
                         methodName = lexer.getStringValue();
@@ -777,8 +815,8 @@ public class Compiler {
                             if (m2 == null) {
                                 ClassDec aux2 = cl2;
                                 while ((aux2 = aux2.getSuperclass()) != null) {
-                                    m = aux2.searchPublicMethod(methodName);
-                                    if (m != null) {
+                                    m2 = aux2.searchPublicMethod(methodName);
+                                    if (m2 != null) {
                                         break;
                                     }
                                     //aux = aux2.getSuperclass();
@@ -787,6 +825,7 @@ public class Compiler {
                         }
                         //vai procurar se o metodo existe na classe (static), ou em suas superclasses
                         if (clInit != null) {
+
                             cl2 = clInit;
                             //se o metodo chamado esta dentro de um metodo da classe corrente entao pode ser um metodo static public ou private
                             if (classeCorrente == clInit) {
@@ -797,8 +836,8 @@ public class Compiler {
                             if (m2 == null) {
                                 ClassDec aux2 = cl2;
                                 while ((aux2 = aux2.getSuperclass()) != null) {
-                                    m = aux2.searchPublicStaticMethod(methodName);
-                                    if (m != null) {
+                                    m2 = aux2.searchPublicStaticMethod(methodName);
+                                    if (m2 != null) {
                                         break;
                                     }
                                     //aux = aux2.getSuperclass();
@@ -811,14 +850,21 @@ public class Compiler {
                         lexer.nextToken();
                         exprList = getRealParameters();
                         boolean flag2 = true;
-                        for (int i = 0; i < m2.getParameters().getSize(); i++) {
-                            if (m2.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                flag2 = false;
-                                break;
+                        if (m2.getParameters() == null) {
+                            if (exprList != null) {
+                                error.show("Wrong parameters");
                             }
-                        }
-                        if (!flag2) {
-                            error.show("Wrong parameters");
+
+                        } else {
+                            for (int i = 0; i < m2.getParameters().getSize(); i++) {
+                                if (m2.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                    flag2 = false;
+                                    break;
+                                }
+                            }
+                            if (!flag2) {
+                                error.show("Wrong parameters");
+                            }
                         }
                         result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m2));
                         break;
@@ -928,7 +974,9 @@ public class Compiler {
             Variable v = symbolTable.getInLocal(name);
 
             if (v == null) {
-                error.show("undeclared variable");
+                if ((v = classeCorrente.searchInstanceVariable(name)) == null) {
+                    error.show("undeclared variable");
+                }
             }
 
             readCom.addVariable(v);
@@ -1165,14 +1213,20 @@ public class Compiler {
                         lexer.nextToken();
                         exprList = getRealParameters();
                         boolean flag = true;
-                        for (int i = 0; i < m.getParameters().getSize(); i++) {
-                            if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                flag = false;
-                                break;
+                        if (m.getParameters() == null) {
+                            if (exprList != null) {
+                                error.show("Wrong parameters");
                             }
-                        }
-                        if (!flag) {
-                            error.show("Wrong parameters");
+                        } else {
+                            for (int i = 0; i < m.getParameters().getSize(); i++) {
+                                if (m.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (!flag) {
+                                error.show("Wrong parameters");
+                            }
                         }
                         //#  corrija
                   /* 
@@ -1227,14 +1281,21 @@ public class Compiler {
                                     //# corrija
                                     exprList = getRealParameters();
                                     boolean flag2 = true;
-                                    for (int i = 0; i < m2.getParameters().getSize(); i++) {
-                                        if (m2.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                            flag2 = false;
-                                            break;
+                                    if (m2.getParameters() == null) {
+                                        if (exprList != null) {
+                                            error.show("Wrong parameters");
                                         }
-                                    }
-                                    if (!flag2) {
-                                        error.show("Wrong parameters");
+
+                                    } else {
+                                        for (int i = 0; i < m2.getParameters().getSize(); i++) {
+                                            if (m2.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                                flag2 = false;
+                                                break;
+                                            }
+                                        }
+                                        if (!flag2) {
+                                            error.show("Wrong parameters");
+                                        }
                                     }
                                     /*
                                     procure o m�todo ident na classe corrente:
@@ -1249,14 +1310,14 @@ public class Compiler {
                                     // expression of the kind "this.x.m()"
                                     //# corrija
                                     Variable var = null;
-                                    ArrayList<Variable> varList = classeCorrente.getInstanceVariableList().getInstanceVariableList();
+                                    /*ArrayList<InstanceVariable> varList = classeCorrente.getInstanceVariableList().getInstanceVariableList();
                                     for (int i = 0; i < varList.size(); i++) {
                                         if (varList.get(i).getName().equals(ident)) {
                                             var = varList.get(i);
                                             break;
                                         }
-                                    }
-
+                                    }*/
+                                    var = classeCorrente.searchInstanceVariable(ident);
                                     if (var == null) {
                                         error.show("Undeclared instance varible");
                                     }
@@ -1270,7 +1331,7 @@ public class Compiler {
                                         error.show("Instance variable is not of a Class type");
                                     }
                                     ClassDec cl = (ClassDec) var.getType();
-                                    Method m3 = cl.searchPublicMethod(ident);
+                                    Method m3 = cl.searchPublicMethod(methodName);
                                     if (m3 == null) {
                                         ClassDec aux2 = cl;
                                         while ((aux2 = aux2.getSuperclass()) != null) {
@@ -1286,14 +1347,21 @@ public class Compiler {
                                     lexer.nextToken();
                                     exprList = getRealParameters();
                                     boolean flag3 = true;
-                                    for (int i = 0; i < m3.getParameters().getSize(); i++) {
-                                        if (m3.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                            flag3 = false;
-                                            break;
+                                    if (m3.getParameters() == null) {
+                                        if (exprList != null) {
+                                            error.show("Wrong parameters");
                                         }
-                                    }
-                                    if (!flag3) {
-                                        error.show("Wrong parameters");
+
+                                    } else {
+                                        for (int i = 0; i < m3.getParameters().getSize(); i++) {
+                                            if (m3.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                                flag3 = false;
+                                                break;
+                                            }
+                                        }
+                                        if (!flag3) {
+                                            error.show("Wrong parameters");
+                                        }
                                     }
                                     /*
                                     em this.x.m(), x est� em ident e m em methodName
@@ -1315,13 +1383,14 @@ public class Compiler {
                                     // expression of the kind "this.x"
                                     //# corrija
                                     Variable var2 = null;
-                                    ArrayList<Variable> varList2 = classeCorrente.getInstanceVariableList().getInstanceVariableList();
+                                    ArrayList<InstanceVariable> varList2 = classeCorrente.getInstanceVariableList().getInstanceVariableList();
                                     for (int i = 0; i < varList2.size(); i++) {
                                         if (varList2.get(i).getName().equals(ident)) {
                                             var2 = varList2.get(i);
                                             break;
                                         }
                                     }
+                                    System.out.println("HIER");
                                     if (var2 == null) {
                                         error.show("Undeclared instance varible");
                                     }
@@ -1343,7 +1412,9 @@ public class Compiler {
                             //# corrija
                             Variable var = symbolTable.getInLocal(variableName);
                             if (var == null) {
-                                error.show("undeclared variable");
+                                if ((var = classeCorrente.searchInstanceVariable(variableName)) == null) {
+                                    error.show("undeclared variable");
+                                }
                             }
                             /*
                             if ( (aVariable = symbolTable.get...(variableName)) == null )
@@ -1361,8 +1432,11 @@ public class Compiler {
                                     lexer.nextToken();
                                     exprList = getRealParameters();
                                     Variable var = symbolTable.getInLocal(variableName);
+                                    System.out.println("var:"+variableName);
                                     if (var != null) {
-                                        error.show("undeclared variable");
+                                        //if ((var = classeCorrente.searchInstanceVariable(variableName)) == null) {
+                                          //  error.show("undeclared variable");
+                                        //}
 
                                         if (!(var.getType() instanceof ClassDec)) {
                                             error.show("Instance variable is not of a Class type");
@@ -1382,17 +1456,24 @@ public class Compiler {
                                             error.show("Undeclared method");
                                         }
                                         boolean flag2 = true;
-                                        for (int i = 0; i < m3.getParameters().getSize(); i++) {
-                                            if (m3.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
-                                                flag2 = false;
-                                                break;
+                                        if (m3.getParameters() == null) {
+                                            if (exprList != null) {
+                                                error.show("Wrong parameters");
+                                            }
+
+                                        } else {
+                                            for (int i = 0; i < m3.getParameters().getSize(); i++) {
+                                                if (m3.getParameters().get(i).getType() != exprList.getV().get(i).getType()) {
+                                                    flag2 = false;
+                                                    break;
+                                                }
+                                            }
+                                            if (!flag2) {
+                                                error.show("Wrong parameters");
                                             }
                                         }
-                                        if (!flag2) {
-                                            error.show("Wrong parameters");
-                                        }
                                     } else {
-
+                                        System.out.println("cl:"+variableName);
                                         if ((cl = symbolTable.getInGlobal(variableName)) == null) {
                                             error.show("Undeclared class");
                                         }

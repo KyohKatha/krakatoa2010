@@ -1,0 +1,20 @@
+/*
+  @filename  er-lex11.kra
+      
+  @comment    Palavras chaves nao podem estar em maiuscula.
+  */
+      
+
+class Program {
+
+    PUBLIC void m() {  //#
+    }
+
+    public void run() {
+
+       A a;
+       a = new A();
+       a.m();
+    }
+
+}

@@ -1,0 +1,21 @@
+/*
+  @filename   er-sem65.kra
+
+  @comment    chamada incorreta a método estático
+
+*/
+
+
+class Program {
+    
+    static public void m() {  
+        Program.p();            //#
+    }
+  
+    static public void p() {  
+    }
+  
+    public void run() {
+    }
+
+}

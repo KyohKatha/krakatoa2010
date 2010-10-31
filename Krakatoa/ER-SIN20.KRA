@@ -1,0 +1,14 @@
+/*
+  @filename   er-sin20.kra
+      
+  @comment    Falta o ; apos write
+  */
+      
+class Program {
+  
+    public void run() {
+       write(0)                //#
+       write(1);
+    }
+
+}

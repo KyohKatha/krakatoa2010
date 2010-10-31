@@ -26,6 +26,8 @@ public class Method {
         this.ident = ident;
         this.type = type;
         this.qualifier = qualifier;
+        this.parameters = new ParamList();
+        this.corpo = new ArrayList<Statement>();
     }
 
     public String getIdent() {
@@ -37,6 +39,7 @@ public class Method {
     }
 
     public ParamList getParameters() {
+        //System.out.println("Size:"+parameters);
         return parameters;
     }
 

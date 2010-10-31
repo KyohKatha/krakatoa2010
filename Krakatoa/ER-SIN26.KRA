@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin26.kra
+      
+  @comment    Testa se => nao 'e aceito como valido
+  */
+      
+
+class Program {
+  
+    public void run() {
+        
+      if ( 4 => 3 ) {       //#
+      }
+      
+    }
+
+}

@@ -1,0 +1,27 @@
+/*
+  @filename   er-sem57.kra
+
+  @comment    Testa se o compilador sinalize erro nas comparacoes com == 
+  */
+
+class A {
+}
+
+
+class B {
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      B b;
+      
+      a = null;
+      b = null;
+      if ( a == b )  //#
+         write( 0 );
+   }
+
+}

@@ -1,0 +1,19 @@
+/*
+  @filename   er-sem15.kra
+      
+  @comment    ! aplicado a inteiro.
+  */
+
+
+class Program {
+   
+   public void run() {
+    
+      if ( ! 1 ) {  //#
+      }
+      
+   }   
+
+}
+
+

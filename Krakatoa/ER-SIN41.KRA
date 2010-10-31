@@ -1,0 +1,20 @@
+/*
+  @filename   er-sin41.kra
+
+  @comment    nome da classe ausente
+  */
+
+class { //#
+
+   public void m() {
+   }
+
+}
+
+
+class Program {
+  
+    public void run() {
+    }
+
+}

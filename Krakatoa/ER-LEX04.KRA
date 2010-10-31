@@ -1,0 +1,13 @@
+/*
+  @filename  er-lex04.kra
+      
+  @comment    Testa se o lexico sinaliza erro no numero 32768
+  */
+      
+class Program {
+  
+    public void run() {
+       write( 32768 ); //#
+    }
+
+}

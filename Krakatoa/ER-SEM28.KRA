@@ -1,0 +1,30 @@
+/*
+  @filename   er-sem28.kra
+
+  @comment    Variavel i declarada duas vezes, mas nao em sequencia
+  */
+
+class A {
+   
+   private int i;
+   private int j;
+   private int i;   //#
+   
+   public void m() {
+   }   
+
+}
+
+
+class Program {
+   
+   public void run() {
+      A a;
+      
+      a = new A();
+      a.m();
+   }   
+
+}
+
+

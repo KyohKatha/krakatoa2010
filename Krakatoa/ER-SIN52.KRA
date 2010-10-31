@@ -1,0 +1,18 @@
+/*
+  @filename   er-sin52.kra
+
+  @comment    erro sintaxe na declaracao de metodo estático
+
+*/
+
+
+class Program {
+    
+    static void m() {  //#
+    }
+  
+    public void run() {
+        Program.m();
+    }
+
+}

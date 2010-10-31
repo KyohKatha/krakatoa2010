@@ -1,0 +1,47 @@
+/*
+  @filename   er-sem40.kra
+
+  @comment    Erro de tipos. A instrucao 'this.m(a)' esta errada: um objeto de uma superclasse
+  esta sendo utilizado onde se espera objeto de subclasse
+  */
+
+class A {
+   
+   private int n;
+   
+   public void set(int n) {
+      this.n = n;
+   }   
+   public int get() {
+      return this.n;
+   }   
+
+}
+
+
+class B extends A {
+   
+   public void set(int pn) {
+      write( pn );
+      super.set(pn);
+   }   
+
+}
+
+
+class Program {
+   
+   public void m(B b) {
+      b.set(0);
+   }   
+   
+   public void run() {
+      A a;
+      
+      a = new A();
+      this.m(a);    //#
+   }   
+
+}
+
+

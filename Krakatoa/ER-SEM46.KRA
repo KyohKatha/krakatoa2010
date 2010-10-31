@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem46.kra
+
+  @comment    super 'e utilizado somente quando ha superclasse
+  */
+
+class Program {
+  
+    public void run() {
+       super.run();   //#
+    }
+
+}

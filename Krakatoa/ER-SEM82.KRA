@@ -1,0 +1,13 @@
+/*
+  @filename   er-sem82.kra
+
+  @comment    m‚todo run nao deve ser estatico
+
+*/
+
+class Program {
+    
+    static public void run() {  //#
+    }
+
+}

@@ -1,0 +1,2 @@
+10 : _ cannot start an indentifier
+       int _i;  //#

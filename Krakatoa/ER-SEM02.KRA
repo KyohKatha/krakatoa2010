@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem02.kra
+      
+  @comment    Caracteres minusculos e maiusculos sao diferentes
+  */
+      
+class Program {
+  
+    public void run() {
+        
+       int i;
+       I = 0;      //#
+       
+       write(i);
+    }
+
+}

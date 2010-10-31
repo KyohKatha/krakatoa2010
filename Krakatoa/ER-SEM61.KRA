@@ -1,0 +1,38 @@
+/*
+  @filename   er-sem61.kra
+
+  @comment    Chamada a metodo inexistente
+  */
+
+
+class A {
+  
+    public void m() {
+    }
+
+}
+
+class B extends A {
+  
+    public void p() {
+    }
+
+}
+
+class C extends B {
+  
+    public void r() {
+    }
+
+}
+
+class Program {
+  
+    public void run() {
+       C c;
+       c = new C();
+       c.s();        //#
+    }
+
+}
+

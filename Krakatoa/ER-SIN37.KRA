@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin37.kra
+
+  @comment    expressao do if vazia
+  */
+
+class Program {
+  
+    public void run() {
+        
+      if () {   //#
+      }
+      
+    }
+
+}

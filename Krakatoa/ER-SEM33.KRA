@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem33.kra
+
+  @comment    Dois metodos publicos com mesmo nome
+  */
+
+class Program {
+
+    public void m() {
+    }
+
+    public void m() {  //#
+    }
+  
+    public void run() {
+    }
+}

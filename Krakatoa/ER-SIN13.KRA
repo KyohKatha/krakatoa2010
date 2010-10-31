@@ -1,0 +1,17 @@
+/*
+  @filename   er-sin13.kra
+      
+  @comment    Sem  corpo do metodo
+  */
+      
+class A {
+  
+    public void m() }  //#
+
+
+class Program {
+  
+    public void run() {
+    }
+
+}

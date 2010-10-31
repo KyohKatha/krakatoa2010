@@ -1,0 +1,2 @@
+12 : Number out of limits
+       write( -32768 ); //#

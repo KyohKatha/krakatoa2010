@@ -1,0 +1,16 @@
+/*
+  @filename   er-sin55.kra
+
+  @comment    erro sintaxe na declaracao de variável estática
+
+*/
+
+
+class Program {
+    
+    private static x; //#
+    
+    public void run() {
+    }
+
+}

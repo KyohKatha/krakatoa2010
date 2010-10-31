@@ -1,0 +1,17 @@
+/*
+  @filename   er-sem03.kra
+      
+  @comment    Redeclaracao de i em duas declaracoes em sequencia.
+  */
+      
+class Program {
+  
+    public void run() {
+       int i;
+       int i;   //#
+       
+       read(i);
+       write(i);
+    }
+
+}

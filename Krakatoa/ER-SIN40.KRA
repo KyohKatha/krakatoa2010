@@ -1,0 +1,28 @@
+/*
+  @filename   er-sin40.kra
+
+  @comment    Declaracao de variavel de instancia na parte publica. Este erro poderia
+  ser tambem semantico. Mas pelas regras da gramatica, ele 'e sintatico.
+  */
+
+
+class A {
+
+   public int i;  //#
+
+   public void m() {
+   }
+
+}
+
+
+class Program {
+  
+    public void run() {
+       A a;
+
+       a = new A();
+       a.m();
+    }
+
+}

@@ -1,0 +1,18 @@
+/*
+  @filename   er-sem07.kra
+
+  @comment    Variavel inteira sendo utilizada como se fosse objeto
+  */
+
+
+class Program {
+  
+    public void run() {
+
+       int i;
+       
+       i.run();   //#
+
+      }
+
+}

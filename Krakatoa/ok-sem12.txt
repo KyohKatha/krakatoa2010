@@ -1,0 +1,2 @@
+21 : undeclared Method
+      A.m();

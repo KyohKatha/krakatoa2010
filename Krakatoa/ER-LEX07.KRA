@@ -1,0 +1,13 @@
+/*
+  @filename  er-lex07.kra
+      
+  @comment    Testa se . 'e considerado ilegal
+  */
+      
+class Program {
+  
+    public void run() {
+       int i0.0;   /* .  'e um carater ilegal  */   //#
+    }
+
+}
