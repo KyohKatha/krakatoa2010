@@ -1,2 +1,0 @@
-11 : Attempt to declare a public instance variable
-   public int i;  //#

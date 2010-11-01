@@ -1,2 +1,0 @@
-26 : undeclared method
-      super.m();       //#

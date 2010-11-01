@@ -19,7 +19,7 @@ public class Comp {
         FileReader stream;
         int numChRead;
         Program program;
-        System.out.println("OLAAAAAAAAAa");
+        //System.out.println("OLAAAAAAAAAa");
         if ( args.length < 1 ||  args.length > 2 )  {
             System.out.println("Usage:\n   Comp input [output]");
             System.out.println("input is the file to be compiled");

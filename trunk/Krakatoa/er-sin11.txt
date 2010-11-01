@@ -1,2 +1,0 @@
-12 : ( expected
-      write 3);       //#

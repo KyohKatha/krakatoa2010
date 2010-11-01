@@ -1,2 +1,0 @@
-10 : undeclared class
-       Program i;       //#

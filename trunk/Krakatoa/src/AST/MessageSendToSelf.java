@@ -13,7 +13,7 @@ package AST;
 public class MessageSendToSelf extends MessageSend {
     
     public Type getType() { 
-        return null;
+        return met.getType();
     }
     
     public void genC( PW pw, boolean putParenthesis ) {

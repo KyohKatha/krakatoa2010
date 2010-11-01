@@ -1,2 +1,0 @@
-7 : 'class' expected
-CLASS A {   //#
