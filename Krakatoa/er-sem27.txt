@@ -1,2 +1,0 @@
-7 : current class is equal to the superclass
-class A extends A {   //#

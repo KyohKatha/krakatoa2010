@@ -1,2 +1,0 @@
-19 : undeclared Method
-        a.m();             //#

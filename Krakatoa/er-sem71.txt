@@ -1,2 +1,0 @@
-14 : 'this' can not be used on a static method
-        this.x = 0;           //#

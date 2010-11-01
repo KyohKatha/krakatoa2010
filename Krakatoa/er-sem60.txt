@@ -1,2 +1,0 @@
-22 : undeclared method
-       super.p();   //#

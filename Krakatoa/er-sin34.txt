@@ -1,2 +1,0 @@
-10 : ) expected
-    public void m( int x, int y ; ) {   //#

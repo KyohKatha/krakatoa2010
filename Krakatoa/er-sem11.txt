@@ -1,1 +1,2 @@
-0
+11 : Wrong type in expression. Must be boolean.
+      while ( 0 )      //#

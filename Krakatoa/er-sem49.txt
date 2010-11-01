@@ -1,2 +1,0 @@
-11 : Identifier expected
-class B extends int {  //#

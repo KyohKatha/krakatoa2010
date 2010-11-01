@@ -1,2 +1,0 @@
-13 : Identifier expected
-       i = { 0 };          //#

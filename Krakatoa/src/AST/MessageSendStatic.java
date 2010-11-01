@@ -12,9 +12,6 @@ package AST;
 
 public class MessageSendStatic extends MessageSend {
 
-    public Type getType() {
-        return null;
-    }
 
     public void genC( PW pw, boolean putParenthesis ) {
     }
@@ -28,6 +25,11 @@ public class MessageSendStatic extends MessageSend {
         this.met = met;
         this.cl = cl;
         this.exprList = exprList;
+    }
+
+    public Type getType(){
+        System.out.println(met);
+        return met.getType();
     }
 
     private Method met;

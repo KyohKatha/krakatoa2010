@@ -1,2 +1,0 @@
-12 : undeclared Method
-        Program.p();            //#

@@ -1,1 +1,2 @@
-0
+12 : Wrong types in expression. Must be boolean.
+      i = (3 && 4) || 5;      //#
