@@ -1,0 +1,2 @@
+18 : EOF expected
+Isto deveria ser um comentario, mas  ...  //#

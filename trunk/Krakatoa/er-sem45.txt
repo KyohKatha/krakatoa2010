@@ -1,0 +1,2 @@
+16 : Can not use read command with object
+      read(a);      //#

@@ -1,0 +1,2 @@
+12 : Can not use read command with boolean variable
+      read( b );  //#

@@ -1,0 +1,227 @@
+Este cabeçalho explica o formato em que está este relatório de erros
+
+Cada linha corresponde a um arquivo de teste. Citaremos três exemplos:
+Primeiro exemplo
+     ok-ger01 **(0/11) 
+Significa que o seu compilador sinalizou erro na linha 11 mas 
+não deveria ter sinalizado erro (0)
+
+Segundo exemplo
+     er-sem40   (42/42) [ : Wrong type ] (Erro de tipos. A instrucao 'this.m(a)' esta errada: um objeto de uma superclasse)
+Significa que o seu compilador apontou o erro na linha 42, a linha correta, 
+com a mensagem " Wrong type ". A mensagem esperada era "Erro de tipos"
+
+Terceiro exemplo
+     er-sem41 **(16/12)
+Significa que o seu compilador apontou o erro na linha 12 e o erro
+estava na linha 16
+
+Fim dos exemplos
+
+Foram considerados 'especiais' três arquivos ok's e 
+nove er's, cujas conferências são mais difíceis de se fazer.
+Estes arquivos são chamados 'critical ok' e 'critical er'.
+Veja no fim deste texto um relatorio com os erros criticos que o seu compilador
+deixou de apontar e com o total de erros ok's e er's
+----------  fim do cabeçalho -------------
+
+
+ok-chk01 
+ok-chk02 
+ok-chk03 
+ok-chk04 
+ok-chk05 
+ok-chk06 
+ok-chk07 
+ok-ger01 
+ok-ger02 
+ok-ger03 
+ok-ger04 
+ok-ger05 
+ok-ger06 
+ok-ger07 
+ok-ger08 
+ok-ger09 
+ok-ger10 
+ok-ger11 
+ok-ger12 
+ok-ger14 
+ok-ger15 
+ok-ger16 
+ok-ger17 
+ok-ger18 **(0/12) 
+ok-ger19 **(0/13) 
+ok-lex02 
+ok-lex03 
+ok-lex04 
+ok-lex05 
+ok-lex06 
+ok-lex07 
+ok-lex08 
+ok-lex10 
+ok-sem03 
+ok-sem04 
+ok-sem05 
+ok-sem06 
+ok-sem07 **(0/16) 
+ok-sem08 
+ok-sem09 
+ok-sem10 
+ok-sem11 
+ok-sem12 
+ok-sem13 
+ok-sem14 
+ok-sem15 
+ok-sem17 **(0/13) 
+ok-sem18 **(0/11) 
+ok-sin02 
+ok-sin03 
+ok-sin04 
+ok-sin05 
+ok-sin06 
+ok-sin07 
+ok-sin08 
+ok-sin09 
+ok-sin10 
+ok-sin11 
+ok-sin12 
+ok-sin13 
+ok-sin14 
+ok-sin15 
+er-lex02   (10/10) [ : Invalid Character: '\' ] (Testa se \ nao 'e aceito como valido)
+er-lex03   (12/12) [ : Number out of limits ] (Testa se o lexico considera o numero -32768 como incorreto.)
+er-lex04   (10/10) [ : Number out of limits ] (Testa se o lexico sinaliza erro no numero 32768)
+er-lex05   (16/16) [ : Invalid Character: '#' ] (Teste para conferir se o lexico sinaliza o numero correto da linha)
+er-lex06   (10/10) [ : _ cannot start an indentifier ] (Testa se o lexico nao permite sublinhado como primeiro carater)
+er-lex07   (10/10) [ : ; expected ] (Testa se . 'e considerado ilegal)
+er-lex08   (1/1) [ : Comment opened and not closed ] (O compilador devera sinalizar 'comentario nao fechado')
+er-lex09   (10/10) [ : Number out of limits ] (O compilador devera sinalizar 'Numero fora dos limites')
+er-lex11   (10/10) [ : public/private or "}" expected ] (Palavras chaves nao podem estar em maiuscula.)
+er-sem01   (17/17) [ : Method needs a return statement ] (metodo com tipo de retorno deve ter pelo menos um comando return)
+er-sem02   (12/12) [ : undeclared variable ] (Caracteres minusculos e maiusculos sao diferentes)
+er-sem03   (11/11) [ : variable redeclaration ] (Redeclaracao de i em duas declaracoes em sequencia.)
+er-sem04   (12/12) [ : Wrong types in assignment ] (Erro de tipos)
+er-sem05   (12/12) [ : Wrong types in assignment ] (Erro de tipos)
+er-sem06   (10/10) [ : Statement expected ] (Instrucao esperada, atribuicao a valor)
+er-sem07   (14/14) [ : Primitive type variable used as object. ] (Variavel inteira sendo utilizada como se fosse objeto)
+er-sem08   (10/10) [ : Wrong types in expression. Must be int. ] (Uso de operador aritmetico com valores booleanos)
+er-sem09   (12/12) [ : Wrong types in expression. Must be boolean. ] (Uso de operadores logicos com inteiros)
+er-sem11   (11/11) [ : Wrong type in expression. Must be boolean. ] (Expressao do while deve ser booleana)
+er-sem12   (10/10) [ : Wrong types in expression. Must be int. ] (Valor booleano em expressao inteira)
+er-sem13   (12/12) [ : Can not use read command with boolean variable ] (Variaveis booleanas nao podem ser lidas.)
+er-sem14   (13/14) [ : You can not write a boolean expression ] (Expressoes booleanas nao podem ser escritas.)
+er-sem15   (12/12) [ : Wrong usage of '!'. Expression is not boolean ] (! aplicado a inteiro.)
+er-sem16   (10/10) [ : Wrong usage of unary signal with type ] (Menos unario aplicado a booleano)
+er-sem17   (10/10) [ : Identifier expected ] (Parametros de read devem ser variaveis.)
+er-sem18   (11/11) [ : undeclared class ] (Tipo 'e uma variavel)
+er-sem19   (10/10) [ : undeclared class ] (Tipo invalido)
+er-sem20   (10/10) [ : Identifier expected ] (Palavra reservada utilizada como variavel)
+er-sem21   (10/10) [ : Identifier expected ] (Palavra reservada utilizada como variavel)
+er-sem22   (10/10) [ : Identifier expected ] (Palavra reservada utilizada como variavel)
+er-sem23   (10/10) [ : Identifier expected ] (Palavra reservada utilizada como variavel)
+er-sem24   (10/10) [ : Identifier expected ] (Palavra reservada utilizada como variavel)
+er-sem25   (10/10) [ : Identifier expected ] (Palavra reservada utilizada como variavel)
+er-sem26   (10/10) [ : break statement outside while statement ] (O compilador devera sinalizar erro 'break fora de while')
+er-sem27   (7/7) [ : current class is equal to the superclass ] (classe A herda de si mesma)
+er-sem28   (11/11) [ : variable redeclaration ] (Variavel i declarada duas vezes, mas nao em sequencia)
+er-sem29   (18/18) [ : Error in redefinition of parameters of superclass method ] (put redefinida em B com parametros diferentes daqueles da superclasse)
+er-sem30   (18/18) [ : Method redefinition with wrong return type ] (Metodo put em B possui valor de retorno. Na superclasse A, nao.)
+er-sem31   (11/11) [ : Member redeclaration ] (Metodo com nome igual a de variavel de instancia)
+er-sem32   (12/12) [ : Method redeclaration ] (Metodo publico e privado com mesmo nome)
+er-sem33   (12/12) [ : Method redeclaration ] (Dois metodos publicos com mesmo nome)
+er-sem34 **(21/0) 
+er-sem35   (10/10) [ : Method should not return anything ] (Metodo que nao deve retornar nada com instrucao return)
+er-sem36   (22/22) [ : Wrong types in assignment ] (Instrucao 'i = a.m()' admite que m retorna algum valor)
+er-sem37   (21/21) [ : undeclared Method ] (Metodo set nao pertence 'a classe A)
+er-sem38   (22/22) [ : Wrong type in assignment ] (A instrucao 'b = a' esta errada. Variaveis de subclasses nao podem receber objetos de superclasses.)
+er-sem39   (20/20) [ : Wrong return type ] (Erro de tipos. A instrucao 'return A.new()' esta errada pois o tipo do valor de)
+er-sem40   (42/42) [ : Wrong parametersh ] (Erro de tipos. A instrucao 'this.m(a)' esta errada: um objeto de uma superclasse)
+er-sem41   (16/16) [ : Objects can not receive primitive types ] (Objeto nao pode receber valores de tipos basicos)
+er-sem42   (16/16) [ : Primitive types can not receive objects ] (Variavel de tipo basico nao pode receber objetos)
+er-sem43   (12/12) [ : Primitive types can not receive null ] (Variavel de tipo basico nao pode receber null)
+er-sem44   (28/29) [ : You can not write an object ] (Nao se pode escrever objetos)
+er-sem45   (16/16) [ : Can not use read command with object ] (Nao se pode ler objetos)
+er-sem46   (10/10) [ : undeclared method ] (super 'e utilizado somente quando ha superclasse)
+er-sem47   (26/26) [ : undeclared method ] (Chamada a metodo inexistente utilizando 'super')
+er-sem48   (7/7) [ : Identifier expected ] (Os nomes dos tipos basicos sao reservados e nao podem ser nomes de classes)
+er-sem49   (11/11) [ : Identifier expected ] (Tipos basicos nao podem ser herdados, pois nao sao classes)
+er-sem50 **(21/17) 
+er-sem51   (19/19) [ : Error in redefinition of parameters of superclass method ] (put redefinida em B com parametros diferentes daqueles da superclasse A)
+er-sem57   (23/23) [ : Error using '!=' or '==' ] (Testa se o compilador sinalize erro nas comparacoes com == )
+er-sem58   (23/23) [ : Error using '!=' or '==' ] (Testa se o compilador sinalize erro nas comparacoes com != )
+er-sem59   (26/26) [ : undeclared Method ] (Chamada a metodo privado)
+er-sem60   (22/22) [ : undeclared method ] (Chamada a metodo privado da superclasse)
+er-sem61   (34/34) [ : undeclared Method ] (Chamada a metodo inexistente)
+er-sem62   (17/17) [ : undeclared variable ] (uso de variavel de instancia sem this)
+er-sem63   (15/15) [ : . or = expected ] (chamada incorreta a método estático)
+er-sem64   (15/15) [ : . or = expected ] (chamada incorreta a método estático)
+er-sem65   (12/12) [ : undeclared Method ] (chamada incorreta a método estático)
+er-sem66   (12/12) [ : undeclared Method ] (chamada a método não existente)
+er-sem67   (15/15) [ : . or = expected ] (chamada a método não existente)
+er-sem68   (15/15) [ : undeclared method ] (chamada a método não existente)
+er-sem69   (15/15) [ : . or = expected ] (chamada incorreta a método estático)
+er-sem70   (12/12) [ : Method redeclaration ] (Metodo publico e privado com mesmo nome)
+er-sem71   (14/14) [ : 'this' can not be used on a static method ] (acesso a variavel de instancia em metodo publico)
+er-sem72   (15/15) [ : 'this' can not be used on a static method ] (chamada de metodo instancia publico em metodo estatico)
+er-sem73   (14/14) [ : Method redeclaration ] (dois metodos estaticos com mesmo nome)
+er-sem74   (15/15) [ : . or = expected ] (chamada ilegal a metodo estatico)
+er-sem75   (17/17) [ : undeclared Method ] (chamada a metodo estatico privado)
+er-sem76   (19/19) [ : undeclared Method ] (chamada a metodo estatico atraves de variavel)
+er-sin01   (10/10) [ : { expected ] (Declaracoes de variaveis locais devem ter aparecer depois de {.)
+er-sin02   (12/12) [ : Identifier expected ] (Depois de , deve vir um identificador)
+er-sin03   (12/12) [ : Identifier expected ] (Falta o identificador)
+er-sin04   (12/12) [ : . or = expected ] (Falta o tipo da variavel)
+er-sin05   (12/12) [ : Identifier expected ] (, seguida de ) em read)
+er-sin06   (13/13) [ : Identifier expected ] (, seguida de ) em write)
+er-sin07   (12/12) [ : Identifier expected ] (read sem argumentos)
+er-sin08   (12/12) [ : Identifier expected ] (write sem argumentos)
+er-sin09   (12/12) [ : ) expected ] (operadores de comparacao nao podem ser usados em sequencia)
+er-sin10   (13/13) [ : ( expected ] (Falta ( depois de read)
+er-sin11   (12/12) [ : ( expected ] (Falta ( depois de write)
+er-sin12   (13/13) [ : Identifier expected ] ({-} usado como expressao)
+er-sin13   (9/9) [ : { expected ] (Sem  corpo do metodo)
+er-sin14   (18/18) [ : EOF expected ] (Classe esperada. Embora qualquer texto apos a classe Programa 'e inutil, o compilador)
+er-sin15   (11/11) [ : ) expected ] (Nao pode existir comentario no meio de um numero)
+er-sin16   (11/11) [ : Identifier expected ] (tipo usado como variavel)
+er-sin17   (10/10) [ : ; expected ] (Falta o ; na declaracao de i)
+er-sin18   (13/13) [ : ; expected ] (Falta o ;  apos atribuicao)
+er-sin19   (13/13) [ : ; expected ] (Falta o ; apos read)
+er-sin20   (10/10) [ : ; expected ] (Falta o ; apos write)
+er-sin21   (14/14) [ : ; expected ] (Falta o ;  apos unico comando do while)
+er-sin22   (15/15) [ : ; expected ] (Falta o ;  apos unico comando do if)
+er-sin23   (12/12) [ : invalid statement ] (else sem if)
+er-sin24   (12/12) [ : Identifier expected ] (Testa se << nao 'e aceito como valido)
+er-sin25   (11/11) [ : Identifier expected ] (Testa se >> nao 'e aceito como valido)
+er-sin26   (12/12) [ : ) expected ] (Testa se => nao 'e aceito como valido)
+er-sin27   (11/11) [ : ) expected ] (Testa se =< nao 'e aceito como valido)
+er-sin28   (7/7) [ : 'class' expected ] (Palavras chaves nao podem estar em maiuscula.)
+er-sin29   (10/10) [ : public/private or "}" expected ] (classe sem corpo)
+er-sin30   (11/11) [ : Invalid Character: '#' ] (carater # nao pertence a linguagem)
+er-sin31   (10/10) [ : public/private or "}" expected ] (; excedente)
+er-sin32   (9/9) [ : Type expected ] (, excedente)
+er-sin33   (10/10) [ : inexistent class ] (Tipo ausente na declaracao de x)
+er-sin34   (10/10) [ : ) expected ] (; excedente na declaracao de y)
+er-sin35   (10/10) [ : ) expected ] (, ausente na declaracao de m)
+er-sin36   (10/10) [ : inexistent class ] (Tipo de retorno ausente na declaracao de m)
+er-sin37   (11/11) [ : Identifier expected ] (expressao do if vazia)
+er-sin38   (16/16) [ : public/private or "}" expected ] (} do fim do while ausente)
+er-sin39   (9/9) [ : { expected ] (; depois do nome do metodo)
+er-sin40   (11/11) [ : Attempt to declare a public instance variable ] (Declaracao de variavel de instancia na parte publica. Este erro poderia)
+er-sin41   (7/7) [ : Identifier expected ] (nome da classe ausente)
+er-sin43   (10/10) [ : public/private or "}" expected ] (testa se aceita declaracoes sem public/private)
+er-sin44   (10/10) [ : public/private or "}" expected ] (testa se aceita declaracoes sem public/private)
+er-sin51   (11/11) [ : Type expected ] (erro sintaxe na declaracao de metodo estático)
+er-sin52   (11/11) [ : static, private, or public expected ] (erro sintaxe na declaracao de metodo estático)
+er-sin53   (11/11) [ : static, private, or public expected ] (erro sintaxe na declaracao de variável estática)
+er-sin54   (11/11) [ : Type expected ] (erro sintaxe na declaracao de variável estática)
+er-sin55   (11/11) [ : Type expected ] (erro sintaxe na declaracao de variável estática)
+er-sin56   (11/11) [ : inexistent class ] (erro sintaxe na declaracao de metodo estático)
+
+
+5/62 erros nos arquivos ok-*.s
+2/128 erros nos arquivos er-*.s
+0/12 erros criticos
+
+
+Para uso do professor:
+5    2    0    1598    1976    129    
