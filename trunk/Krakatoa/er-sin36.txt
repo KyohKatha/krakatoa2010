@@ -1,2 +1,0 @@
-10 : inexistent class
-    public m( int x, int y ) {  //#

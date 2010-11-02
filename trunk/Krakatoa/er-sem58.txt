@@ -1,2 +1,0 @@
-23 : Error using '!=' or '=='
-      if ( a != b )   //#

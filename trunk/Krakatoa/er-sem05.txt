@@ -1,2 +1,0 @@
-12 : Wrong types in assignment
-      b = 0;   //#
