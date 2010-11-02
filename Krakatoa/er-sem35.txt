@@ -1,0 +1,2 @@
+10 : Method should not return anything
+      return 0;         //#

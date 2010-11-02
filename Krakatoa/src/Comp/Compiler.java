@@ -30,7 +30,7 @@ public class Compiler {
         symbolTable = new SymbolTable();
         lexer = new Lexer(input, error);
         error.setLexer(lexer);
-
+        isWhile = false;
 
         Program p = null;
         try {
@@ -574,9 +574,12 @@ public class Compiler {
                 break;
             case Symbol.BREAK:
                 //se nao estiver dentro do while da erro!
+                if(!isWhile)
+                    error.show("break statement outside while statement");
                 statement = breakStatement();
                 break;
             case Symbol.WHILE:
+                isWhile = true;
                 statement = whileStatement();
                 break;
             case Symbol.SEMICOLON:
@@ -1080,6 +1083,7 @@ public class Compiler {
         whileSt = statement();
 
         WhileCommand whileCom = new WhileCommand(expr, whileSt);
+        isWhile = false;
         return whileCom;
     }
 
@@ -1854,4 +1858,5 @@ public class Compiler {
     private Method metodoCorrente;
     private int qualifierCorrente;
     private ReturnCommand retornoCorrente;
+    private boolean isWhile;
 }

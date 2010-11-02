@@ -1,0 +1,2 @@
+12 : Primitive types can not receive null
+      i = null;     //#

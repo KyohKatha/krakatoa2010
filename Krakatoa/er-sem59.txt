@@ -1,0 +1,2 @@
+26 : undeclared Method
+       a.p();  //#

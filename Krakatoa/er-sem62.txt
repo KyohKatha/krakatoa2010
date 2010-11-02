@@ -1,0 +1,2 @@
+17 : undeclared variable
+      a = b;    //#

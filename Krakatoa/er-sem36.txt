@@ -1,0 +1,2 @@
+22 : Wrong types in assignment
+      i = a.m();          //#

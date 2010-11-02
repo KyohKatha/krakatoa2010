@@ -1,0 +1,2 @@
+10 : Wrong types in expression. Must be int.
+      write( true + false );   //#

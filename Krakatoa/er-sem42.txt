@@ -1,0 +1,2 @@
+16 : Primitive types can not receive objects
+      i = new A();   //#

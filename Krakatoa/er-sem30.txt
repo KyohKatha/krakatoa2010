@@ -1,0 +1,2 @@
+18 : Method redefinition with wrong return type
+   public int put() {   //#

@@ -1,0 +1,2 @@
+11 : undeclared class
+       k i;    //#

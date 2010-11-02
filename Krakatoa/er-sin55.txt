@@ -1,0 +1,2 @@
+11 : Type expected
+    private static x; //#

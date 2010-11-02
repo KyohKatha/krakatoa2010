@@ -1,0 +1,2 @@
+18 : Error in redefinition of parameters of superclass method
+   public void put(int x) {  //#
