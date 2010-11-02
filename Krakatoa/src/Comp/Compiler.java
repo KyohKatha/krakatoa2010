@@ -30,7 +30,6 @@ public class Compiler {
         symbolTable = new SymbolTable();
         lexer = new Lexer(input, error);
         error.setLexer(lexer);
-        isWhile = false;
 
         Program p = null;
         try {
@@ -84,13 +83,13 @@ public class Compiler {
     private Program program() {
         // Program ::=  ClassDec { ClassDec }
         ArrayList<ClassDec> classes = new ArrayList<ClassDec>();
-        //////System.out.println("CLASSES");
+        ////////System.out.println("CLASSES");
         classes.add(classDec());
-        //////System.out.println("Voltei CLASSES");
+        ////////System.out.println("Voltei CLASSES");
         while (lexer.token == Symbol.CLASS) {
             classes.add(classDec());
         }
-        //////System.out.println("VOLTEI! VOU RETORNAR!");
+        ////////System.out.println("VOLTEI! VOU RETORNAR!");
         return new Program(classes);
     }
 
@@ -310,10 +309,10 @@ public class Compiler {
         if (lexer.token != Symbol.RIGHTPAR) {
             parametros = formalParamDec();
         }
-        ////System.out.println(isRedefinition);
+        //////System.out.println(isRedefinition);
 
         if (isRedefinition) {
-            ////System.out.println(parametros);
+            //////System.out.println(parametros);
             if ((aux.searchPublicMethod(met.getIdent()).getParameters() == null && parametros != null)) {
                 error.show("Error in redefinition of parameters of superclass method");
             } else if (parametros != null) {
@@ -339,7 +338,7 @@ public class Compiler {
 
         lexer.nextToken();
 
-        ArrayList<Statement> corpo = statementList();
+        ArrayList<Statement> corpo = statementList(false);
         if (metodoCorrente.getType() != Type.voidType) {
             if (retornoCorrente == null) {
                 error.show("Method needs a return statement");
@@ -463,10 +462,10 @@ public class Compiler {
         return result;
     }
 
-    private Statement compositeStatement() {
+    private Statement compositeStatement(boolean isWhile) {
 
         lexer.nextToken();
-        ArrayList<Statement> stList = statementList();
+        ArrayList<Statement> stList = statementList(isWhile);
         if (lexer.token != Symbol.RIGHTCURBRACKET) {
             error.show("} expected");
         } else {
@@ -476,13 +475,13 @@ public class Compiler {
         return new CompositeCommand(stList);
     }
 
-    private ArrayList<Statement> statementList() {
+    private ArrayList<Statement> statementList(boolean isWhile) {
         // CompStatement ::= "{" { Statement } "}"
         int tk;
         ArrayList<Statement> statements = new ArrayList();
         // statements always begin with an identifier, if, read, write, ...
         while ((tk = lexer.token) != Symbol.RIGHTCURBRACKET && tk != Symbol.ELSE) {
-            statements.add(statement());
+            statements.add(statement(isWhile));
         }
 
         if (tk == Symbol.ELSE) {
@@ -492,7 +491,7 @@ public class Compiler {
         return statements;
     }
 
-    private Statement statement() {
+    private Statement statement(boolean isWhile) {
         /*
         Statement ::= Assignment ``;'' | IfStat |WhileStat 
         |  MessageSend ``;''  | ReturnStat ``;''
@@ -501,7 +500,7 @@ public class Compiler {
          */
 
         Statement statement = null;
-
+        //System.out.println("Token:"+lexer.token + " isWhile:"+isWhile);
         switch (lexer.token) {
             case Symbol.THIS:
                 if (qualifierCorrente == Symbol.STATICPRIVATE || qualifierCorrente == Symbol.STATICPUBLIC) {
@@ -570,23 +569,24 @@ public class Compiler {
                 statement = writeStatement();
                 break;
             case Symbol.IF:
-                statement = ifStatement();
+                statement = ifStatement(isWhile);
                 break;
             case Symbol.BREAK:
                 //se nao estiver dentro do while da erro!
-                if(!isWhile)
+                //System.out.println(isWhile);
+                if (!isWhile) {
                     error.show("break statement outside while statement");
+                }
                 statement = breakStatement();
                 break;
             case Symbol.WHILE:
-                isWhile = true;
                 statement = whileStatement();
                 break;
             case Symbol.SEMICOLON:
                 statement = nullStatement();
                 break;
             case Symbol.LEFTCURBRACKET:
-                statement = compositeStatement();
+                statement = compositeStatement(isWhile);
                 break;
             default:
                 error.show("Statement expected");
@@ -879,7 +879,7 @@ public class Compiler {
                         // id = expr
                         Variable v = symbolTable.getInLocal(variableName);
                         InstanceVariable auxInst = null;
-                        //////System.out.println("Eh AKI!");
+                        ////////System.out.println("Eh AKI!");
                         if (v == null) {
                             error.show("undeclared variable");
                         }
@@ -943,11 +943,16 @@ public class Compiler {
                             }
                         }
                         lexer.nextToken();
+                        if (lexer.token != Symbol.IDENT) {
+                            error.show("Identifier expected");
+                        }
                         methodName = lexer.getStringValue();
                         lexer.nextToken();
+
+                        //System.out.println(lexer.token);
                         //id.id()
-                        //System.out.println(v2.getName() + "t: " + v2.getType());
-                        //System.out.println(methodName);
+                        ////System.out.println(v2.getName() + "t: " + v2.getType());
+                        ////System.out.println(methodName);
                         if (lexer.token == Symbol.LEFTPAR) {
                             Method m2 = null;
                             //vai procurar se o metodo existe na classe da variavel, ou em suas superclasses
@@ -1028,10 +1033,42 @@ public class Compiler {
                             if ((v3 = clInit.searchStaticInstanceVariable(methodName)) == null) {
                                 error.show("Variable undeclared");
                             }
-                            VariableExpr vE = new VariableExpr(v3);
-                            error.show("TEM Q ARRUMAR AKI");
-                            //result = new MessageSendStatement(mevE);
-                            //NAO SEI O Q MANDAR AKI NO RESULT!
+                            if (lexer.token == Symbol.ASSIGN) {
+                                lexer.nextToken();
+                                Expr anExpr2 = expr();
+                                if ((v3.getType() == Type.booleanType || v3.getType() == Type.intType
+                                        || v3.getType() == Type.voidType)) {
+                                    if (anExpr2.getType() == null) {
+                                        error.show("Primitive types can not receive null");
+                                    }
+                                    if (anExpr2.getType() != Type.booleanType && anExpr2.getType() != Type.intType
+                                            && anExpr2.getType() != Type.voidType) {
+                                        error.show("Primitive types can not receive objects");
+                                    }
+                                    if (anExpr2.getType() != v3.getType()) {
+                                        error.show("Wrong types in assignment");
+                                    }
+                                } else {
+                                    if (anExpr2.getType() == Type.booleanType || anExpr2.getType() == Type.intType
+                                            || anExpr2.getType() == Type.voidType) {
+                                        error.show("Objects can not receive primitive types");
+                                    } else {
+                                        if (anExpr2.getType() != null && !anExpr2.getType().getCname().equals(v3.getType().getCname())) {
+                                            ClassDec auxClass = symbolTable.getInGlobal(anExpr2.getType().getCname());
+                                            while (auxClass != null && !auxClass.getCname().equals(v3.getType().getCname())) {
+                                                auxClass = auxClass.getSuperclass();
+                                            }
+                                            if (auxClass == null) {
+                                                error.show("Wrong type in assignment");
+                                            }
+                                        }
+                                    }
+                                }
+                                //# corrija
+                                result = new AssignCommand(v3, anExpr2);
+                            } else {
+                                result = new MessageSendStatement(new MessageSendStaticVariable(v3, clInit));
+                            }
                         }
                         break;
                     default:
@@ -1068,26 +1105,33 @@ public class Compiler {
     private Statement whileStatement() {
         Statement whileSt = null;
         lexer.nextToken();
+        //System.out.println("Token While1:"+lexer.token);
         if (lexer.token != Symbol.LEFTPAR) {
             error.show("( expected");
         }
         lexer.nextToken();
+        //System.out.println("Token While2:"+lexer.token);
         Expr expr = expr();
+        //System.out.println("Token While3:"+lexer.token);
         if (expr.getType() != Type.booleanType) {
             error.show("Wrong type in expression. Must be boolean.");
         }
+        //System.out.println("Token While4:"+lexer.token);
         if (lexer.token != Symbol.RIGHTPAR) {
             error.show(") expected");
         }
         lexer.nextToken();
-        whileSt = statement();
+        //System.out.println("Token While5:"+lexer.token);
+        //System.out.println("Estou no while");
+
+        whileSt = statement(true);
 
         WhileCommand whileCom = new WhileCommand(expr, whileSt);
-        isWhile = false;
+
         return whileCom;
     }
 
-    private Statement ifStatement() {
+    private Statement ifStatement(boolean isWhile) {
         Statement ifSt = null, elseSt = null;
         lexer.nextToken();
         if (lexer.token != Symbol.LEFTPAR) {
@@ -1099,10 +1143,10 @@ public class Compiler {
             error.show(") expected");
         }
         lexer.nextToken();
-        ifSt = statement();
+        ifSt = statement(isWhile);
         if (lexer.token == Symbol.ELSE) {
             lexer.nextToken();
-            elseSt = statement();
+            elseSt = statement(isWhile);
         }
         IfCommand ifCom = new IfCommand(expr, ifSt, elseSt);
         return ifCom;
@@ -1277,8 +1321,8 @@ public class Compiler {
                 if (right.getType() == Type.stringType && (left.getType() != Type.stringType && left.getType() != null)) {
                     error.show("Wrong types in expression");
                 }
-                //System.out.println(left.getType());
-                //System.out.println(right.getType());
+                ////System.out.println(left.getType());
+                ////System.out.println(right.getType());
                 if ((left.getType() != null && right.getType() != null) && left.getType() != Type.booleanType
                         && left.getType() != Type.intType && left.getType() != Type.stringType) {
                     if (left.getType().getName() != right.getType().getCname()) {
@@ -1708,7 +1752,7 @@ public class Compiler {
                                             break;
                                         }
                                     }
-                                    //////System.out.println("HIER");
+                                    ////////System.out.println("HIER");
                                     if (var2 == null) {
                                         error.show("Undeclared instance varible");
                                     }
@@ -1746,9 +1790,23 @@ public class Compiler {
                                     Method m3 = null;
                                     methodName = lexer.getStringValue();
                                     lexer.nextToken();
+                                    if (lexer.token != Symbol.LEFTPAR) {
+                                        if ((cl = symbolTable.getInGlobal(variableName)) == null) {
+                                            error.show("Undeclared class");
+                                        }
+                                        if (cl.getCname() != classeCorrente.getCname()) {
+                                            error.show("Instance Variables can not be used outside the class");
+                                        }
+
+                                        Variable v = cl.searchStaticInstanceVariable(methodName);
+                                        if (v == null) {
+                                            error.show("undeclared variable");
+                                        }
+                                        return new MessageSendStaticVariable(v, cl);
+                                    }
                                     exprList = getRealParameters();
                                     Variable var = symbolTable.getInLocal(variableName);
-                                    //////System.out.println("var:" + variableName);
+                                    ////////System.out.println("var:" + variableName);
                                     if (var != null) {
                                         //if ((var = classeCorrente.searchInstanceVariable(variableName)) == null) {
                                         //  error.show("undeclared variable");
@@ -1793,7 +1851,7 @@ public class Compiler {
                                             }
                                         }
                                     } else {
-                                        //////System.out.println("cl:" + variableName);
+                                        ////////System.out.println("cl:" + variableName);
                                         if ((cl = symbolTable.getInGlobal(variableName)) == null) {
                                             error.show("Undeclared class");
                                         }
@@ -1808,8 +1866,9 @@ public class Compiler {
                                                 }
                                             }
                                         }
-                                        if(m3 == null)
+                                        if (m3 == null) {
                                             error.show("Undeclared Method");
+                                        }
                                     }
                                     return new MessageSendStatic(m3, cl, exprList);
 
@@ -1858,5 +1917,4 @@ public class Compiler {
     private Method metodoCorrente;
     private int qualifierCorrente;
     private ReturnCommand retornoCorrente;
-    private boolean isWhile;
 }

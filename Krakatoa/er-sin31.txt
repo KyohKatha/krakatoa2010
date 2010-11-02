@@ -1,2 +1,0 @@
-10 : public/private or "}" expected
-    private int i;  ;    //#
