@@ -20,7 +20,8 @@ public class MessageSendStatement extends Statement {
 
    public void genKrakatoa(PW pw){
       pw.printIdent("");
-      messageSend.genKrakatoa(pw,true);
+      if(messageSend != null)
+          messageSend.genKrakatoa(pw,true);
       pw.println(";\n");
    }
 

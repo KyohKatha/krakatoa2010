@@ -1,0 +1,72 @@
+public class null {
+    int n;
+    int n;
+    
+    public AST.VoidType@5740bb m ( ){
+    int k;
+    ;
+
+k = n;
+    write(k);
+    }
+
+    public AST.VoidType@5740bb m ( ){
+    int k;
+    ;
+
+k = n;
+    write(k);
+    }
+
+    public AST.VoidType@5740bb p ( ){
+    write(n);
+    }
+
+    public AST.VoidType@5740bb p ( ){
+    write(n);
+    }
+
+    public AST.VoidType@5740bb s ( ){
+    read (n);
+    }
+
+    public AST.VoidType@5740bb s ( ){
+    read (n);
+    }
+
+    
+}
+public class null {
+    
+    public AST.VoidType@5740bb run ( ){
+    null a;
+a =  new null();
+;
+        a.s();
+;
+
+        a.m();
+;
+
+        a.p();
+;
+
+    }
+
+    public AST.VoidType@5740bb run ( ){
+    null a;
+a =  new null();
+;
+        a.s();
+;
+
+        a.m();
+;
+
+        a.p();
+;
+
+    }
+
+    
+}

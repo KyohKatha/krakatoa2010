@@ -17,7 +17,10 @@ public class MessageSendStatic extends MessageSend {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        pw.printIdent(cl.getKrakatoaName() + "." + met.getIdent() + "(");
+        if(exprList != null)
+            exprList.genKrakatoa(pw);
+        pw.print(");\n");
     }
 
 
