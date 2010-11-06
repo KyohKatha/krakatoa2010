@@ -1,0 +1,1 @@
+-1 : Either the file OK-SEM16.KRA does not exist or it cannot be read

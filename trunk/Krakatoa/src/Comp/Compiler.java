@@ -83,13 +83,11 @@ public class Compiler {
     private Program program() {
         // Program ::=  ClassDec { ClassDec }
         ArrayList<ClassDec> classes = new ArrayList<ClassDec>();
-        ////////System.out.println("CLASSES");
         classes.add(classDec());
-        ////////System.out.println("Voltei CLASSES");
+
         while (lexer.token == Symbol.CLASS) {
             classes.add(classDec());
         }
-        ////////System.out.println("VOLTEI! VOU RETORNAR!");
         return new Program(classes);
     }
 
@@ -309,6 +307,7 @@ public class Compiler {
         if (lexer.token != Symbol.RIGHTPAR) {
             parametros = formalParamDec();
         }
+        
         //////System.out.println(isRedefinition);
 
         if (isRedefinition) {

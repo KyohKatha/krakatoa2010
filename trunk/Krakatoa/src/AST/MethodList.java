@@ -34,7 +34,9 @@ public class MethodList {
 
     public void genKrakatoa(PW pw){
         for( int i = 0; i < methods.size(); i++){
-            methods.get(i).genKrakatoa(pw);
+            Method m = methods.get(i);
+            m.genKrakatoa(pw);
+            pw.print("\n");
         }
     }
 

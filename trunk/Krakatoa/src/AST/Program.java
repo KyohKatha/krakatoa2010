@@ -21,6 +21,7 @@ public class Program {
     }
 
     public void genKrakatoa(PW pw){
+        //System.out.print("oiaaa: " + classList.get(0).getKrakatoaName());
         for(int i = 0; i < classList.size(); i++){
             classList.get(i).genKrakatoa(pw);
         }

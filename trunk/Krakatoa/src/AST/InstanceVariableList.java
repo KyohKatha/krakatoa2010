@@ -40,14 +40,13 @@ public class InstanceVariableList {
 
 
     public void genKrakatoa(PW pw){
-        Type tp = instanceVariableList.get(1).getType();
-        pw.printIdent(tp.getKrakatoaName() + " ");
+        Type tp = null;
+        //pw.printIdent(tp.getKrakatoaName() + " ");
         for(int i =0; i < instanceVariableList.size(); i++){
-            instanceVariableList.get(i).genKrakatoa(null);
-            if(i+1 < instanceVariableList.size())
-                pw.print(", ");
-            else
-                pw.print(";\n");
+            tp = instanceVariableList.get(i).getType();
+            pw.printIdent(tp.getKrakatoaName() + " ");
+            instanceVariableList.get(i).genKrakatoa(pw);
+            pw.print(";\n");
         }
     }
     
