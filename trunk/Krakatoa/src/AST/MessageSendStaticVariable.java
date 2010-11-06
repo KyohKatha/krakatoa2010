@@ -17,7 +17,7 @@ public class MessageSendStaticVariable extends MessageSend {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-
+        pw.printIdent(cl.getKrakatoaName() + "." + v.getName() + ";\n");
     }
 
 

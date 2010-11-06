@@ -1471,9 +1471,7 @@ public class Compiler {
 
                 String className = lexer.getStringValue();
                 /*
-                // encontre a classe className in symbol table
-                ClassDec aClass = symbolTable.getInGlobal(className);
-                if ( aClass == null ) ...
+                 * encontre a classe className in symbol table
                  */
                 ClassDec aClass2 = symbolTable.getInGlobal(className);
                 if (aClass2 == null) {

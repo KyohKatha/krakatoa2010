@@ -31,7 +31,8 @@ public class CreateObject extends Expr{
 
     @Override
     public void genKrakatoa(PW pw, boolean putParenthesis) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        pw.print(" new ");
+        pw.print(classe.getKrakatoaName() + "();\n");
     }
 
     @Override
