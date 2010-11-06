@@ -19,7 +19,6 @@ public class Comp {
         FileReader stream;
         int numChRead;
         Program program;
-        //System.out.println("OLAAAAAAAAAa");
         if ( args.length < 1 ||  args.length > 2 )  {
             System.out.println("Usage:\n   Comp input [output]");
             System.out.println("input is the file to be compiled");
@@ -35,12 +34,13 @@ public class Comp {
            inputFileName = inputFileName.substring(0, lastIndex);
            if ( (lastIndex = inputFileName.lastIndexOf('\\')) != -1 )
               inputFileName = inputFileName.substring(lastIndex + 1);
+           
            String outputFileName;
            if ( args.length == 2 )
               outputFileName = args[1];
            else 
-              outputFileName = inputFileName + ".htm";
-           resultFileName = inputFileName + ".txt";
+              outputFileName = inputFileName + "saida.KRA";
+           resultFileName = inputFileName + "resposta.txt";
               
            
            PrintWriter outError;
@@ -123,10 +123,10 @@ public class Comp {
             program  = compiler.compile(input, outError );
             
             if ( program != null ) {
-                System.out.println("Program:"+program.getClassList().get(0).getCname());
+                //System.out.println("Program:"+program.getClassList().get(0).getCname());
                 PW pw = new PW();
                pw.set(printWriter);
-               //program.genHTML( pw );
+               program.genKrakatoa( pw );
                if ( printWriter.checkError() ) {
                   System.out.println("There was an error in the output");
                }

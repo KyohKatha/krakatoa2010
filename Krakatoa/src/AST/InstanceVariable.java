@@ -9,8 +9,6 @@
 
 package AST;
 
-import java.io.*;
-
 public class InstanceVariable extends Variable {
     
     public InstanceVariable( String name, Type type ) {
@@ -18,7 +16,6 @@ public class InstanceVariable extends Variable {
     }
 
     public void genKrakatoa(PW pw){
-        super.genKrakatoa(pw);
+        pw.print( super.getName() );
     }
-
 }

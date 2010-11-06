@@ -1,14 +1,15 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ *Integrantes
+ *
+ *      Bruno Antunes da Silva           317292
+ *      Katharina Carrapatoso Garcia     317144
+ *
  */
 
 package AST;
 
-/**
- *
- * @author Katha
- */
+
 public class CreateObject extends Expr{
 
     public CreateObject(ClassDec classe) {
