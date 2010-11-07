@@ -1,0 +1,52 @@
+public class null {
+    
+    public AST.VoidType@5740bb m ( ){
+    }
+
+    public AST.VoidType@5740bb m ( ){
+    }
+
+    
+}
+public class null extends null {
+    
+    public AST.VoidType@5740bb m ( ){
+    }
+
+    public AST.VoidType@5740bb m ( ){
+    }
+
+    
+}
+public class null extends null {
+    
+    public AST.VoidType@5740bb p ( ){
+    }
+
+    public AST.VoidType@5740bb p ( ){
+    }
+
+    
+}
+public class null {
+    
+    public AST.VoidType@5740bb run ( ){
+    null c;
+c =  new null();
+;
+        c.m();
+;
+
+    }
+
+    public AST.VoidType@5740bb run ( ){
+    null c;
+c =  new null();
+;
+        c.m();
+;
+
+    }
+
+    
+}

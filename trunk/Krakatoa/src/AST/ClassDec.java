@@ -14,6 +14,7 @@ public class ClassDec extends Type {
 
     public ClassDec(String name) {
         super(name);
+        this.name = name;
         instanceVariableList = new InstanceVariableList();
         privateMethodList = new MethodList();
         publicMethodList = new MethodList();
@@ -112,7 +113,7 @@ public class ClassDec extends Type {
 	}
 		
     public void genKrakatoa(PW pw){
-        pw.printIdent("public class "+ name);
+        pw.printIdent("public class "+ this.getKrakatoaName());
         if(superclass != null){
             pw.print(" extends "+ superclass.getKrakatoaName());
         }
@@ -210,10 +211,6 @@ public class ClassDec extends Type {
         this.staticPublicMethodList = staticPublicMethodList;
     }
 
-
-    public void genKrakatoa() {
-        
-    }
     private String name;
     private ClassDec superclass;
     private InstanceVariableList instanceVariableList, staticInstanceVariableList;

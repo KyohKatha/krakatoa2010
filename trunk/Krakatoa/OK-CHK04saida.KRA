@@ -1,70 +1,35 @@
-public class null {
-    int n;
+public class A {
     int n;
     
-    public AST.VoidType@5740bb m ( ){
-    int k;
-    ;
+    public void m ( ){
+        int k;
+        ;
 
-k = n;
-    write(k);
+        k = n;
+        write(k);
     }
 
-    public AST.VoidType@5740bb m ( ){
-    int k;
-    ;
-
-k = n;
-    write(k);
+    public void p ( ){
+        write(n);
     }
 
-    public AST.VoidType@5740bb p ( ){
-    write(n);
-    }
-
-    public AST.VoidType@5740bb p ( ){
-    write(n);
-    }
-
-    public AST.VoidType@5740bb s ( ){
-    read (n);
-    }
-
-    public AST.VoidType@5740bb s ( ){
-    read (n);
+    public void s ( ){
+        read (n);
     }
 
     
 }
-public class null {
+public class Program {
     
-    public AST.VoidType@5740bb run ( ){
-    null a;
-a =  new null();
+    public void run ( ){
+        A a;
+        a =  new A();
 ;
         a.s();
-;
 
         a.m();
-;
 
         a.p();
-;
-
-    }
-
-    public AST.VoidType@5740bb run ( ){
-    null a;
-a =  new null();
-;
-        a.s();
-;
-
-        a.m();
-;
-
-        a.p();
-;
 
     }
 

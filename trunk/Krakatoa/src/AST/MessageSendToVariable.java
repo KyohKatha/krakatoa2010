@@ -26,11 +26,14 @@ public class MessageSendToVariable extends MessageSend {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-        pw.printIdent(v.getName() + ".");
+        if(v==null)
+            System.out.print("\nMessageSendToVariable com variavel NULL\n");
+        else
+            pw.print(v.getName() + ".");
         pw.print(met.getIdent() + "(");
         if(exprList != null)
             exprList.genKrakatoa(pw);
-        pw.print(");\n");
+        pw.print(")");
     }
 
     private ExprList exprList;

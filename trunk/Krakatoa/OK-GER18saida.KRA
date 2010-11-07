@@ -1,0 +1,40 @@
+public class A {
+    
+    public void print ( ){
+        set(2);
+
+        write(A.get());
+    }
+
+    
+}
+public class B {
+    
+    public void m ( ){
+        set(1);
+
+        write(A.get());
+        print();
+
+    }
+
+    
+}
+public class Program {
+    
+    public void run ( ){
+        B b;
+        write("");
+        write("Ok-ger18");
+        write("The output should be: ");
+        write("0 1 2");
+        set(0);
+
+        write(A.get());
+        b =  new B();
+        b.m();
+
+    }
+
+    
+}

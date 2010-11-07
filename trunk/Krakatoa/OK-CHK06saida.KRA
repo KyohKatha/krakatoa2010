@@ -1,0 +1,43 @@
+public class A {
+    
+    public void m ( ){
+        A a;
+        a = null;
+        a.m();
+
+    }
+
+    
+}
+public class B {
+    
+    public void m ( ){
+    }
+
+    
+}
+public class C {
+    B b;
+    
+    public void m ( ){
+        b.m();
+
+    }
+
+    public B get ( ){
+        return b;
+    }
+
+    
+}
+public class Program {
+    
+    public void run ( ){
+        C c;
+        c = null;
+        c.m();
+
+    }
+
+    
+}

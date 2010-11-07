@@ -221,22 +221,22 @@ public class Compiler {
                 Method met = new Method(name, t, qualifier);
                 metodoCorrente = met;
                 if (qualifier == Symbol.PUBLIC) {
-                    nvClasse.setPublicMethod(met);
+                    //nvClasse.setPublicMethod(met);
                     classeCorrente.setPublicMethod(met);
                 }
 
                 if (qualifier == Symbol.PRIVATE) {
-                    nvClasse.setPrivateMethod(met);
+                    //nvClasse.setPrivateMethod(met);
                     classeCorrente.setPrivateMethod(met);
                 }
 
                 if (qualifier == Symbol.STATICPRIVATE) {
-                    nvClasse.setPrivateStaticMethod(met);
+                    //nvClasse.setPrivateStaticMethod(met);
                     classeCorrente.setPrivateStaticMethod(met);
                 }
 
                 if (qualifier == Symbol.STATICPUBLIC) {
-                    nvClasse.setPublicStaticMethod(met);
+                    //nvClasse.setPublicStaticMethod(met);
                     classeCorrente.setPublicStaticMethod(met);
                 }
 
@@ -250,10 +250,10 @@ public class Compiler {
                 InstanceVariableList varList = null;
                 varList = instanceVarDec(t, name);
                 if (qualifier == Symbol.PRIVATE) {
-                    nvClasse.setInstanceVariableList(varList);
+                    //nvClasse.setInstanceVariableList(varList);
                     classeCorrente.setInstanceVariableList(varList);
                 } else {
-                    nvClasse.setStaticInstanceVariableList(varList);
+                    //nvClasse.setStaticInstanceVariableList(varList);
                     classeCorrente.setStaticInstanceVariableList(varList);
                 }
             }

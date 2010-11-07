@@ -32,7 +32,7 @@ public class CreateObject extends Expr{
     @Override
     public void genKrakatoa(PW pw, boolean putParenthesis) {
         pw.print(" new ");
-        pw.print(classe.getKrakatoaName() + "();\n");
+        pw.print(classe.getKrakatoaName() + "()");
     }
 
     @Override
