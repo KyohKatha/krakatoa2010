@@ -22,11 +22,10 @@ public class LiteralStringExpr extends Expr {
     public Type getType() {
         return Type.stringType;
     }
-    
-    private String literalString;
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-        pw.print(literalString);
+        pw.print("\"" + literalString + "\"");
     }
 
+    private String literalString;
 }

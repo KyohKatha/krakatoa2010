@@ -86,13 +86,15 @@ public class Method {
                 pw.printIdent("static public ");
                 break;
         }
-        pw.print(type + " " + ident + " ( ");
+        pw.print(this.getType().getKrakatoaName() + " " + ident + " ( ");
         if(parameters != null)
             parameters.genKrakatoa(pw);
         pw.print("){\n");
+        pw.add();
         for(int i = 0; i < corpo.size(); i++){
             corpo.get(i).genKrakatoa(pw);
         }
+        pw.sub();
         pw.printIdent("}\n");
     }
 }
