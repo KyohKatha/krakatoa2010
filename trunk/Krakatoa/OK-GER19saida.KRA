@@ -1,0 +1,49 @@
+
+class A {
+    private int n;
+    
+    static private int n;
+    
+    
+    public int get ( ){
+        return this.n;
+    }
+
+    public void set ( int n){
+        this.n = n;
+    }
+
+    
+    
+    static public int get ( ){
+        return A.n;
+    }
+
+    static public void set ( int n){
+        A.n = n;
+    }
+
+}
+
+class Program {
+    
+    
+    
+    public void run ( ){
+        A a;
+        write("");
+        write("Ok-ger19");
+        write("The output should be: ");
+        write("0 1");
+        a = new A();
+        a.set(0);
+
+        A.set(1);
+
+        write(A.get());
+        write(A.get());
+    }
+
+    
+    
+}

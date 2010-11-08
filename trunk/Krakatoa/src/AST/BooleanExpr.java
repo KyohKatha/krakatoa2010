@@ -26,7 +26,7 @@ public class BooleanExpr extends Expr {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-        pw.print( value ? "1" : "0" );
+        pw.print( value ? " true " : " false " );
     }
     
     public static BooleanExpr True  = new BooleanExpr(true);

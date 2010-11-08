@@ -1,0 +1,104 @@
+
+class A {
+    private int k;
+    
+    
+    
+    public int get_A ( ){
+        return this.k;
+    }
+
+    public void set ( int k){
+        this.k = k;
+    }
+
+    public void print ( ){
+        write(this.get_A());
+    }
+
+    public void init ( ){
+        this.set(0);
+
+    }
+
+    
+    
+}
+
+class B extends A {
+    private int k;
+    
+    
+    
+    public int get_B ( ){
+        return this.k;
+    }
+
+    public void init ( ){
+        super.init();
+
+        this.k = 2;
+    }
+
+    public void print ( ){
+        write(this.get_B());
+        write(this.get_A());
+        super.print();
+
+    }
+
+    
+    
+}
+
+class C extends A {
+    
+    
+    
+    public int get_A ( ){
+        return 0;
+    }
+
+    
+    
+}
+
+class Program {
+    
+    
+    
+    public void run ( ){
+        A a;
+        B b;
+        C c;
+        write("");
+        write("Ok-ger16");
+        write("The output should be: ");
+        write("2 2 0 0 2 0 0 0 0 0 0");
+        b = new B();
+        b.init();
+
+        c = new C();
+        c.init();
+
+        write(B.get_B());
+        a = b;
+        a.print();
+
+        b.print();
+
+        a.init();
+
+        b.init();
+
+        write(A.get_A());
+        write(B.get_A());
+        a = c;
+        write(A.get_A());
+        c = new C();
+        write(C.get_A());
+    }
+
+    
+    
+}

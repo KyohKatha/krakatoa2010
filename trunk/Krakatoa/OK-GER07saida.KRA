@@ -1,0 +1,25 @@
+
+class A {
+    
+    public void m ( ){
+        write(0);
+    }
+
+    
+}
+
+class Program {
+    
+    public void run ( ){
+        A a;
+        write("");
+        write("Ok-ger07");
+        write("The output should be :");
+        write("0");
+        a = new A();
+        a.m();
+
+    }
+
+    
+}

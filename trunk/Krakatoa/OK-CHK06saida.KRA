@@ -1,4 +1,5 @@
-public class A {
+
+class A {
     
     public void m ( ){
         A a;
@@ -9,28 +10,31 @@ public class A {
 
     
 }
-public class B {
+
+class B {
     
     public void m ( ){
     }
 
     
 }
-public class C {
-    B b;
+
+class C {
+    private B b;
     
     public void m ( ){
-        b.m();
+        this.b.m();
 
     }
 
     public B get ( ){
-        return b;
+        return this.b;
     }
 
     
 }
-public class Program {
+
+class Program {
     
     public void run ( ){
         C c;

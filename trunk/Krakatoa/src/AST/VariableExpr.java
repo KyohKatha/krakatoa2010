@@ -24,6 +24,7 @@ public class VariableExpr extends Expr {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
+        if(v.getThiss()) pw.print("this.");
         v.genKrakatoa(pw);
     }
 

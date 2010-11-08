@@ -26,7 +26,7 @@ public class MessageSendToSuper extends MessageSend {
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-        pw.print("super.");
+        //pw.print("super.");
         pw.print(met.getIdent() + "(");
         if(exprList != null)
             exprList.genKrakatoa(pw);
