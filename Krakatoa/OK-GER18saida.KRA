@@ -1,26 +1,53 @@
-public class A {
+
+class A {
+    
+    static private int n;
+    
     
     public void print ( ){
-        set(2);
+        A.set(2);
 
         write(A.get());
     }
 
     
+    
+    static public int get ( ){
+        return A.n;
+    }
+
+    static public void set ( int n){
+        A.n = n;
+    }
+
 }
-public class B {
+
+class B {
+    
+    
     
     public void m ( ){
-        set(1);
+        A.set(1);
 
         write(A.get());
-        print();
+        B.print();
 
     }
 
     
+    
+    static public void print ( ){
+        A a;
+        a = new A();
+        a.print();
+
+    }
+
 }
-public class Program {
+
+class Program {
+    
+    
     
     public void run ( ){
         B b;
@@ -28,13 +55,14 @@ public class Program {
         write("Ok-ger18");
         write("The output should be: ");
         write("0 1 2");
-        set(0);
+        A.set(0);
 
         write(A.get());
-        b =  new B();
+        b = new B();
         b.m();
 
     }
 
+    
     
 }

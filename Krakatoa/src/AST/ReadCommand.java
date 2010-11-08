@@ -10,6 +10,7 @@
 package AST;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  *
@@ -19,6 +20,11 @@ public class ReadCommand extends Statement{
 
     public ReadCommand() {
         variables = new ArrayList<Variable>();
+        thiss = new boolean[100];
+    }
+
+    public void setThis(int in){
+        this.thiss[in] = true;
     }
 
     public void addVariable(Variable v){
@@ -30,8 +36,9 @@ public class ReadCommand extends Statement{
     }
 
     public void genKrakatoa(PW pw){
-        pw.printIdent("read (");
+        pw.printIdent("read(");
         for(int i = 0; i < variables.size(); i++){
+            if(thiss[i]) pw.print("this.");
             pw.print(variables.get(i).getName());
             if(i+1<variables.size()) pw.print(", ");
         }
@@ -39,4 +46,5 @@ public class ReadCommand extends Statement{
     }
 
     private ArrayList<Variable> variables;
+    boolean[] thiss;
 }

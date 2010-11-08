@@ -113,7 +113,7 @@ public class ClassDec extends Type {
 	}
 		
     public void genKrakatoa(PW pw){
-        pw.printIdent("public class "+ this.getKrakatoaName());
+        pw.printIdent("\nclass "+ this.getKrakatoaName());
         if(superclass != null){
             pw.print(" extends "+ superclass.getKrakatoaName());
         }
@@ -121,9 +121,15 @@ public class ClassDec extends Type {
         pw.add();
         instanceVariableList.genKrakatoa(pw);
         pw.printIdent("\n");
-        publicMethodList.genKrakatoa(pw);
+        staticInstanceVariableList.genKrakatoa(pw);
         pw.printIdent("\n");
         privateMethodList.genKrakatoa(pw);
+        pw.printIdent("\n");
+        publicMethodList.genKrakatoa(pw);
+        pw.printIdent("\n");
+        staticPrivateMethodList.genKrakatoa(pw);
+        pw.printIdent("\n");
+        staticPublicMethodList.genKrakatoa(pw);
         pw.sub();
         pw.printIdent("}\n");
     }

@@ -1,0 +1,46 @@
+
+class A {
+    private int n;
+    
+    
+    
+    public void set ( int n){
+        this.n = n;
+    }
+
+    public int get ( ){
+        return this.n;
+    }
+
+    
+    
+}
+
+class Program {
+    private A a;
+    
+    
+    private void set ( A a){
+        this.a = a;
+    }
+
+    
+    public void print ( ){
+        write(a.get());
+    }
+
+    public A get ( ){
+        return this.a;
+    }
+
+    public void run ( ){
+        write("");
+        write("Ok-ger21");
+        write("The output should be :");
+        write("0");
+        write("0");
+    }
+
+    
+    
+}

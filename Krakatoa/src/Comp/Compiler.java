@@ -248,7 +248,7 @@ public class Compiler {
                 error.show("Attempt to declare a public instance variable");
             } else {
                 InstanceVariableList varList = null;
-                varList = instanceVarDec(t, name);
+                varList = instanceVarDec(qualifier, t, name);
                 if (qualifier == Symbol.PRIVATE) {
                     //nvClasse.setInstanceVariableList(varList);
                     classeCorrente.setInstanceVariableList(varList);
@@ -266,13 +266,13 @@ public class Compiler {
         return nvClasse;
     }
 
-    private InstanceVariableList instanceVarDec(Type type, String name) {
+    private InstanceVariableList instanceVarDec(int q, Type type, String name) {
         //   InstVarDec ::= [ "static"  ] "private"  Type  IdList  ";"
         InstanceVariableList variables = new InstanceVariableList();
         if (classeCorrente.searchInstanceVariable(name) != null) {
             error.show("variable redeclaration");
         }
-        InstanceVariable v = new InstanceVariable(name, type);
+        InstanceVariable v = new InstanceVariable(q, name, type);
         //symbolTable.putInLocal(name, v);
         variables.addElement(v);
 
@@ -285,7 +285,7 @@ public class Compiler {
             if (classeCorrente.searchInstanceVariable(name) != null) {
                 error.show("variable redeclaration");
             }
-            v = new InstanceVariable(variableName, type);
+            v = new InstanceVariable(q, variableName, type);
             //symbolTable.putInLocal(variableName, v);
             lexer.nextToken();
             variables.addElement(v);
@@ -701,7 +701,8 @@ public class Compiler {
                                 error.show("Objects can not receive primitive types");
                             }
                         }
-                        result = new AssignCommand(v, anExpr);
+
+                        result = new AssignCommand(v, anExpr, true);
                         break;
                     case Symbol.DOT:
                         // this.id.id
@@ -714,6 +715,7 @@ public class Compiler {
                         if (v2 == null) {
                             error.show("undeclared variable");
                         }
+
                         methodName = lexer.getStringValue();
                         ClassDec cl = symbolTable.getInGlobal(v2.getType().getCname());
                         Method m = cl.searchPublicMethod(methodName);
@@ -755,7 +757,8 @@ public class Compiler {
                                 error.show("Wrong parametersg");
                             }
                         }
-                        result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m));
+                        
+                        result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m), 1);
                         break;
                     case Symbol.LEFTPAR:
                         // this.id()
@@ -805,8 +808,7 @@ public class Compiler {
                                 error.show("Wrong parametersh");
                             }
                         }
-                        result = new MessageSendStatement(
-                                new MessageSendToSelf(m5, exprList));
+                        result = new MessageSendStatement(new MessageSendToSelf(m5, exprList));
                         break;
                     default:
                         error.show(CompilerError.identifier_expected);
@@ -866,7 +868,7 @@ public class Compiler {
                         error.show("Wrong parametersi");
                     }
                 }
-                result = new MessageSendStatement(new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList));
+                result = new MessageSendStatement(new MessageSendToSuper(classeCorrente.getSuperclass(), m, exprList),2);
                 break;
             case Symbol.IDENT:
                 //id
@@ -914,6 +916,7 @@ public class Compiler {
                             }
                         }
                         //# corrija
+                        
                         result = new AssignCommand(v, anExpr);
                         break;
                     case Symbol.IDENT:
@@ -1023,7 +1026,10 @@ public class Compiler {
                                     error.show("Wrong parametersb");
                                 }
                             }
-                            result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m2));
+                            if(v2!=null)
+                                result = new MessageSendStatement(new MessageSendToVariable(exprList, v2, m2));
+                            else if(clInit!=null)
+                                result = new MessageSendStatement(new MessageSendToClass(exprList, clInit, m2));
                         } else if (clInit != null) {
                             if (classeCorrente != clInit) {
                                 error.show("You can not access a private static variable of another class");
@@ -1064,7 +1070,10 @@ public class Compiler {
                                     }
                                 }
                                 //# corrija
-                                result = new AssignCommand(v3, anExpr2);
+                                if(clInit!=null)
+                                    result = new AssignCommand(v3, anExpr2, clInit);
+                                else
+                                    result = new AssignCommand(v3, anExpr2);
                             } else {
                                 result = new MessageSendStatement(new MessageSendStaticVariable(v3, clInit));
                             }
@@ -1189,6 +1198,7 @@ public class Compiler {
             error.show("( expected");
         }
         lexer.nextToken();
+        int thiss = 0;
         while (true) {
             String name;
             Variable v;
@@ -1203,6 +1213,7 @@ public class Compiler {
                 }
                 name = (String) lexer.getStringValue();
                 v = classeCorrente.searchInstanceVariable(name);
+                readCom.setThis(thiss);
             } else {
                 if (lexer.token != Symbol.IDENT) {
                     error.show(CompilerError.identifier_expected);
@@ -1227,6 +1238,7 @@ public class Compiler {
             } else {
                 break;
             }
+            thiss++;
         }
 
         if (lexer.token != Symbol.RIGHTPAR) {
@@ -1672,6 +1684,8 @@ public class Compiler {
                                         error.show("Undeclared instance varible");
                                     }
 
+                                    var.setThiss(true);
+
                                     lexer.nextToken();
                                     if (lexer.token != Symbol.IDENT) {
                                         error.show(CompilerError.identifier_expected);
@@ -1737,6 +1751,7 @@ public class Compiler {
                                     if ( aMethod == null )
                                     ...
                                      */
+                                    
                                     return new MessageSendToVariable(exprList, var, m3);
                                 default:
                                     // expression of the kind "this.x"
@@ -1753,6 +1768,8 @@ public class Compiler {
                                     if (var2 == null) {
                                         error.show("Undeclared instance varible");
                                     }
+
+                                    var2.setThiss(true);
                                     /*
                                     procure x na lista de vari�veis de inst�ncia da classe corrente:
                                     anInstanceVariable = currentClass.searchInstanceVariable(ident);

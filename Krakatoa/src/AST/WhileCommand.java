@@ -28,7 +28,7 @@ public class WhileCommand extends Statement{
     public void genKrakatoa(PW pw){
         pw.printIdent("while(");
         expr.genKrakatoa(pw, true);
-        pw.print("){");
+        pw.print("){\n");
         pw.add();
         whileStatement.genKrakatoa(pw);
         pw.sub();

@@ -80,7 +80,7 @@ class C {
    }   
    
    public void method_integer(int n) {
-      write( this.name, n, this.time );
+      read( this.name, n, this.time );
       if (this.letter) {
          write( "true" );
       }

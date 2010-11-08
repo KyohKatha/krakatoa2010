@@ -22,13 +22,13 @@ public class UnaryExpr extends Expr {
     public void genC( PW pw, boolean putParenthesis ) {
         switch ( op ) {
             case Symbol.PLUS : 
-              pw.print("+");
+              pw.print(" + ");
               break;
             case Symbol.MINUS :
-              pw.print("-");
+              pw.print(" - ");
               break;
             case Symbol.NOT :
-              pw.print("!");
+              pw.print(" ! ");
               break;
         }
         expr.genC(pw, false);
@@ -37,13 +37,13 @@ public class UnaryExpr extends Expr {
     public void genKrakatoa(PW pw, boolean putParenthesis){
         switch ( op ) {
             case Symbol.PLUS :
-              pw.print("+");
+              pw.print(" +");
               break;
             case Symbol.MINUS :
-              pw.print("-");
+              pw.print(" -");
               break;
             case Symbol.NOT :
-              pw.print("!");
+              pw.print(" !");
               break;
         }
         expr.genKrakatoa(pw, false);

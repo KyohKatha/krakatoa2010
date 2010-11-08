@@ -1,254 +1,126 @@
-public class null {
-    String course;
-    String course;
-    int number;
-    int number;
-    int age;
-    int age;
-    String name;
-    String name;
+
+class Person {
+    private String course;
+    private int number;
+    private int age;
+    private String name;
     
-    public AST.StringType@201f9 getCourse ( ){
-    return course    }
-
-    public AST.StringType@201f9 getCourse ( ){
-    return course    }
-
-    public AST.VoidType@1cf8583 setCourse ( course){
-course = course;
+    public String getCourse ( ){
+        return this.course;
     }
 
-    public AST.VoidType@1cf8583 setCourse ( course){
-course = course;
+    public void setCourse ( String course){
+        this.course = course;
     }
 
-    public AST.IntType@14693c7 getNumber ( ){
-    return number    }
-
-    public AST.IntType@14693c7 getNumber ( ){
-    return number    }
-
-    public AST.VoidType@1cf8583 setNumber ( number){
-number = number;
+    public int getNumber ( ){
+        return this.number;
     }
 
-    public AST.VoidType@1cf8583 setNumber ( number){
-number = number;
+    public void setNumber ( int number){
+        this.number = number;
     }
 
-    public AST.VoidType@1cf8583 init ( name, age){
-name = name;
-age = age;
+    public void init ( String name, int age){
+        this.name = name;
+        this.age = age;
     }
 
-    public AST.VoidType@1cf8583 init ( name, age){
-name = name;
-age = age;
+    public String getName ( ){
+        return this.name;
     }
 
-    public AST.StringType@201f9 getName ( ){
-    return name    }
-
-    public AST.StringType@201f9 getName ( ){
-    return name    }
-
-    public AST.IntType@14693c7 getAge ( ){
-    return age    }
-
-    public AST.IntType@14693c7 getAge ( ){
-    return age    }
-
-    public AST.VoidType@1cf8583 print ( ){
-    write(Name = , name);
-    write(Age = , age);
+    public int getAge ( ){
+        return this.age;
     }
 
-    public AST.VoidType@1cf8583 print ( ){
-    write(Name = , name);
-    write(Age = , age);
+    public void print ( ){
+        write("Name = ", this.name);
+        write("Age = ", this.age);
     }
 
     
 }
-public class null {
-    null first;
-    null first;
-    null second;
-    null second;
+
+class Group {
+    private Person first;
+    private Person second;
     
-    public AST.VoidType@1cf8583 set ( first, second){
-first = first;
-second = second;
+    public void set ( Person first, Person second){
+        this.first = first;
+        this.second = second;
     }
 
-    public AST.VoidType@1cf8583 set ( first, second){
-first = first;
-second = second;
+    public Person getFirst ( ){
+        return this.first;
     }
 
-    public AST.ClassDec@901887 getFirst ( ){
-    return first    }
-
-    public AST.ClassDec@901887 getFirst ( ){
-    return first    }
-
-    public AST.ClassDec@901887 getSecond ( ){
-    return second    }
-
-    public AST.ClassDec@901887 getSecond ( ){
-    return second    }
-
-    public AST.VoidType@1cf8583 print ( ){
-    write(First: ,     first.getName();
-);
-    write(Second: ,     second.getName();
-);
+    public Person getSecond ( ){
+        return this.second;
     }
 
-    public AST.VoidType@1cf8583 print ( ){
-    write(First: ,     first.getName();
-);
-    write(Second: ,     second.getName();
-);
+    public void print ( ){
+        write("First: ", this.first.getName());
+        write("Second: ", this.second.getName());
     }
 
     
 }
-public class null {
-    String name;
-    String name;
-    int numberOfStudents;
-    int numberOfStudents;
-    String city;
-    String city;
+
+class University {
+    private String name;
+    private int numberOfStudents;
+    private String city;
     
-    public AST.VoidType@1cf8583 init ( name, city, numberOfStudents){
-name = name;
-city = city;
-numberOfStudents = numberOfStudents;
+    public void init ( String name, String city, int numberOfStudents){
+        this.name = name;
+        this.city = city;
+        this.numberOfStudents = numberOfStudents;
     }
 
-    public AST.VoidType@1cf8583 init ( name, city, numberOfStudents){
-name = name;
-city = city;
-numberOfStudents = numberOfStudents;
-    }
-
-    public AST.VoidType@1cf8583 print ( ){
-    write(name);
-    write(city);
-    write(numberOfStudents);
-    }
-
-    public AST.VoidType@1cf8583 print ( ){
-    write(name);
-    write(city);
-    write(numberOfStudents);
+    public void print ( ){
+        write(this.name);
+        write(this.city);
+        write(this.numberOfStudents);
     }
 
     
 }
-public class null {
+
+class Program {
     
-    public AST.VoidType@1cf8583 run ( ){
-    null s;
-    null joao;
-    null maria;
-    null g;
-s =  new null();
-;
-        s.init(UFSCar, Sao Carlos, 7000);
-;
+    public void run ( ){
+        University s;
+        Person joao;
+        Person maria;
+        Group g;
+        s = new University();
+        s.init("UFSCar", "Sao Carlos", 7000);
 
         s.print();
-;
 
-joao =  new null();
-;
-        joao.init(Joao, 21);
-;
+        joao = new Person();
+        joao.init("Joao", 21);
 
-        joao.setCourse(EnC);
-;
+        joao.setCourse("EnC");
 
         joao.setNumber(6729);
-;
 
-maria =  new null();
-;
-        maria.init(Maria, 20);
-;
+        maria = new Person();
+        maria.init("Maria", 20);
 
-        maria.setCourse(Fisioterapia);
-;
+        maria.setCourse("Fisioterapia");
 
         maria.setNumber(8607);
-;
 
         joao.print();
-;
 
         maria.print();
-;
 
-g =  new null();
-;
+        g = new Group();
         g.set(joao, maria);
-;
 
         g.print();
-;
-
-    }
-
-    public AST.VoidType@1cf8583 run ( ){
-    null s;
-    null joao;
-    null maria;
-    null g;
-s =  new null();
-;
-        s.init(UFSCar, Sao Carlos, 7000);
-;
-
-        s.print();
-;
-
-joao =  new null();
-;
-        joao.init(Joao, 21);
-;
-
-        joao.setCourse(EnC);
-;
-
-        joao.setNumber(6729);
-;
-
-maria =  new null();
-;
-        maria.init(Maria, 20);
-;
-
-        maria.setCourse(Fisioterapia);
-;
-
-        maria.setNumber(8607);
-;
-
-        joao.print();
-;
-
-        maria.print();
-;
-
-g =  new null();
-;
-        g.set(joao, maria);
-;
-
-        g.print();
-;
 
     }
 

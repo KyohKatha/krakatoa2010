@@ -53,6 +53,14 @@ public class ExprList {
         this.v = v;
     }
 
+    public int size(){
+        return v.size();
+    }
+
+    public Expr getElement(int i){
+        return v.get(i);
+    }
+
     private ArrayList<Expr> v;
     
 }

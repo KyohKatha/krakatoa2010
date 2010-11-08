@@ -1,0 +1,70 @@
+
+class A {
+    private A myself;
+    private int n;
+    
+    static private A staticMyself;
+    
+    
+    public A get ( ){
+        return this.myself;
+    }
+
+    public void set ( A myself){
+        this.myself = myself;
+    }
+
+    public void setInt ( int n){
+        this.n = n;
+    }
+
+    public int getInt ( ){
+        return this.n;
+    }
+
+    
+    
+    static public A get ( ){
+        return A.staticMyself;
+    }
+
+    static public void set ( A myself){
+        A.staticMyself = myself;
+    }
+
+}
+
+class Program {
+    
+    
+    
+    public void run ( ){
+        A a, bInstancebStatic;
+        write("");
+        write("Ok-ger20");
+        write("The output should be: ");
+        write("0 1 2");
+        a = new A();
+        bInstance = new A();
+        bStatic = new A();
+        a.setInt(0);
+
+        bInstance.setInt(1);
+
+        bStatic.setInt(2);
+
+        a.set(bInstance);
+
+        A.set(bStatic);
+
+        write(A.getInt());
+        A c;
+        c = A.get();
+        write(A.getInt());
+        c = A.get();
+        write(A.getInt());
+    }
+
+    
+    
+}

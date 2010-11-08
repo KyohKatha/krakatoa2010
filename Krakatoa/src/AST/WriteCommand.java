@@ -9,6 +9,8 @@
 
 package AST;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author BRUNO
@@ -18,7 +20,6 @@ public class WriteCommand extends Statement{
     public WriteCommand(ExprList exprList) {
         this.exprList = exprList;
     }
-
 
     public void genC(PW pw){
 

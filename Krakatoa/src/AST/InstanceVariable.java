@@ -6,16 +6,21 @@
  *      Katharina Carrapatoso Garcia     317144
  *
  */
-
 package AST;
 
+import Lexer.Symbol;
+
 public class InstanceVariable extends Variable {
-    
-    public InstanceVariable( String name, Type type ) {
+
+    public InstanceVariable(int q, String name, Type type) {
         super(name, type);
+        this.qualifier = q;
     }
 
-    public void genKrakatoa(PW pw){
-        pw.print( super.getName() );
+    @Override
+    public void genKrakatoa(PW pw) {
+        pw.print(super.getName());
     }
+    
+    int qualifier;
 }

@@ -32,7 +32,7 @@ public class ThisExpr extends Expr{
     }
 
     public void genKrakatoa(PW pw, boolean putParenthesis){
-        pw.print("this.");
+        pw.print("this");
    }
 
     private ClassDec currentClass;
